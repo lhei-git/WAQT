@@ -1,4 +1,5 @@
 # LongTermAirQualityIndex
+## The dev branch is the default branch for branching/forking and merging into. 
 ## Contribution
 - Branch or fork the dev branch.
 - When ready submit a pull request to merge your branch or fork into the dev branch.
