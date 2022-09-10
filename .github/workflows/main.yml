@@ -29,6 +29,13 @@ jobs:
       - name: Check for secrets (API keys)
         with: # Set the secret as an input
           test: ${{ secrets.test }}
+      - name: Run pytest
+        uses: pavelzw/pytest-action@v1
+        with:
+          verbose: true
+          emoji: true
+          job-summary: true
+          custom-arguments: '-q'
 
 
       
