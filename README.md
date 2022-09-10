@@ -5,3 +5,4 @@
 - When ready submit a pull request to merge your branch or fork into the dev branch.
 - Pull requests require 2 reviews to merge.
 - We should never merge our individual pull requests into test or main.
+- The Issues tab in GitHub includes all assigned and outstanding tasks. 
