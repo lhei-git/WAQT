@@ -1,8 +1,1 @@
-# LongTermAirQualityIndex
-## The dev branch is the default branch for branching/forking and merging into. 
-## Contribution
-- Branch or fork the dev branch.
-- When ready submit a pull request to merge your branch or fork into the dev branch.
-- Pull requests require 2 reviews to merge.
-- We should never merge our individual pull requests into test or main.
-- The Issues tab in GitHub includes all assigned and outstanding tasks. 
+This is a sample branch. Please create your own branches for your own changes based off the dev branch. Good tutorial: https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-and-deleting-branches-within-your-repository
