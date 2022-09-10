@@ -6,3 +6,9 @@
 - Pull requests require 2 reviews to merge.
 - We should never merge our individual pull requests into test or main.
 - The Issues tab in GitHub includes all assigned and outstanding tasks. 
+## Setup Local Enviorment for front-end
+- Install node.js (https://nodejs.org/en/)
+- Initalize React project: 'npm install'
+- Install nx vscode extension
+## Setup Local Enviorment for back-end
+- Install Python (https://www.python.org/)
