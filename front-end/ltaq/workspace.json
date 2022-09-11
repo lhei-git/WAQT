@@ -1,0 +1,8 @@
+{
+  "$schema": "./node_modules/nx/schemas/workspace-schema.json",
+  "version": 2,
+  "projects": {
+    "ltaq": "apps/ltaq",
+    "ltaq-e2e": "apps/ltaq-e2e"
+  }
+}

@@ -12,6 +12,6 @@ describe('App', () => {
   it('should have a greeting as the title', () => {
     const { getByText } = render(<App />);
 
-    expect(getByText(/Welcome long-term-air-quality-index/gi)).toBeTruthy();
+    expect(getByText(/Welcome ltaq/gi)).toBeTruthy();
   });
 });

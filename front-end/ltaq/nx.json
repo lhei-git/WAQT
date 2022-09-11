@@ -1,8 +1,8 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "npmScope": "long-term-air-quality-index",
+  "npmScope": "ltaq",
   "affected": {
-    "defaultBase": "master"
+    "defaultBase": "main"
   },
   "tasksRunnerOptions": {
     "default": {
@@ -14,7 +14,7 @@
           "test",
           "e2e"
         ],
-        "accessToken": "ODBlNjU2YTktYTk3Ny00Yzc5LWFhN2QtODFlOWQ0MzRmMThjfHJlYWQtd3JpdGU="
+        "accessToken": "MmExYWYzMjEtMTYwZS00MTI2LWE0ZDEtM2U5ZTYyMmRmMTBkfHJlYWQtd3JpdGU="
       }
     }
   },
@@ -67,18 +67,18 @@
   "generators": {
     "@nrwl/react": {
       "application": {
-        "style": "scss",
+        "style": "css",
         "linter": "eslint",
         "babel": true
       },
       "component": {
-        "style": "scss"
+        "style": "css"
       },
       "library": {
-        "style": "scss",
+        "style": "css",
         "linter": "eslint"
       }
     }
   },
-  "defaultProject": "long-term-air-quality-index"
+  "defaultProject": "ltaq"
 }

@@ -1,11 +1,11 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import styles from './app.module.scss';
+import styles from './app.module.css';
 import NxWelcome from './nx-welcome';
 
 export function App() {
   return (
     <>
-      <NxWelcome title="long-term-air-quality-index" />
+      <NxWelcome title="ltaq" />
       <div />
     </>
   );

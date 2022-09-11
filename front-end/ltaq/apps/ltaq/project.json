@@ -1,6 +1,6 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/long-term-air-quality-index/src",
+  "sourceRoot": "apps/ltaq/src",
   "projectType": "application",
   "targets": {
     "build": {
@@ -9,17 +9,14 @@
       "defaultConfiguration": "production",
       "options": {
         "compiler": "babel",
-        "outputPath": "dist/apps/long-term-air-quality-index",
-        "index": "apps/long-term-air-quality-index/src/index.html",
+        "outputPath": "dist/apps/ltaq",
+        "index": "apps/ltaq/src/index.html",
         "baseHref": "/",
-        "main": "apps/long-term-air-quality-index/src/main.tsx",
-        "polyfills": "apps/long-term-air-quality-index/src/polyfills.ts",
-        "tsConfig": "apps/long-term-air-quality-index/tsconfig.app.json",
-        "assets": [
-          "apps/long-term-air-quality-index/src/favicon.ico",
-          "apps/long-term-air-quality-index/src/assets"
-        ],
-        "styles": ["apps/long-term-air-quality-index/src/styles.scss"],
+        "main": "apps/ltaq/src/main.tsx",
+        "polyfills": "apps/ltaq/src/polyfills.ts",
+        "tsConfig": "apps/ltaq/tsconfig.app.json",
+        "assets": ["apps/ltaq/src/favicon.ico", "apps/ltaq/src/assets"],
+        "styles": ["apps/ltaq/src/styles.css"],
         "scripts": [],
         "webpackConfig": "@nrwl/react/plugins/webpack"
       },
@@ -33,8 +30,8 @@
         "production": {
           "fileReplacements": [
             {
-              "replace": "apps/long-term-air-quality-index/src/environments/environment.ts",
-              "with": "apps/long-term-air-quality-index/src/environments/environment.prod.ts"
+              "replace": "apps/ltaq/src/environments/environment.ts",
+              "with": "apps/ltaq/src/environments/environment.prod.ts"
             }
           ],
           "optimization": true,
@@ -50,15 +47,15 @@
       "executor": "@nrwl/web:dev-server",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "long-term-air-quality-index:build",
+        "buildTarget": "ltaq:build",
         "hmr": true
       },
       "configurations": {
         "development": {
-          "buildTarget": "long-term-air-quality-index:build:development"
+          "buildTarget": "ltaq:build:development"
         },
         "production": {
-          "buildTarget": "long-term-air-quality-index:build:production",
+          "buildTarget": "ltaq:build:production",
           "hmr": false
         }
       }
@@ -67,16 +64,14 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": [
-          "apps/long-term-air-quality-index/**/*.{ts,tsx,js,jsx}"
-        ]
+        "lintFilePatterns": ["apps/ltaq/**/*.{ts,tsx,js,jsx}"]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/long-term-air-quality-index"],
+      "outputs": ["coverage/apps/ltaq"],
       "options": {
-        "jestConfig": "apps/long-term-air-quality-index/jest.config.ts",
+        "jestConfig": "apps/ltaq/jest.config.ts",
         "passWithNoTests": true
       }
     }
