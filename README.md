@@ -3,9 +3,10 @@
 ## Contribution
 - Branch or fork the dev branch.
 - When ready submit a pull request to merge your branch or fork into the dev branch.
-- Pull requests require 2 reviews to merge.
+- Pull requests require 1 review to merge.
 - We should never merge our individual pull requests into test or main.
 - The Issues tab in GitHub includes all assigned and outstanding tasks. 
+- Make sure not to upload API keys to GitHub
 ## Setup Local Enviorment for front-end
 - Install node.js (https://nodejs.org/en/)
 - Initalize React project in front-end/ltaq using: 'npm install'
