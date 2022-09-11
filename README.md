@@ -8,7 +8,8 @@
 - The Issues tab in GitHub includes all assigned and outstanding tasks. 
 ## Setup Local Enviorment for front-end
 - Install node.js (https://nodejs.org/en/)
-- Initalize React project: 'npm install'
+- Initalize React project in front-end/ltaq using: 'npm install'
 - Install nx vscode extension
+- run the react app with npm start inside front-end/ltaq
 ## Setup Local Enviorment for back-end
 - Install Python (https://www.python.org/)
