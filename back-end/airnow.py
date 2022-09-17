@@ -1,5 +1,6 @@
 # This connects to the AirNow API 
 # Documentation: https://docs.airnowapi.org/webservices
+from tracemalloc import start
 from flask import Flask, request, jsonify
 import requests
 from flask_cors import CORS
@@ -17,32 +18,12 @@ def airNowEndpoint(config=None):
     app.config.update(config or {})
     CORS(app)
 
-    def downloadData(startDate, startHourUTC, endDate, endHourUTC, parameters, bbox):
-        # API parameters
-        options = {}
-        options["url"] = "https://airnowapi.org/aq/data/"
-        options["start_date"] = startDate
-        options["start_hour_utc"] = startHourUTC
-        options["end_date"] = endDate
-        options["end_hour_utc"] = endHourUTC
-        options["parameters"] = parameters
-        options["bbox"] = bbox
-        options["data_type"] = "a"
-        options["format"] = "application/json"
-        options["ext"] = "json"
-        options["api_key"] = API_KEY
-
+    #this function sets up the url and downloads the json 
+    
+    def downloadData(startDate, endDate, parameters, bbox):
         # API request URL
-        REQUEST_URL = options["url"] \
-                    + "?startdate=" + options["start_date"] \
-                    + "t" + options["start_hour_utc"] \
-                    + "&enddate=" + options["end_date"] \
-                    + "t" + options["end_hour_utc"] \
-                    + "&parameters=" + options["parameters"] \
-                    + "&bbox=" + options["bbox"] \
-                    + "&datatype=" + options["data_type"] \
-                    + "&format=" + options["format"] \
-                    + "&api_key=" + options["api_key"]
+        REQUEST_URL = "https://www.airnowapi.org/aq/data/?startDate="+startDate+"&endDate="+endDate+"&parameters="+ parameters+"&BBOX="+bbox+"&dataType=B&format=application/json&verbose=0&monitorType=2&includerawconcentrations=0&API_KEY="+API_KEY
+        print(REQUEST_URL)
         r = requests.get(REQUEST_URL)
         with open("output.txt",'wb') as f:
             f.write(r.content)
@@ -61,13 +42,21 @@ def airNowEndpoint(config=None):
         endHourUTC = request.args.get("endHourUTC")
         parameters = request.args.get("parameters")
         bbox = request.args.get("bbox")
-        downloadData(startDate, startHourUTC, endDate, endHourUTC, parameters, bbox)
+        #downloadData(startDate, startHourUTC, endDate, endHourUTC, parameters, bbox)
+        #example paramaters:
+        downloadData("2022-09-17T16","2022-09-17T17","OZONE,PM25", "-124.205070,28.716781,-75.337882,45.419415")
 
         #read output.txt 
         #contains json response from air now
         responseData = open('output.txt')
         jsonResponse = json.load(responseData)
-        return jsonResponse
+        #delete the json file
+        if os.path.exists("output.txt"):
+            os.remove("output.txt")
+        else:
+            print("The file does not exist")
+        #print(jsonResponse)
+        return jsonify(jsonResponse)
     return app
 
 
