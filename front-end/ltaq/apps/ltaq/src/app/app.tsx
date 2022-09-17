@@ -1,14 +1,11 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import styles from './app.module.css';
-import NxWelcome from './nx-welcome';
+import Search from './search';
+import Maps from './maps';
 
-export function App() {
-  return (
-    <>
-      <NxWelcome title="ltaq" />
-      <div />
-    </>
-  );
+const App = () => {
+    return (
+        <><Search />
+        <Maps /></>
+    );
 }
 
 export default App;
