@@ -42,9 +42,9 @@ def airNowEndpoint(config=None):
         endHourUTC = request.args.get("endHourUTC")
         parameters = request.args.get("parameters")
         bbox = request.args.get("bbox")
-        #downloadData(startDate, startHourUTC, endDate, endHourUTC, parameters, bbox)
+        downloadData(startDate, startHourUTC, endDate, endHourUTC, parameters, bbox)
         #example paramaters:
-        downloadData("2022-09-17T16","2022-09-17T17","OZONE,PM25", "-124.205070,28.716781,-75.337882,45.419415")
+        #downloadData("2022-09-17T16","2022-09-17T17","OZONE,PM25", "-124.205070,28.716781,-75.337882,45.419415")
 
         #read output.txt 
         #contains json response from air now
