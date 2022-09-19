@@ -1,10 +1,13 @@
-import Search from './search';
-import Maps from './maps';
+import Location from './searchLocation';
+import Map from './map';
+import "./app.css";
 
 const App = () => {
     return (
-        <><Search />
-        <Maps /></>
+        <>
+        <Location />
+        <Map />
+        </>
     );
 }
 
