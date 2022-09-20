@@ -1,11 +1,15 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import styles from './app.module.css';
-import NxWelcome from './nx-welcome';
+import Graphs from './graph';
+import LineGraph from './line'
+import Table from './current-table'
 
 export function App() {
   return (
     <>
-      <NxWelcome title="ltaq" />
+      <Graphs />
+      <LineGraph />
+      <Table />
       <div />
     </>
   );
