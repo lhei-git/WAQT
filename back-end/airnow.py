@@ -31,20 +31,14 @@ def airNowEndpoint(config=None):
     #endpoint to get all the data
     # Contract: https://docs.airnowapi.org/Data/docs
     # Returns Ozone, PM25, PM10, CO, N02 and S02 Values for a location
-    # Sample bounds: -124.205070,28.716781,-75.337882,45.419415
+    # Sample bounds: -83.553673,42.029418,-82.871707,42.451216	
     # Sample date: 2022-09-12T00
     # Will return in json format 
-    @app.route("/", methods=['GET'])
-    def getAllData():
-        startDate = request.args.get("startDate")
-        startHourUTC = request.args.get("startHourUTC")
-        endDate = request.args.get("endDate")
-        endHourUTC = request.args.get("endHourUTC")
-        parameters = request.args.get("parameters")
-        bbox = request.args.get("bbox")
-        downloadData(startDate, startHourUTC, endDate, endHourUTC, parameters, bbox)
+    def getAllData(startDate, endDate, parameters, bbox):   
+
+        downloadData(startDate, endDate, parameters, bbox)
         #example paramaters:
-        #downloadData("2022-09-17T16","2022-09-17T17","OZONE,PM25", "-124.205070,28.716781,-75.337882,45.419415")
+        #downloadData("2022-09-17T16","2022-09-17T17","PM25", "-83.553673,42.029418,-82.871707,42.451216")
 
         #read output.txt 
         #contains json response from air now
@@ -57,6 +51,18 @@ def airNowEndpoint(config=None):
             print("The file does not exist")
         #print(jsonResponse)
         return jsonify(jsonResponse)
+
+    #This grabs pm 2.5 values for a bounding box
+    #sample request url: localhost:8000/pm25?startDate=2022-09-17T16&endDate=2022-09-17T17&bbox=-83.553673,42.029418,-82.871707,42.451216
+    @app.route("/pm25", methods=['GET'])
+    def pm25Response():
+        #get url parameters
+        startDate = request.args.get("startDate")
+        endDate = request.args.get("endDate")
+        bbox = request.args.get("bbox")
+        #retrieve json data (this method only calls for pm2.5)
+        return getAllData(str(startDate), str(endDate), "PM25", str(bbox))
+    
     return app
 
 

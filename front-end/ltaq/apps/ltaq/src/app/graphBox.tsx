@@ -1,4 +1,9 @@
-import React from "react";
+//Import this into all graph methods
+//This is used to display the graph on the page
+//along with making it resizeable 
+
+//This was included with the react-charts library
+
 import { ResizableBox as ReactResizableBox } from "react-resizable";
 
 import "react-resizable/css/styles.css";

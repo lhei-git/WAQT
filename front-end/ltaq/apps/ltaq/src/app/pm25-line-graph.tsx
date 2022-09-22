@@ -3,6 +3,7 @@ import ResizableBox from "./graphBox";
 import React from "react";
 import { AxisOptions, Chart } from "react-charts";
 
+
 export default function Bar() {
   const { data, randomizeData } = useDemoConfig({
     series: 3,

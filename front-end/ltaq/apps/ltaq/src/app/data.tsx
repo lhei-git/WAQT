@@ -1,3 +1,7 @@
+//Graph configuration examples
+//This is only for references
+
+//Included with react-charts library
 import React from "react";
 
 //
