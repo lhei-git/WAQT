@@ -1,33 +1,79 @@
+import React from 'react';
 import { useState } from 'react';
+import './app.css';
 
-function Location() {
-  const [name, setName] = useState(''); //useState is a Hook that lets you add React state to function components
-  const [showName, setShowName] = useState(false);
-  
-  function handleSubmit(e: { preventDefault: () => void; }) {
-    e.preventDefault(); //method of the Event interface tells the user agent that if the event does not get explicitly handled, its default action should not be taken as it normally would be.
-    setShowName(true); //Determines whether to show or hide the object body.
-    sessionStorage.setItem("gLocation", name); //Set global variable gLocation to be passed throughout app
+const [selectedOption, setSelectedOption] = useState<String>();
+
+class Location extends React.Component<{}, { value: string }> {
+
+  constructor(props: {} | Readonly<{}>) {
+
+    super(props);
+    this.state = {
+      value: 'location',
+    };
+
+    this.locationChange = this.locationChange.bind(this); //User entered location handler
+    this.handleSubmit = this.handleSubmit.bind(this); //submit button handler
   }
+
+  //Form Events
+  locationChange(event: { target: { value: any } }) {
+    localStorage.setItem("location", JSON.stringify({ value: event.target.value })); //Save user input in localStorage variable "location"
+    this.setState({ value: event.target.value });
+  }
+
+  handleSubmit(event: { preventDefault: () => void }) {
+    // alert('Location Entered: ' + this.state.value);
+    // alert('Location Entered: ' + localStorage.getItem('location'));
+    console.log(JSON.stringify(localStorage.getItem("location"))) //Get and pring localStorage varabile "location" and print to console.log
+    event.preventDefault();
+  }
+
+  // This function is triggered when the select changes
+  placeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = event.target.value;
+    setSelectedOption(value);
+  };
+  
+  override render() {
     
-  return (
-    <div className="Location">
-      <form>
-        <label>Location:</label>
-        <input name="location" value={name} 
-          onChange={(e) => setName(e.target.value)}/>
-        <button onClick={handleSubmit} type="submit">
-          Submit
-        </button>
-      </form>
-      {/* Checks the condition if showName is 
-      true, which will be true only if 
-      we click on the submit button */}
-      {showName === true && 
-      <p>Location: {name}</p>}
-    </div>
-  );
+    return (
+      <>
+        <div>
+          {/* <h1 className = "form-box h1">
+        Enter Location
+      </h1> */}
+
+          <form onSubmit={this.handleSubmit}>
+            <label>
+              Location:
+              {/* <textarea
+                value={this.state.value}
+                onChange={this.locationChange}
+              /> */}
+              <input
+                type="text"
+                // name="note"
+                value={this.state.value}
+                // onChange={this.locationChange}
+                onChange={this.locationChange}
+              />
+            </label>
+            <select onChange={this.placeChange}>
+              <option value="grapefruit">City</option>
+              <option value="lime">State</option>
+              <option selected value="coconut">
+                County
+              </option>
+              <option value="mango">Zip Code</option>
+            </select>
+            <input type="submit" value="Submit" />
+          </form>
+        </div>
+      </>
+    );
+  }
 }
 
 export default Location;
-
