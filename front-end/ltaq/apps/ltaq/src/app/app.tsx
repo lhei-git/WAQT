@@ -1,17 +1,12 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import styles from './app.module.css';
-import Graphs from './pm25-line-graph';
-import LineGraph from './line'
+import LineGraph from './pm25'
 import Table from './current-table'
-import Test from './test'
 
 export function App() {
-  return (
-    <>
-      <Graphs />
-      <div />
-    </>
-  );
+  return ( 
+    <LineGraph />
+  )
 }
 
 export default App;
