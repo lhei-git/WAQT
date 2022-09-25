@@ -9,7 +9,7 @@ import json
 
 # API is in secrets
 # Do not push API_KEY to GitHub
-API_KEY = ""
+API_KEY = "875A031F-D66C-4D57-B82A-15A608B9465A"
 
 #endpoint to access air now data: 
 def airNowEndpoint(config=None):
@@ -27,7 +27,7 @@ def airNowEndpoint(config=None):
         r = requests.get(REQUEST_URL)
         with open("output.txt",'wb') as f:
             f.write(r.content)
-
+    
     #endpoint to get all the data
     # Contract: https://docs.airnowapi.org/Data/docs
     # Returns Ozone, PM25, PM10, CO, N02 and S02 Values for a location
