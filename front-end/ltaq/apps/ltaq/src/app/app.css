@@ -1,0 +1,74 @@
+/* Size of Map TileLayer */
+.leaflet-container{
+    width: 100vw;
+    height: 200vw;
+}
+
+/* To see borders of sections */
+/* *{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 1px solid red;
+} */
+
+.form-box{
+    /* min-width: 100%; */
+    height: 20vh;
+    /* border: null; */
+    /* border: 1px solid red; */
+    margin: 0vw;
+    text-align: left;
+    padding: 8vw ;
+    position:relative; 
+    border: yellow;
+     /* margin: top right bottom left;*/
+     /* margin: 10 100 .5vh 0; */
+    /* position:relative for .prevBtn and .nextBtn position:absolute; */
+}
+
+.form-box h1{
+    font-size: 35px ;
+    text-align: left;
+    /* color: #F55A00; */
+    border: blue;
+ /* margin: top right bottom left;*/
+    margin: 10 0 .5vh 0;
+
+}
+
+.form-box textarea{
+    display: block;
+    height: 0.1vw;
+    width: 100%;
+    padding: .5rem .8rem .5rem .8rem;
+    margin: .9vw 0 ;
+    border:0;
+    border-radius: 5px;
+    font-size: 20px;
+    border: 1px solid green;
+}
+
+.form-box location{
+    height: 0.1vh;
+    margin: 0vw;
+    text-align: left;
+    padding: 50vw ;
+ /* margin: top right bottom left;*/
+    margin: 0 0 0 0;
+    border: purple;
+    position:relative; 
+}
+
+.form-box select{
+    height: 0.1vh;
+}
+
+.form-box submit{
+    height: 0.1vh;
+    width: 1vh
+}
+
+.form-box dropDown{
+    height: 0.1vh;
+}
