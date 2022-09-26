@@ -1,15 +1,14 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import styles from './app.module.css';
-import LineGraph from './pm25'
-import Table from './fire-info-table'
+import Location from './searchLocation';
+import Map from './map';
+import "./app.css";
 
-export function App() {
-  return ( 
-    <>
-      <LineGraph />
-      <Table />
-    </>
-  )
+const App = () => {
+    return (
+        <>
+        <Location />
+        <Map />
+        </>
+    );
 }
 
 export default App;
