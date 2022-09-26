@@ -9,7 +9,7 @@ import json
 
 # API is in secrets
 # Do not push API_KEY to GitHub
-API_KEY = "875A031F-D66C-4D57-B82A-15A608B9465A"
+API_KEY = ""
 
 #endpoint to access air now data: 
 def airNowEndpoint(config=None):
@@ -56,7 +56,7 @@ def airNowEndpoint(config=None):
     #sample request url: localhost:8000/pm25?startDate=2022-09-17T16&endDate=2022-09-17T17&bbox=-83.553673,42.029418,-82.871707,42.451216
     @app.route("/pm25", methods=['GET'])
     def pm25Response():
-        #get url parameters
+        #get url parameters 
         startDate = request.args.get("startDate")
         endDate = request.args.get("endDate")
         bbox = request.args.get("bbox")
