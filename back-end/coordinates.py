@@ -2,9 +2,6 @@ import requests, os
 import json
 from flask import Flask, jsonify, request
 
-#API key
-API_KEY = ''
-City = '' 
 
 def coordinates(config=None):
     app = Flask(__name__)
