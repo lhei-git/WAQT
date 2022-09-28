@@ -1,13 +1,15 @@
 // App.js
 import { useEffect, useState } from "react";
 import styles from "./app.module.css";
+import {locationInfo} from './locationHandler'
 
 function BasicFireInfo() {
 
   const [data, setData] = useState<any[]>([]);
-
+  const url = 'http://127.0.0.1:8001/search?location='+locationInfo[0];
+  console.log(url)
   const fetchData = () => {
-    fetch(`http://127.0.0.1:8001/`)
+    fetch(url)
       .then((response) => response.json())
       .then((actualData) => {
         setData(actualData.features.slice(0,10));
@@ -19,8 +21,8 @@ function BasicFireInfo() {
 
   useEffect(() => {
     fetchData();
-  }, []);
-
+  }, [data]);
+  
   return (
     <div className={styles["basicTable"]}>
       <tbody>
@@ -37,7 +39,8 @@ function BasicFireInfo() {
             <td>{item.attributes.FireCause}</td>
             <td>{item.attributes.DiscoveryAcres}</td>
           </tr>
-        ))}
+        ))
+        }
       </tbody>
     </div>
   );

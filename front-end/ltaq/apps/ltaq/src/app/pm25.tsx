@@ -5,8 +5,9 @@ import axios from 'axios';
 Chart.register(...registerables);
 
 export default function PM25Graph() {
-  const [dates, setDate] = useState<any[]>([]);
-  const [values, setValues] = useState<any[]>([]);
+  var values: string[] = [];
+  var dates: string[] = [];
+  //const [values, setValues] = useState<any[]>([]);
   const getData = () => {
     fetch(
       'http://localhost:8000/pm25?startDate=2022-09-17T16&endDate=2022-09-17T17&bbox=-83.553673,42.029418,-82.871707,42.451216'
@@ -31,7 +32,7 @@ export default function PM25Graph() {
     labels: dates,
     datasets: [
       {
-        label: 'Holy crap it finally works',
+        label: 'PM25',
         backgroundColor: 'rgba(75,192,192,1)',
         borderColor: 'rgba(0,0,0,1)',
         borderWidth: 2,
@@ -43,7 +44,7 @@ export default function PM25Graph() {
   console.log('after loop');
   return (
     <div>
-      <Bar data={state} v-if="loaded" />
+      <Bar data={state}  />
     </div>
   );
 }
