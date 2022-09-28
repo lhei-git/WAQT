@@ -2,7 +2,7 @@ import React from 'react';
 import { MapContainer, TileLayer, useMap, Marker, Popup } from 'react-leaflet';
 import './app.css';
 import michiganAQI from './michiganInitialLatitude.json';
-
+import {locationInfo} from './locationHandler'
 const Map = () => {
   console.log(michiganAQI);
   var gLocation = sessionStorage.getItem('gLocation'); //get global gLocation string
@@ -12,7 +12,7 @@ const Map = () => {
       {/* <p>{gLocation}</p> */}
       {/* Map Container is it's properties */}
       <MapContainer
-        center={[42.3314, -83.0458]}
+        center={[locationInfo[1], locationInfo[2]]}
         zoom={13}
         scrollWheelZoom={true}
       >

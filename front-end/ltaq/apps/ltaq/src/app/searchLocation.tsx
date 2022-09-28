@@ -1,5 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import {locationInfo, locationHandeler} from './locationHandler'
+import BasicFireInfo from './fire-info-table'
+import Map from './map'
 import './App.css';
+import { render } from 'react-dom';
 
 function searchLocation() {
 
@@ -16,19 +20,27 @@ function searchLocation() {
       [e.target.name]: e.target.value,
     });
   };
+  
 
   //Called when user hits 'submit' button
-  const handleSubmit = (event: { preventDefault: () => void; }) => {
+  const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
     //Store state array in local storage and print to console
     localStorage.setItem("LocationInfo", JSON.stringify(state));
     console.log(state.location);
     console.log(state.locationType);
+    locationHandeler(state.location, state.locationType)
+    console.log(locationInfo[0])
+    useEffect(() => {
+      Map();
+    }, [state]);
+    
+    
     }
 
   return (
     <div>
-      <h1>Wildfire Air Quality (WAQ)</h1>
+      <h1>Wildfire Air Quality (WAQ) Protoype 1</h1>
       <form onSubmit={handleSubmit}>
         <label>
           Location:{' '}
