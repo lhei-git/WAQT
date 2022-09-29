@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import {locationInfo, locationHandeler} from './locationHandler'
 import BasicFireInfo from './fire-info-table'
 import Map from './map'
+import PM25Graph from './pm25'
 import './App.css';
-import { render } from 'react-dom';
+import ReactDOM, { render } from 'react-dom';
+
+
+export let userLocation: string = "Anaheim";
 
 function searchLocation() {
 
@@ -29,13 +32,20 @@ function searchLocation() {
     localStorage.setItem("LocationInfo", JSON.stringify(state));
     console.log(state.location);
     console.log(state.locationType);
-    locationHandeler(state.location, state.locationType)
-    console.log(locationInfo[0])
-    useEffect(() => {
-      Map();
-    }, [state]);
-    
-    
+    userLocation = state.location
+    console.log(userLocation);
+    //temp patch for waiting for the endpoint to get cord data
+   // locationHandeler(state.location, state.locationType)
+    ReactDOM.render(
+      <div>
+        <BasicFireInfo/>,
+        <PM25Graph />,
+        <Map />
+        
+        
+      </div>,
+      document.getElementById('root')
+  );
     }
 
   return (

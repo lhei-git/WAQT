@@ -5,46 +5,39 @@ import axios from 'axios';
 Chart.register(...registerables);
 
 export default function PM25Graph() {
-  var values: string[] = [];
-  var dates: string[] = [];
-  //const [values, setValues] = useState<any[]>([]);
-  const getData = () => {
-    fetch(
-      'http://localhost:8000/pm25?startDate=2022-09-17T16&endDate=2022-09-17T17&bbox=-83.553673,42.029418,-82.871707,42.451216'
-    )
-      .then((result) => result.json())
-      .then((output) => {
-        for (let i = 0; i < output.length; i++) {
-          dates.push(output[i].UTC);
-          values.push(output[i].Value);
-        }
-      })
-      .catch((err) => console.error(err));
-    
-  };
+  const url = "http://localhost:8000/pm25?startDate=2022-09-17T16&endDate=2022-09-17T17&bbox=-83.553673,42.029418,-82.871707,42.451216";
+  const values: string[] = []
+  const dates: string[] = []
+  const [data, setData] = useState<any[]>([]);
 
-  console.log(values[0]);
   useEffect(() => {
-    getData();
-  }, []);
+    axios.get(url)
+      .then((response) => 
+      setData(response.data)
+      );
+    }, []);
 
-  const state = {
-    labels: dates,
-    datasets: [
-      {
-        label: 'PM25',
-        backgroundColor: 'rgba(75,192,192,1)',
-        borderColor: 'rgba(0,0,0,1)',
-        borderWidth: 2,
-        data: values,
-      },
-    ],
-  };
-
-  console.log('after loop');
-  return (
-    <div>
-      <Bar data={state}  />
-    </div>
-  );
+    for (let index = 0; index < data.length; index++) {
+      values.push(data[index].Value)
+      dates.push(data[index].UTC)
+    }
+    console.log(values)
+    return (
+      
+      <div>
+                  <Bar 
+                    data={{
+                        labels: dates,
+                        datasets: [
+                            {
+                                label: "PM 25",
+                                data: values
+                            }
+                        ]
+                    }}
+                />
+      </div>
+    );
+  
+  
 }

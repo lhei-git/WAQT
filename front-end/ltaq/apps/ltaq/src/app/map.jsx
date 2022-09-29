@@ -1,18 +1,32 @@
-import React from 'react';
+
+import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, useMap, Marker, Popup } from 'react-leaflet';
 import './app.css';
 import michiganAQI from './michiganInitialLatitude.json';
-import {locationInfo} from './locationHandler'
-const Map = () => {
-  console.log(michiganAQI);
-  var gLocation = sessionStorage.getItem('gLocation'); //get global gLocation string
+import axios from "axios"
+import {userLocation} from './searchLocation'
 
+  
+const Map = () => {
+  //url that converts location to coordinates
+  const url = 'http://localhost:8002/search?City='+userLocation;
+
+  const [data,setData] = useState([]);
+  useEffect(() => {
+    axios.get(url)
+      .then((response) => setData(response.data));
+    }, []);
+  
+  console.log(data.Lat);
+  //console.log(michiganAQI);
+  var gLocation = sessionStorage.getItem('gLocation'); //get global gLocation string
+  if(data.Lat != undefined)
   return (
     <>
       {/* <p>{gLocation}</p> */}
       {/* Map Container is it's properties */}
       <MapContainer
-        center={[locationInfo[1], locationInfo[2]]}
+        center={[data.Lat, data.Lon]}
         zoom={13}
         scrollWheelZoom={true}
       >
@@ -37,6 +51,13 @@ const Map = () => {
       </MapContainer>
     </>
   );
+  else{
+    return(
+      <div>
+        Loading...
+      </div>
+    );
+  }
 };
 
 export default Map;
