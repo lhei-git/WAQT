@@ -4,15 +4,13 @@ import json
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 
-from flask_limiter import Limiter
-from flask_limiter.util import get_remote_address
 
 API_KEY = ""
 
 
 def create_app(config=None):
     app = Flask(__name__)
-    limiter = Limiter(app, key_func=get_remote_address)
+
 
     # See http://flask.pocoo.org/docs/latest/config/
     app.config.update(dict(DEBUG=True))
