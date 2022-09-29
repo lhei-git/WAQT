@@ -1,14 +1,14 @@
 // App.js
 import { useEffect, useState } from "react";
 import styles from "./app.module.css";
-import {locationInfo} from './locationHandler'
+import {userLocation} from './searchLocation'
 
 function BasicFireInfo() {
 
   const [data, setData] = useState<any[]>([]);
-  const url = 'http://127.0.0.1:8001/search?location='+locationInfo[0];
+  const url = 'http://127.0.0.1:8001/search?location='+userLocation;
   console.log(url)
-  const fetchData = () => {
+  useEffect(() => {
     fetch(url)
       .then((response) => response.json())
       .then((actualData) => {
@@ -17,11 +17,8 @@ function BasicFireInfo() {
       .catch((err) => {
         console.log(err.message);
       });
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, [data]);
+       
+    }, []);
   
   return (
     <div className={styles["basicTable"]}>
