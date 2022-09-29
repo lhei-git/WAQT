@@ -4,6 +4,10 @@ import { Chart, registerables } from 'chart.js';
 import axios from 'axios';
 Chart.register(...registerables);
 
+//returns a bar graph which displays PM25 Data
+//This data can be in a specific date range
+
+//TODO: Add coordinate support
 export default function PM25Graph() {
   const url = "http://localhost:8000/pm25?startDate=2022-09-17T16&endDate=2022-09-17T17&bbox=-83.553673,42.029418,-82.871707,42.451216";
   const values: string[] = []

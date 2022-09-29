@@ -34,10 +34,11 @@ function searchLocation() {
     console.log(state.locationType);
     userLocation = state.location
     console.log(userLocation);
-    //temp patch for waiting for the endpoint to get cord data
-   // locationHandeler(state.location, state.locationType)
+    
+    //render all components here:
     ReactDOM.render(
       <div>
+        <h1>{userLocation}</h1>
         <BasicFireInfo/>,
         <PM25Graph />,
         <Map />

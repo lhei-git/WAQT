@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import styles from "./app.module.css";
 import {userLocation} from './searchLocation'
 
+//This returns a table from the wildfire API
+//returns Date, Name, Acres and Cause when available
 function BasicFireInfo() {
 
   const [data, setData] = useState<any[]>([]);
