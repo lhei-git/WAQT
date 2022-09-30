@@ -16,6 +16,7 @@
 - Install Python (https://www.python.org/)
 
 ## File Tree
+```
 LongTermAirQualityIndex<br/>
 ├── .vscode                                                <--- Description<br/>
 ├── back-end                                               <--- Description<br/>
@@ -89,3 +90,4 @@ LongTermAirQualityIndex<br/>
 │      |   └── generators\                                 <--- Description<br/>
 │      └── README.md                                       <--- Front-end README<br/>
 └── README.md                                              <--- Project README<br/>
+```
