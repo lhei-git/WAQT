@@ -1,12 +1,11 @@
 import Location from './searchLocation';
-import Map from './map';
 import "./app.css";
 
+//This renders the search and greeting page of our web app
 const App = () => {
     return (
         <>
         <Location />
-        <Map />
         </>
     );
 }

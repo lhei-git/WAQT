@@ -1,5 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import BasicFireInfo from './fire-info-table'
+import Map from './map'
+import PM25Graph from './pm25'
 import './App.css';
+import ReactDOM, { render } from 'react-dom';
+
+
+export let userLocation: string = "Anaheim";
 
 function searchLocation() {
 
@@ -16,19 +23,35 @@ function searchLocation() {
       [e.target.name]: e.target.value,
     });
   };
+  
 
   //Called when user hits 'submit' button
-  const handleSubmit = (event: { preventDefault: () => void; }) => {
+  const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
     //Store state array in local storage and print to console
     localStorage.setItem("LocationInfo", JSON.stringify(state));
     console.log(state.location);
     console.log(state.locationType);
+    userLocation = state.location
+    console.log(userLocation);
+    
+    //render all components here:
+    ReactDOM.render(
+      <div>
+        <h1>{userLocation}</h1>
+        <BasicFireInfo/>,
+        <PM25Graph />,
+        <Map />
+        
+        
+      </div>,
+      document.getElementById('root')
+  );
     }
 
   return (
     <div>
-      <h1>Wildfire Air Quality (WAQ)</h1>
+      <h1>Wildfire Air Quality (WAQ) Protoype 1</h1>
       <form onSubmit={handleSubmit}>
         <label>
           Location:{' '}

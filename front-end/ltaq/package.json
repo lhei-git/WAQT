@@ -10,9 +10,11 @@
   "private": true,
   "dependencies": {
     "@types/react-router": "^5.1.19",
+    "chart.js": "^3.9.1",
     "core-js": "^3.6.5",
     "leaflet": "^1.8.0",
     "prop-types": "^15.8.1",
+    "react-chartjs-2": "^4.3.1",
     "react-leaflet": "^4.0.2",
     "regenerator-runtime": "0.13.7",
     "tslib": "^2.3.0"
