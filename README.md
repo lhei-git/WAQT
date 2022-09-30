@@ -4,16 +4,16 @@
 - Open a terminal in vs code 
 - Navigate to `front-end/ltaq`
 - run `npm install`
-- Install nx vscode extension
+- Install nx vscode extension (if not already downloaded)
 - In the terminal inside `front-end/ltaq`, run `npm start` 
 ## Setup Local Enviorment for back-end
-- Install Python (https://www.python.org/)
-- Install Flask `pip install flask`
-- Install Flask-Cors `pip install flask-cors`
+- Install Python (https://www.python.org/) (if not already downloaded)
+- Install Flask `pip install flask` (if not already downloaded)
+- Install Flask-Cors `pip install flask-cors` (if not already downloaded)
 - Add the API key to airnow.py (ask Ryan for it)
-- Open another terminl and run `python3 Wildfire.py`
-- Open another terminl and run `python3 airnow.py`
-- Open another terminl and run `python3 coordinates.py`
+- Open another terminal and run `python3 Wildfire.py`
+- Open another terminal and run `python3 airnow.py`
+- Open another terminal and run `python3 coordinates.py`
 ## The dev branch is the default branch for branching/forking and merging into. 
 ## Contribution
 - Branch or fork the dev branch.
