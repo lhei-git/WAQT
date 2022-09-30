@@ -17,77 +17,77 @@
 
 ## File Tree
 ```
-LongTermAirQualityIndex<br/>
-├── .vscode                                                <--- Description<br/>
-├── back-end                                               <--- Description<br/>
-│   └── airnow.py                                          <--- Description<br/>
-│   └── main.py                                            <--- Description<br/>
-│   └── sampleAirNow.py                                    <--- Description<br/>
-│   └── test_flask.py                                      <--- Description<br/>
-│   └── WildFire.py                                        <--- Description<br/>
-│   └── README.md                                          <--- Back-end README<br/>
-├── front-end                                              <--- Description<br/>
-│   └── ltaq                                               <--- Description<br/>
-│      ├── .prettierignore                                 <--- Description<br/>
-│      ├── .prettierc                                      <--- Description<br/>
-│      ├── .editorconfig                                   <--- Description<br/>
-│      ├── .eslintrc.json                                  <--- Description<br/>
-│      ├── .vscode                                         <--- Description<br/>
-│      │      └── extensions.json                          <--- Description<br/>
-│      ├── babel.config.json                               <--- Description<br/>
-│      ├── jest.config.ts                                  <--- Description<br/>
-│      ├── jest.preset.jsx                                 <--- Description<br/>
-│      ├── nx.json                                         <--- Description<br/>
-│      ├── package.json                                    <--- Description<br/>
-│      ├── package-lock.json                               <--- Description<br/>
-│      ├── tsconfig.base.json                              <--- Description<br/>
-│      ├── workspace.json                                  <--- Description<br/>
-│      ├── apps                                            <--- Code for front page<br/>
-│      │   ├── ltaq                                        <--- Description<br/>
-│      |   │   ├── src                                     <--- Description<br/>
-│      |   |   │   ├── app                                 <--- Description<br/>
-│      |   |   |   │   ├── app.csc                         <--- Styling for front-end<br/>
-│      |   |   |   │   ├── app.tsx                         <--- Front-end layout and order<br/>
-│      |   |   |   │   ├── map.jsx                         <--- Leaflet Map API component<br/>
-│      |   |   |   │   ├── michiganInitialLatitude.json    <--- Sample wildfire coordinates for testing<br/>
-│      |   |   |   │   └── searchLocation.tsx              <--- User location search box component<br/>
-│      |   |   │   ├── assets                              <--- Description<br/>
-│      |   |   |   │   └── .gitkeep                        <--- Description<br/>
-│      |   |   │   ├── environments                        <--- Description<br/>
-│      |   |   |   │   ├── environment.prod.ts             <--- Description<br/>
-│      |   |   |   │   └── environment.ts                  <--- Description<br/>
-│      |   |   │   ├── favicon                             <--- Description<br/>
-│      |   |   │   ├── index.html                          <--- Description<br/>
-│      |   |   │   ├── main.tsx                            <--- Description<br/>
-│      |   |   │   ├── polyfills.ts                        <--- Description<br/>
-│      |   |   │   └── styles.csc                          <--- Global front-end styling<br/>
-│      |   │   ├── .babelrc                                <--- Description<br/>
-│      |   │   ├── .browserslistrc                         <--- Description<br/>
-│      |   │   ├── .eslintrc.json                          <--- Description<br/>
-│      |   │   ├── jest.config.ts                          <--- Description<br/>
-│      |   │   ├── project.json                            <--- Description<br/>
-│      |   │   ├── tsconfig.app.json                       <--- Description<br/>
-│      |   │   ├── tsconfig.json                           <--- Description<br/>
-│      |   │   └── tsconfig.spec.json                      <--- Description<br/>
-│      │   ├── ltaq-e2e                                    <--- Description<br/>
-│      |   │   ├── src                                     <--- Description<br/>
-│      |   |   │   ├── e2e                                 <--- Description<br/>
-│      |   |   |   │   └── app.cy.ts                       <--- Description<br/>
-│      |   |   │   ├── fixtures                            <--- Description<br/>
-│      |   |   |   │   └── example.json                    <--- Description<br/>
-│      |   |   │   └── support                             <--- Description<br/>
-│      |   |   |       ├── app.po.ts                       <--- Description<br/>
-│      |   |   |       ├── commands.ts                     <--- Description<br/>
-│      |   |   |       └── e2e.ts                          <--- Description<br/>
-│      |   │   ├── .eslintrc.json                          <--- Description<br/>
-│      |   │   ├── cypress.config.ts                       <--- Description<br/>
-│      |   │   ├── project.json                            <--- Description<br/>
-│      |   │   └── tsconfig.json                           <--- Description<br/>
-│      │   └── .gitkeep                                    <--- Description<br/>
-│      ├── libs\                                           <--- Description<br/>
-│      ├── node_modules\                                   <--- Description<br/>
-│      ├── tools\                                          <--- Description<br/>
-│      |   └── generators\                                 <--- Description<br/>
-│      └── README.md                                       <--- Front-end README<br/>
-└── README.md                                              <--- Project README<br/>
+LongTermAirQualityIndex
+├── .vscode                                                <--- Description
+├── back-end                                               <--- Description
+│   └── airnow.py                                          <--- Description
+│   └── main.py                                            <--- Description
+│   └── sampleAirNow.py                                    <--- Description
+│   └── test_flask.py                                      <--- Description
+│   └── WildFire.py                                        <--- Description
+│   └── README.md                                          <--- Back-end README
+├── front-end                                              <--- Description
+│   └── ltaq                                               <--- Description
+│      ├── .prettierignore                                 <--- Description
+│      ├── .prettierc                                      <--- Description
+│      ├── .editorconfig                                   <--- Description
+│      ├── .eslintrc.json                                  <--- Description
+│      ├── .vscode                                         <--- Description
+│      │      └── extensions.json                          <--- Description
+│      ├── babel.config.json                               <--- Description
+│      ├── jest.config.ts                                  <--- Description
+│      ├── jest.preset.jsx                                 <--- Description
+│      ├── nx.json                                         <--- Description
+│      ├── package.json                                    <--- Description
+│      ├── package-lock.json                               <--- Description
+│      ├── tsconfig.base.json                              <--- Description
+│      ├── workspace.json                                  <--- Description
+│      ├── apps                                            <--- Code for front page
+│      │   ├── ltaq                                        <--- Description
+│      |   │   ├── src                                     <--- Description
+│      |   |   │   ├── app                                 <--- Description
+│      |   |   |   │   ├── app.csc                         <--- Styling for front-end
+│      |   |   |   │   ├── app.tsx                         <--- Front-end layout and order
+│      |   |   |   │   ├── map.jsx                         <--- Leaflet Map API component
+│      |   |   |   │   ├── michiganInitialLatitude.json    <--- Sample wildfire coordinates for testing
+│      |   |   |   │   └── searchLocation.tsx              <--- User location search box component
+│      |   |   │   ├── assets                              <--- Description
+│      |   |   |   │   └── .gitkeep                        <--- Description
+│      |   |   │   ├── environments                        <--- Description
+│      |   |   |   │   ├── environment.prod.ts             <--- Description
+│      |   |   |   │   └── environment.ts                  <--- Description
+│      |   |   │   ├── favicon                             <--- Description
+│      |   |   │   ├── index.html                          <--- Description
+│      |   |   │   ├── main.tsx                            <--- Description
+│      |   |   │   ├── polyfills.ts                        <--- Description
+│      |   |   │   └── styles.csc                          <--- Global front-end styling
+│      |   │   ├── .babelrc                                <--- Description
+│      |   │   ├── .browserslistrc                         <--- Description
+│      |   │   ├── .eslintrc.json                          <--- Description
+│      |   │   ├── jest.config.ts                          <--- Description
+│      |   │   ├── project.json                            <--- Description
+│      |   │   ├── tsconfig.app.json                       <--- Description
+│      |   │   ├── tsconfig.json                           <--- Description
+│      |   │   └── tsconfig.spec.json                      <--- Description
+│      │   ├── ltaq-e2e                                    <--- Description
+│      |   │   ├── src                                     <--- Description
+│      |   |   │   ├── e2e                                 <--- Description
+│      |   |   |   │   └── app.cy.ts                       <--- Description
+│      |   |   │   ├── fixtures                            <--- Description
+│      |   |   |   │   └── example.json                    <--- Description
+│      |   |   │   └── support                             <--- Description
+│      |   |   |       ├── app.po.ts                       <--- Description
+│      |   |   |       ├── commands.ts                     <--- Description
+│      |   |   |       └── e2e.ts                          <--- Description
+│      |   │   ├── .eslintrc.json                          <--- Description
+│      |   │   ├── cypress.config.ts                       <--- Description
+│      |   │   ├── project.json                            <--- Description
+│      |   │   └── tsconfig.json                           <--- Description
+│      │   └── .gitkeep                                    <--- Description
+│      ├── libs\                                           <--- Description
+│      ├── node_modules\                                   <--- Description
+│      ├── tools\                                          <--- Description
+│      |   └── generators\                                 <--- Description
+│      └── README.md                                       <--- Front-end README
+└── README.md                                              <--- Project README
 ```
