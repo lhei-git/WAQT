@@ -6,6 +6,7 @@ import requests
 from flask_cors import CORS
 import os
 import json
+from datetime import date
 
 # API is in secrets
 # Do not push API_KEY to GitHub
@@ -20,7 +21,7 @@ def airNowEndpoint(config=None):
 
     #this function sets up the url and downloads the json 
     
-    def downloadData(startDate, endDate, parameters, bbox):
+    def downloadDataBBOX(startDate, endDate, parameters, bbox):
         # API request URL
         REQUEST_URL = "https://www.airnowapi.org/aq/data/?startDate="+startDate+"&endDate="+endDate+"&parameters="+ parameters+"&BBOX="+bbox+"&dataType=B&format=application/json&verbose=0&monitorType=2&includerawconcentrations=0&API_KEY="+API_KEY
         print(REQUEST_URL)
@@ -36,7 +37,7 @@ def airNowEndpoint(config=None):
     # Will return in json format 
     def getAllData(startDate, endDate, parameters, bbox):   
 
-        downloadData(startDate, endDate, parameters, bbox)
+        downloadDataBBOX(startDate, endDate, parameters, bbox)
         #example paramaters:
         #downloadData("2022-09-17T16","2022-09-17T17","PM25", "-83.553673,42.029418,-82.871707,42.451216")
 
@@ -63,6 +64,29 @@ def airNowEndpoint(config=None):
         #retrieve json data (this method only calls for pm2.5)
         return getAllData(str(startDate), str(endDate), "PM25", str(bbox))
     
+    @app.route("/aqi", methods=['GET'])
+    def getCurrentAQI():
+        #get these from GMAPS 
+        lat = str(36.6002)
+        lon = str(121.8947)
+        REQUEST_URL = "https://www.airnowapi.org/aq/observation/latLong/current/?format=application/json&latitude="+lat+"&longitude=-"+lon+"&distance=25&API_KEY="+API_KEY
+        print(REQUEST_URL)
+        r = requests.get(REQUEST_URL)
+        with open("outputAQI.txt",'wb') as f:
+            f.write(r.content) 
+        #read output.txt 
+        #contains json response from air now
+        responseData = open('outputAQI.txt')
+        jsonResponse = json.load(responseData)
+        #delete the json file
+        if os.path.exists("outputAQI.txt"):
+            os.remove("outputAQI.txt")
+        else:
+            print("The file does not exist")
+        #print(jsonResponse)
+        print(jsonResponse)
+        return jsonify(jsonResponse)
+
     return app
 
 
