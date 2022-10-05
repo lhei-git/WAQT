@@ -56,7 +56,7 @@ def airNowEndpoint(config=None):
     #This grabs pm 2.5 values for a bounding box
     #sample request url: localhost:8000/pm25?startDate=2022-09-17T16&endDate=2022-09-17T17&bbox=-83.553673,42.029418,-82.871707,42.451216
     @app.route("/pm25", methods=['GET'])
-    def pm25Response():
+    def getPM25():
         #get url parameters 
         startDate = request.args.get("startDate")
         endDate = request.args.get("endDate")
@@ -64,6 +64,15 @@ def airNowEndpoint(config=None):
         #retrieve json data (this method only calls for pm2.5)
         return getAllData(str(startDate), str(endDate), "PM25", str(bbox))
     
+    @app.route("/all", methods=['GET'])
+    def getAllAQI():
+        #get url parameters 
+        startDate = request.args.get("startDate")
+        endDate = request.args.get("endDate")
+        bbox = request.args.get("bbox")
+        #retrieve json data (this method only calls for pm2.5)
+        return getAllData(str(startDate), str(endDate), "OZONE,PM25,PM10,CO,SO2", str(bbox))
+
     @app.route("/aqi", methods=['GET'])
     def getCurrentAQI():
         #get these from GMAPS 
