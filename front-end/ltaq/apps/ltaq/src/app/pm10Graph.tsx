@@ -9,7 +9,7 @@ Chart.register(...registerables);
 //This data can be in a specific date range
 
 //TODO: Add coordinate support
-export default function PM25Graph() {
+export default function PM10Graph() {
   const bbox = '-83.553673,42.029418,-82.871707,42.451216';
   const url =
     'http://localhost:8000/pm10?bbox='+bbox;
@@ -26,7 +26,7 @@ export default function PM25Graph() {
           labels: Object.keys(data),
           datasets: [
             {
-              label: 'PM 10',
+              label: 'PM 10 ',
               data: Object.values(data),
             },
           ],
