@@ -7,7 +7,7 @@ import axios from "axios"
 
 //This returns a table from the wildfire API
 //returns Date, Name, Acres and Cause when available
-function BasicFireInfo() {
+function CurrentAQI() {
 
   //request to get data from your python file:
   const [data, setData] = useState<any[]>([]);
@@ -40,4 +40,4 @@ function BasicFireInfo() {
   );
 }
 
-export default BasicFireInfo;
+export default CurrentAQI;
