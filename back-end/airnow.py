@@ -7,16 +7,25 @@ from flask_cors import CORS
 import os
 import json
 from datetime import date
+from dateutil.relativedelta import relativedelta
 
 # API is in secrets
 # Do not push API_KEY to GitHub
 API_KEY = ""
+CURRENT_DATE = date.today()
+
+#convert month to quarter
+month2quarter = {
+        1:1,2:1,3:1,
+        4:2,5:2,6:2,
+        7:3,8:3,9:3,
+        10:4,11:4,12:4,
+    }.get
+
 
 #endpoint to access air now data: 
-def airNowEndpoint(config=None):
+def airNowEndpoint():
     app = Flask(__name__)
-    app.config.update(dict(DEBUG=True))
-    app.config.update(config or {})
     CORS(app)
 
     #this function sets up the url and downloads the json 
@@ -50,19 +59,57 @@ def airNowEndpoint(config=None):
             os.remove("output.txt")
         else:
             print("The file does not exist")
-        #print(jsonResponse)
-        return jsonify(jsonResponse)
+        
+        #sort the data
+        res = sorted(jsonResponse, key=lambda k: k['Value'], reverse=True)
+        #return data for the highest value o
+        return res[0]['Value']
 
     #This grabs pm 2.5 values for a bounding box
     #sample request url: localhost:8000/pm25?startDate=2022-09-17T16&endDate=2022-09-17T17&bbox=-83.553673,42.029418,-82.871707,42.451216
     @app.route("/pm25", methods=['GET'])
     def getPM25():
         #get url parameters 
-        startDate = request.args.get("startDate")
-        endDate = request.args.get("endDate")
         bbox = request.args.get("bbox")
-        #retrieve json data (this method only calls for pm2.5)
-        return getAllData(str(startDate), str(endDate), "PM25", str(bbox))
+        #results
+        highestValuesPerQuarter = {}
+        #get data for the previous 8 quarters 
+
+        #retrieve sorted json data (this method only calls for pm2.5)
+        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=3))+"T00", str(CURRENT_DATE)+"T00", "PM25", str(bbox))
+        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month - 3))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=6))+"T00", str(CURRENT_DATE - relativedelta(months=3))+"T00", "PM25", str(bbox))
+        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month - 6))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=9))+"T00", str(CURRENT_DATE - relativedelta(months=6))+"T00", "PM25", str(bbox))
+        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month - 9))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=12))+"T00", str(CURRENT_DATE - relativedelta(months=9))+"T00", "PM25", str(bbox))
+        return jsonify(highestValuesPerQuarter)
+    @app.route("/pm10", methods=['GET'])
+    def getPM10():
+        #get url parameters 
+        bbox = request.args.get("bbox")
+        #results
+        highestValuesPerQuarter = {}
+        #get data for the previous 8 quarters 
+
+        #retrieve sorted json data (this method only calls for pm2.5)
+        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=3))+"T00", str(CURRENT_DATE)+"T00", "PM10", str(bbox))
+        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month - 3))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=6))+"T00", str(CURRENT_DATE - relativedelta(months=3))+"T00", "PM10", str(bbox))
+        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month - 6))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=9))+"T00", str(CURRENT_DATE - relativedelta(months=6))+"T00", "PM10", str(bbox))
+        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month - 9))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=12))+"T00", str(CURRENT_DATE - relativedelta(months=9))+"T00", "PM10", str(bbox))
+        return jsonify(highestValuesPerQuarter)
+    
+    @app.route("/ozone", methods=['GET'])
+    def getOzone():
+        #get url parameters 
+        bbox = request.args.get("bbox")
+        #results
+        highestValuesPerQuarter = {}
+        #get data for the previous 8 quarters 
+
+        #retrieve sorted json data (this method only calls for pm2.5)
+        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=3))+"T00", str(CURRENT_DATE)+"T00", "OZONE", str(bbox))
+        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month - 3))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=6))+"T00", str(CURRENT_DATE - relativedelta(months=3))+"T00", "OZONE", str(bbox))
+        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month - 6))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=9))+"T00", str(CURRENT_DATE - relativedelta(months=6))+"T00", "OZONE", str(bbox))
+        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month - 9))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=12))+"T00", str(CURRENT_DATE - relativedelta(months=9))+"T00", "OZONE", str(bbox))
+        return jsonify(highestValuesPerQuarter)
     
     @app.route("/all", methods=['GET'])
     def getAllAQI():

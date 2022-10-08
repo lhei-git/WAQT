@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import BasicFireInfo from './fire-info-table'
 import Map from './map'
-import PM25Graph from './pm25'
+import PM25Graph from './pm25Graph'
 import './App.css';
 import ReactDOM, { render } from 'react-dom';
 
