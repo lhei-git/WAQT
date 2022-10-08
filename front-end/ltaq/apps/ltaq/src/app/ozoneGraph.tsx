@@ -9,7 +9,7 @@ Chart.register(...registerables);
 //This data can be in a specific date range
 
 //TODO: Add coordinate support
-export default function PM25Graph() {
+export default function OzoneGraph() {
   const bbox = '-83.553673,42.029418,-82.871707,42.451216';
   const url =
     'http://localhost:8000/ozone?bbox='+bbox;
