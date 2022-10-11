@@ -21,3 +21,8 @@
     background-color: #aa3004;
     color: white;
   }
+.graph {
+  position: relative; 
+  height:20vh; 
+  width:40vw;
+}
