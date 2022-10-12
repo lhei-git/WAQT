@@ -1,74 +1,52 @@
-/* Size of Map TileLayer */
-.leaflet-container{
-    width: 100vw;
-    height: 200vw;
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
-/* To see borders of sections */
-/* *{
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    border: 1px solid red;
-} */
-
-.form-box{
-    /* min-width: 100%; */
-    height: 20vh;
-    /* border: null; */
-    /* border: 1px solid red; */
-    margin: 0vw;
-    text-align: left;
-    padding: 8vw ;
-    position:relative; 
-    border: yellow;
-     /* margin: top right bottom left;*/
-     /* margin: 10 100 .5vh 0; */
-    /* position:relative for .prevBtn and .nextBtn position:absolute; */
+a {
+  color: inherit;
+  text-decoration: none;
 }
 
-.form-box h1{
-    font-size: 35px ;
-    text-align: left;
-    /* color: #F55A00; */
-    border: blue;
- /* margin: top right bottom left;*/
-    margin: 10 0 .5vh 0;
-
+* {
+  box-sizing: border-box;
 }
 
-.form-box textarea{
-    display: block;
-    height: 0.1vw;
-    width: 100%;
-    padding: .5rem .8rem .5rem .8rem;
-    margin: .9vw 0 ;
-    border:0;
-    border-radius: 5px;
-    font-size: 20px;
-    border: 1px solid green;
+.container {
+  display: flex;
+  height: 100vh;
 }
 
-.form-box location{
-    height: 0.1vh;
-    margin: 0vw;
-    text-align: left;
-    padding: 50vw ;
- /* margin: top right bottom left;*/
-    margin: 0 0 0 0;
-    border: purple;
-    position:relative; 
+.controls {
+  width: 20%;
+  padding: 1rem;
+  background: #14161a;
+  color: #fff;
 }
 
-.form-box select{
-    height: 0.1vh;
+.controls input {
+  border: none;
 }
 
-.form-box submit{
-    height: 0.1vh;
-    width: 1vh
+.map-container {
+  width: 100%;
+  height: 100vh;
 }
 
-.form-box dropDown{
-    height: 0.1vh;
+.map {
+  width: 80%;
+  height: 100vh;
+}
+
+.highlight {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.combobox-input {
+  width: 100%;
+  padding: 0.5rem;
 }
