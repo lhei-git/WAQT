@@ -4,6 +4,7 @@ import Map from './map'
 import PM25Graph from './pm25'
 import './App.css';
 import ReactDOM, { render } from 'react-dom';
+import GoogleMaps from './googleMaps';
 
 
 export let userLocation: string = "Anaheim";
@@ -39,9 +40,10 @@ function searchLocation() {
     ReactDOM.render(
       <div>
         <h1>{userLocation}</h1>
-        <BasicFireInfo/>,
-        <PM25Graph />,
-        <Map />
+        {/* <BasicFireInfo/>, */}
+        {/* <PM25Graph />, */}
+        {/* <Map /> */}
+        < GoogleMaps />
         
         
       </div>,
