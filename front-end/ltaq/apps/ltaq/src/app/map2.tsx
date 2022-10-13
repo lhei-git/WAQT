@@ -6,7 +6,7 @@ import {
   Circle,
   MarkerClusterer,
 } from "@react-google-maps/api";
-// import Places from "./places";
+import Places from "./places";
 // import Distance from "./distance";
 
 //Typescript variables
@@ -15,7 +15,7 @@ type DirectionsResult = google.maps.DirectionsResult;
 type MapOptions = google.maps.MapOptions;
 
 export default function Map() {
-  const [office, setOffice] = useState<LatLngLiteral>(); //Literal object containing Lat and Long
+  const [location, setLocation] = useState<LatLngLiteral>(); //Literal object containing Lat and Long
   const [directions, setDirections] = useState<DirectionsResult>();
   const mapRef = useRef<GoogleMap>(); //mapRef is an instance of GoogleMap
   //useMemo Hook: generate this value once, and reuse that value, unless one of these dependencies change.  Second argument []
@@ -42,13 +42,13 @@ export default function Map() {
   const houses = useMemo(() => generateHouses(center), [center]);
 
   const fetchDirections = (house: LatLngLiteral) => {
-    if (!office) return;
+    if (!location) return;
 
     const service = new google.maps.DirectionsService();
     service.route(
       {
         origin: house,
-        destination: office,
+        destination: location,
         travelMode: google.maps.TravelMode.DRIVING,
       },
       (result, status) => {
@@ -64,14 +64,15 @@ export default function Map() {
     <div className="container">
       {/* Google places search */}
       <div className="controls">
-        <h1>Commute?</h1>
-        {/* <Places
-          setOffice={(position) => {
-            setOffice(position);
-            mapRef.current?.panTo(position);
+        <h1>WAQ</h1>
+        <Places
+          //Pass in setLocation which updates a state called 'position', which stores the lat and lon of the location they selected.  receives a position/location
+          setLocation={(position) => {
+            setLocation(position); //position calls the setLocation function
+            mapRef.current?.panTo(position); //start at the current location if available, but move/pan to the map location 
           }}
-        /> */}
-        {!office && <p>Enter the address of your office.</p>}
+        />
+        {!location && <p>Enter a Location</p>}
         {/* {directions && <Distance leg={directions.routes[0].legs[0]} />} */}
       </div>
       {/* Map CSS */}
@@ -96,10 +97,10 @@ export default function Map() {
             />
           )}
 
-          {office && (
+          {location && (
             <>
               <Marker
-                position={office}
+                position={location}
                 icon="https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
               />
 
@@ -118,9 +119,9 @@ export default function Map() {
                 }
               </MarkerClusterer> */}
 
-              <Circle center={office} radius={15000} options={closeOptions} />
-              <Circle center={office} radius={30000} options={middleOptions} />
-              <Circle center={office} radius={45000} options={farOptions} />
+              <Circle center={location} radius={15000} options={closeOptions} />
+              <Circle center={location} radius={30000} options={middleOptions} />
+              <Circle center={location} radius={45000} options={farOptions} />
             </>
           )}
         </GoogleMap>

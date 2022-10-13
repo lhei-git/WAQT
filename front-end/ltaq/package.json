@@ -10,6 +10,7 @@
   "private": true,
   "dependencies": {
     "@googlemaps/react-wrapper": "^1.1.35",
+    "@reach/combobox": "^0.18.0",
     "@react-google-maps/api": "^2.13.1",
     "@types/react-router": "^5.1.19",
     "chart.js": "^3.9.1",
@@ -21,7 +22,8 @@
     "react-dom": "^18.2.0",
     "react-leaflet": "^4.0.2",
     "regenerator-runtime": "0.13.7",
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "use-places-autocomplete": "^4.0.0"
   },
   "devDependencies": {
     "@nrwl/cli": "14.7.3",
