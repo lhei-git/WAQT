@@ -8,6 +8,7 @@ import {
 } from "@react-google-maps/api";
 import Places from "./places";
 
+
 //Typescript variables
 type LatLngLiteral = google.maps.LatLngLiteral;
 type MapOptions = google.maps.MapOptions;
