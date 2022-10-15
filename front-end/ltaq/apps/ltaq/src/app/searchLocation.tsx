@@ -17,13 +17,13 @@ function searchLocation() {
     locationType: '',
   });
 
-  //Any time a chage is made to X variable 'name', update the state array with the 'value'
-  const handleChange = (e: { target: { name: any; value: any } }) => {
-    setState({
-      ...state, //Spread syntax, allowing multiple arguments because 'state' is an array
-      [e.target.name]: e.target.value,
-    });
-  };
+  // //Any time a chage is made to X variable 'name', update the state array with the 'value'
+  // const handleChange = (e: { target: { name: any; value: any } }) => {
+  //   setState({
+  //     ...state, //Spread syntax, allowing multiple arguments because 'state' is an array
+  //     [e.target.name]: e.target.value,
+  //   });
+  // };
   
 
   //Called when user hits 'submit' button
@@ -53,8 +53,9 @@ function searchLocation() {
 
   return (
     <div>
-      <h1>Wildfire Air Quality (WAQ) Protoype 1</h1>
-      <form onSubmit={handleSubmit}>
+      <h1>Wildfire Air Quality (WAQ) Protoype 2</h1>
+      
+      {/* <form onSubmit={handleSubmit}>
         <label>
           Location:{' '}
           <input
@@ -79,7 +80,7 @@ function searchLocation() {
         <input type="submit" value="Submit" />
       </form>
       <h5>Location: {state.location}</h5>
-      <h5>Type: {state.locationType}</h5>
+      <h5>Type: {state.locationType}</h5> */}
     </div>
   );
 }

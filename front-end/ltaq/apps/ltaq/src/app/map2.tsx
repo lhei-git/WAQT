@@ -7,16 +7,13 @@ import {
   MarkerClusterer,
 } from "@react-google-maps/api";
 import Places from "./places";
-// import Distance from "./distance";
 
 //Typescript variables
 type LatLngLiteral = google.maps.LatLngLiteral;
-type DirectionsResult = google.maps.DirectionsResult;
 type MapOptions = google.maps.MapOptions;
 
 export default function Map() {
   const [location, setLocation] = useState<LatLngLiteral>(); //Literal object containing Lat and Long
-  const [directions, setDirections] = useState<DirectionsResult>();
   const mapRef = useRef<GoogleMap>(); //mapRef is an instance of GoogleMap
   //useMemo Hook: generate this value once, and reuse that value, unless one of these dependencies change.  Second argument []
   const center = useMemo<LatLngLiteral>(
@@ -39,25 +36,6 @@ export default function Map() {
     []
   );
   const onLoad = useCallback((map) => (mapRef.current = map), []); //recieves an instance of the map.  accesses the current map and assigns it to map
-  const houses = useMemo(() => generateHouses(center), [center]);
-
-  const fetchDirections = (house: LatLngLiteral) => {
-    if (!location) return;
-
-    const service = new google.maps.DirectionsService();
-    service.route(
-      {
-        origin: house,
-        destination: location,
-        travelMode: google.maps.TravelMode.DRIVING,
-      },
-      (result, status) => {
-        if (status === "OK" && result) {
-          setDirections(result);
-        }
-      }
-    );
-  };
 
   return (
     //container css for map
@@ -68,8 +46,8 @@ export default function Map() {
         <Places
           //Pass in setLocation which updates a state called 'position', which stores the lat and lon of the location they selected.  receives a position/location
           setLocation={(position) => {
-            setLocation(position); //position calls the setLocation function
-            mapRef.current?.panTo(position); //start at the current location if available, but move/pan to the map location 
+            setLocation(position); //position calls the setLocation function.  Set position into the setLocation state
+            mapRef.current?.panTo(position); //start at the current location if available, but move/pan to the map location 'position' if not
           }}
         />
         {!location && <p>Enter a Location</p>}
@@ -84,44 +62,35 @@ export default function Map() {
           options={options} //Google Map render options
           onLoad={onLoad} //upon loading, call the onLoad function
         >
-          {directions && (
-            <DirectionsRenderer
-              directions={directions}
-              options={{
-                polylineOptions: {
-                  zIndex: 50,
-                  strokeColor: "#1976D2",
-                  strokeWeight: 5,
-                },
-              }}
-            />
-          )}
-
+          {/* If there is an office, then pass in the location, which is a latlngliteral, to place a marker on the location */}
           {location && (
             <>
               <Marker
                 position={location}
-                icon="https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
+                // icon="https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
               />
 
-              {/* <MarkerClusterer>
-                {(clusterer) =>
-                  houses.map((house) => (
-                    <Marker
-                      key={house.lat}
-                      position={house}
-                      clusterer={clusterer}
-                      onClick={() => {
-                        fetchDirections(house);
-                      }}
-                    />
-                  ))
-                }
-              </MarkerClusterer> */}
+              {/* Clusters fires together */}
+              {/* <MarkerClusterer> */}
+                {/* Pass in a function clusterer() that when called, will recieve an instance of the clusterer itself */}
+                {/* {(clusterer) => */}
+                  {/* // Returns all of the fires to render out
+              //     fires.map((fire) => (
+              //       <Marker */}
+              {/* //         key={fire.lat}
+              //         position={fire}
+              //         clusterer={clusterer}
+              //         onClick={() => { */}
+              {/* //           fetchDirections(fire);
+              //         }}
+              //       />
+              //     ))
+              //   }
+              // </MarkerClusterer> */}
 
-              <Circle center={location} radius={15000} options={closeOptions} />
+              {/* <Circle center={location} radius={15000} options={closeOptions} />
               <Circle center={location} radius={30000} options={middleOptions} />
-              <Circle center={location} radius={45000} options={farOptions} />
+              <Circle center={location} radius={45000} options={farOptions} /> */}
             </>
           )}
         </GoogleMap>
@@ -131,45 +100,45 @@ export default function Map() {
 }
 
 //Displaying circles
-const defaultOptions = {
-  strokeOpacity: 0.5,
-  strokeWeight: 2,
-  clickable: false,
-  draggable: false,
-  editable: false,
-  visible: true,
-};
-const closeOptions = {
-  ...defaultOptions,
-  zIndex: 3,
-  fillOpacity: 0.05,
-  strokeColor: "#8BC34A",
-  fillColor: "#8BC34A",
-};
-const middleOptions = {
-  ...defaultOptions,
-  zIndex: 2,
-  fillOpacity: 0.05,
-  strokeColor: "#FBC02D",
-  fillColor: "#FBC02D",
-};
-const farOptions = {
-  ...defaultOptions,
-  zIndex: 1,
-  fillOpacity: 0.05,
-  strokeColor: "#FF5252",
-  fillColor: "#FF5252",
-};
+// const defaultOptions = {
+//   strokeOpacity: 0.5,
+//   strokeWeight: 2,
+//   clickable: false,
+//   draggable: false,
+//   editable: false,
+//   visible: true,
+// };
+// const closeOptions = {
+//   ...defaultOptions,
+//   zIndex: 3,
+//   fillOpacity: 0.05,
+//   strokeColor: "#8BC34A",
+//   fillColor: "#8BC34A",
+// };
+// const middleOptions = {
+//   ...defaultOptions,
+//   zIndex: 2,
+//   fillOpacity: 0.05,
+//   strokeColor: "#FBC02D",
+//   fillColor: "#FBC02D",
+// };
+// const farOptions = {
+//   ...defaultOptions,
+//   zIndex: 1,
+//   fillOpacity: 0.05,
+//   strokeColor: "#FF5252",
+//   fillColor: "#FF5252",
+// };
 
-//Generate houses to display on the map
-const generateHouses = (position: LatLngLiteral) => {
-  const _houses: Array<LatLngLiteral> = [];
-  for (let i = 0; i < 100; i++) {
-    const direction = Math.random() < 0.5 ? -2 : 2;
-    _houses.push({
-      lat: position.lat + Math.random() / direction,
-      lng: position.lng + Math.random() / direction,
-    });
-  }
-  return _houses;
-};
+//Generate fires to display on the map
+// const generateFire = (position: LatLngLiteral) => {
+//   const _fires: Array<LatLngLiteral> = [];
+//   for (let i = 0; i < 100; i++) {
+//     const direction = Math.random() < 0.5 ? -2 : 2;
+//     _fires.push({
+//       lat: position.lat + Math.random() / direction,
+//       lng: position.lng + Math.random() / direction,
+//     });
+//   }
+//   return _fires;
+// };
