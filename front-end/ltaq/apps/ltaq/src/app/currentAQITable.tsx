@@ -11,7 +11,9 @@ function CurrentAQI() {
 
   //request to get data from your python file:
   const [data, setData] = useState<any[]>([]);
-  const url = "http://localhost:8000/aqi";
+  const lat = 36.6002;
+  const lon = 121.8947;
+  const url = "http://localhost:8000/aqi?lat="+lat+"&lon="+lon;
   console.log(url)
   useEffect(() => {
     axios.get(url)
@@ -23,13 +25,14 @@ function CurrentAQI() {
     <div className={styles["basicTable"]}>
       <tbody>
         <tr>
+          {/* Headers */}
           <th>Pollutant</th>
           <th>AQI</th>
           <th>Level of Concern</th>
         </tr>
         {data.map((item, index) => (
           <tr key={index}>
-            {/* access json data using each key you need */}
+            {/* access json data using each key you need, this will be dynamically allocated */}
             <td>{item.ParameterName}</td>
             <td>{item.AQI}</td>
             <td>{item.Category.Name}</td>

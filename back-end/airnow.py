@@ -129,9 +129,12 @@ def airNowEndpoint():
 
     @app.route("/aqi", methods=['GET'])
     def getCurrentAQI():
+        #endpoint url sample: localhost:8000/aqi?lat=36.6002&lon=121.8947
         #get these from GMAPS 
-        lat = str(36.6002)
-        lon = str(121.8947)
+        #lat = str(36.6002)
+        #lon = str(121.8947)
+        lat = request.args.get("lat")
+        lon = request.args.get("lon")
         REQUEST_URL = "https://www.airnowapi.org/aq/observation/latLong/current/?format=application/json&latitude="+lat+"&longitude=-"+lon+"&distance=25&API_KEY="+API_KEY
         print(REQUEST_URL)
         r = requests.get(REQUEST_URL)
