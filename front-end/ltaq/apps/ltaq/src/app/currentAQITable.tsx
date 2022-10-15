@@ -23,8 +23,8 @@ function CurrentAQI() {
     <div className={styles["basicTable"]}>
       <tbody>
         <tr>
+          <th>Pollutant</th>
           <th>AQI</th>
-          <th>Value</th>
           <th>Level of Concern</th>
         </tr>
         {data.map((item, index) => (
