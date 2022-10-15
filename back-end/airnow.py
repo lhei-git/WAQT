@@ -35,9 +35,10 @@ def airNowEndpoint():
         REQUEST_URL = "https://www.airnowapi.org/aq/data/?startDate="+startDate+"&endDate="+endDate+"&parameters="+ parameters+"&BBOX="+bbox+"&dataType=B&format=application/json&verbose=0&monitorType=2&includerawconcentrations=0&API_KEY="+API_KEY
         print(REQUEST_URL)
         r = requests.get(REQUEST_URL)
-        with open("output.txt",'wb') as f:
+        f = "output.txt"
+        with open(f,'w+'):
             f.write(r.content)
-    
+        f.close()
     #endpoint to get all the data
     # Contract: https://docs.airnowapi.org/Data/docs
     # Returns Ozone, PM25, PM10, CO, N02 and S02 Values for a location
@@ -136,10 +137,12 @@ def airNowEndpoint():
         r = requests.get(REQUEST_URL)
         with open("outputAQI.txt",'wb') as f:
             f.write(r.content) 
+        f.close()
         #read output.txt 
         #contains json response from air now
         responseData = open('outputAQI.txt')
         jsonResponse = json.load(responseData)
+        responseData.close()
         #delete the json file
         if os.path.exists("outputAQI.txt"):
             os.remove("outputAQI.txt")
