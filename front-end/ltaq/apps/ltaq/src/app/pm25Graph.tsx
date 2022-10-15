@@ -20,6 +20,7 @@ export default function PM25Graph() {
     axios.get(url).then((response) => setData(response.data));
   }, []);
   return (
+    <span>
     <div className={styles["graph"]}>
       <Line
         data={{
@@ -27,6 +28,7 @@ export default function PM25Graph() {
           datasets: [
             {
               label: 'PM 25',
+              backgroundColor: ["#3e95cd"],
               data: Object.values(data),
             },
           ],
@@ -42,11 +44,12 @@ export default function PM25Graph() {
             },
             title: {
               display: true,
-              text: 'PM 25 Chart',
+              text: ' Worst PM 25 Chart',
             },
           },
         }}
       />
     </div>
+    </span>
   );
 }

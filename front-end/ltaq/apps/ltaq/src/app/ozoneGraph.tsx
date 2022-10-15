@@ -20,6 +20,7 @@ export default function OzoneGraph() {
     axios.get(url).then((response) => setData(response.data));
   }, []);
   return (
+    <span>
     <div className={styles["graph"]}>
       <Line
         data={{
@@ -27,6 +28,7 @@ export default function OzoneGraph() {
           datasets: [
             {
               label: 'Ozone',
+              backgroundColor: ["#3e95cd"],
               data: Object.values(data),
             },
           ],
@@ -42,11 +44,12 @@ export default function OzoneGraph() {
             },
             title: {
               display: true,
-              text: 'Ozone Chart',
+              text: 'Worst Ozone Chart',
             },
           },
         }}
       />
     </div>
+    </span> 
   );
 }
