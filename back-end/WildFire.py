@@ -1,3 +1,4 @@
+import datetime
 import requests, os
 import json
 
@@ -6,6 +7,19 @@ from flask_cors import CORS
 
 
 API_KEY = ""
+
+def timeConverter(timeToConvert):
+    formatTime = str(timeToConvert)[:-3]
+    return str(datetime.datetime.fromtimestamp(int(formatTime)))
+
+def convertSecondsToTime(seconds):
+    seconds = seconds % (24 * 3600)
+    hour = seconds // 3600
+    seconds %= 3600
+    minutes = seconds // 60
+    seconds %= 60
+     
+    return "%d:%02d:%02d" % (hour, minutes, seconds)
 
 
 def create_app(config=None):
@@ -22,21 +36,72 @@ def create_app(config=None):
 
     # Definition of the routes. Put them into their own file. See also
     # Flask Blueprints: http://flask.pocoo.org/docs/latest/blueprints
-    @app.route("/search", methods=['GET'])
-        
+    @app.route("/Wildfire", methods=['GET'])
     def WildFire():
-       # TODO Add suport for county, state, zip
-       city = request.args.get("location")
-       url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCity%20%3D%20'"+city+"'&outFields=IncidentName,FireCause,DiscoveryAcres,CreatedOnDateTime_dt&outSR=4326&f=json"
-       response_API = requests.get(url)
-       res = json.loads(response_API.text)
-       return jsonify(res)
+        location = request.args.get("county").strip("+")
+        print(location)
+        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'&outFields=CalculatedAcres,DailyAcres,IncidentName,FireOutDateTime,FireDiscoveryDateTime,ControlDateTime,ContainmentDateTime,DiscoveryAcres,CpxName,CpxID,IsCpxChild&outSR=4326&f=json"
+        print(url)
+        response_API = requests.get(url)
+        WildfireResponse = {}
+        output = json.loads(response_API.text)
+        # count = len(output['features'])
+        # print(output['features'][0]['attributes']['FireDiscoveryDateTime'])
+        # print(output['features'][count-1]['attributes']['FireDiscoveryDateTime'])
+        
 
-    def WildFireData(IncidentName, CalculatedAcres):
-        options = {}
-        options["url"] = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=1%3D1&outFields=CalculatedAcres,IncidentName&outSR=4326&f=json"
-        options["Incident_Name"] = IncidentName
-        options["Calculated_Acres"] = CalculatedAcres
+        # WildfireResponse["FireCount"] = count 
+        # WildfireResponse["StartDate"] = (output['features'][0]['attributes']['FireDiscoveryDateTime'])
+        # WildfireResponse["EndDate"] = (output['features'][count-1]['attributes']['FireDiscoveryDateTime'])
+        #print(output['features'][0]['attributes']['FireDiscoveryDateTime'])
+
+        #most recent fire row
+        mostRecentFireDate = output['features'][0]['attributes']['FireDiscoveryDateTime']
+        
+        WildfireResponse["MostRecentFireDate"] = timeConverter(mostRecentFireDate)
+        WildfireResponse["MostRecentFireName"] = output['features'][0]['attributes']['IncidentName']
+
+        #longest burning fire
+        marker = 0
+        timeDifference = 0
+        for i in range(len(output['features'])):
+            start = str(output['features'][i]['attributes']['FireDiscoveryDateTime'])
+            end = str(output['features'][i]['attributes']['FireOutDateTime'])
+            if(start != "None" and end != "None"):
+                if (timeDifference == 0):
+                    timeDifference = int(end) - int(start)
+                    marker = i
+                    i = i + 1
+                elif (output['features'][i]['attributes']['FireOutDateTime'] - output['features'][i]['attributes']['FireDiscoveryDateTime'] > timeDifference):
+                    timeDifference = output['features'][i]['attributes']['FireOutDateTime'] - output['features'][i]['attributes']['FireDiscoveryDateTime']
+                    marker = i
+                    i = i + 1
+                else:
+                    i = i + 1
+            else:
+                i = i + 1
+        WildfireResponse["LongestFireName"] = output['features'][marker]['attributes']['IncidentName']
+        longestFireStart = output['features'][marker]['attributes']['FireDiscoveryDateTime']
+        longestFireEnd = output['features'][marker]['attributes']['FireOutDateTime']
+        WildfireResponse["LongestStartDate"] = timeConverter(longestFireStart)
+        WildfireResponse["LongestEndDate"] = timeConverter(longestFireEnd)
+        
+
+        #Average Fire Duration
+        avgDiff = 0
+        amount = 0
+        for j in range(len(output['features'])):
+            start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
+            end = str(output['features'][j]['attributes']['FireOutDateTime'])
+            if(start != "None" and end != "None"):
+                avgDiff += (int(end[:-3]) - int(start[:-3]))
+                amount = j
+                j = j + 1
+            else:
+                j = j + 1
+
+        WildfireResponse["AverageDuration"] = convertSecondsToTime(avgDiff / amount)
+        return jsonify(WildfireResponse)
 
     return app
 
