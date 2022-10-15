@@ -40,8 +40,7 @@ def create_app(config=None):
     def WildFire():
         location = request.args.get("county").strip("+")
         print(location)
-        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'&outFields=CalculatedAcres,DailyAcres,IncidentName,FireOutDateTime,FireDiscoveryDateTime,ControlDateTime,ContainmentDateTime,DiscoveryAcres,CpxName,CpxID,IsCpxChild&outSR=4326&f=json"
-        print(url)
+        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20%20(DailyAcres%20%3D%201%20OR%20DailyAcres%20%3D%202000)%20&outFields=DailyAcres,FireOutDateTime,FireDiscoveryDateTime,IncidentName&outSR=4326&f=json"
         response_API = requests.get(url)
         WildfireResponse = {}
         output = json.loads(response_API.text)
@@ -56,10 +55,10 @@ def create_app(config=None):
         #print(output['features'][0]['attributes']['FireDiscoveryDateTime'])
 
         #most recent fire row
-        mostRecentFireDate = output['features'][0]['attributes']['FireDiscoveryDateTime']
+        mostRecentFireDate = output['features'][len(output['features'])-1]['attributes']['FireDiscoveryDateTime']
         
         WildfireResponse["MostRecentFireDate"] = timeConverter(mostRecentFireDate)
-        WildfireResponse["MostRecentFireName"] = output['features'][0]['attributes']['IncidentName']
+        WildfireResponse["MostRecentFireName"] = output['features'][len(output['features'])-1]['attributes']['IncidentName']
 
         #longest burning fire
         marker = 0
