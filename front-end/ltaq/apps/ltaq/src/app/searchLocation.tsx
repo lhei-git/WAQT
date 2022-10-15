@@ -4,7 +4,6 @@ import Map from './map'
 import PM25Graph from './pm25'
 import './App.css';
 import ReactDOM, { render } from 'react-dom';
-import GoogleMaps from './googleMaps';
 import usePlacesAutocomplete, {
   getGeocode,
   getLatLng,
@@ -17,8 +16,8 @@ import {
   ComboboxOption,
 } from "@reach/combobox";
 import "@reach/combobox/styles.css";
-import { useJsApiLoader } from '@react-google-maps/api';
-import MaP from './map2';
+import { GoogleMapsMarkerClusterer, useJsApiLoader } from '@react-google-maps/api';
+import MAP2 from './map2';
 import { useLoadScript} from "@react-google-maps/api";
 
 export let userLocation: string = "Anaheim";
@@ -28,19 +27,17 @@ export let userLocation: string = "Anaheim";
 //   googleMapsApiKey: 'KEY_HERE',
 // });
 
-  //Function setLocation that recieves a position (latlngliteral)
-  // type PlacesProps = {
-  //   setLocation: (position: google.maps.LatLngLiteral) => void;
-  // };
-
-  //Function setLocation that recieves a position (latlngliteral)
+  // Function setLocation that recieves a position (latlngliteral)
   type PlacesProps = {
     setLocation: (position: google.maps.LatLngLiteral) => void;
   };
+
 // function searchLocation() {
   //Pass in the setLocation prop
   // function searchLocation({ setLocation }: PlacesProps) {
+// export default function searchLocation ({ setLocation }: PlacesProps) {
 const searchLocation = () => {
+  // const searchLocation = ( {setLocation}: PlacesProps) => {
   const {
     ready, //boolean, is the script ready to be used?
     value, //value that the user entered into the input box
@@ -55,10 +52,21 @@ const searchLocation = () => {
     setValue(val, false); //update the value to be what the user has selected.  we're not asking it to go and load more data, because we've chosen a selection
     clearSuggestions(); //once a user selects a location, we shouldn't show the list of suggestions to the user
   
-  //convert from address string into lat/long coordinates
-  const results = await getGeocode({ address: val }); //Geocode takes in an object that has a text address of whatever text the user selects
-  const { lat, lng } = await getLatLng(results[0]); //getLatLng of single result (results[0]) of whatever the first result is
-  // setLocation({ lat, lng }); //call setLocation function that recieves a latlngLiteral
+    //convert from address string into lat/long coordinates
+    const results = await getGeocode({ address: val }); //Geocode takes in an object that has a text address of whatever text the user selects
+    const { lat, lng } = await getLatLng(results[0]); //getLatLng of single result (results[0]) of whatever the first result is
+    // setLocation({ lat, lng }); //call setLocation function that recieves a latlngLiteral
+
+        ReactDOM.render(
+      <div>
+        <h1>{userLocation}</h1>
+        {/* <BasicFireInfo/>, */}
+        {/* <PM25Graph />, */}
+        {/* <Map /> */}
+        < MAP2 />
+      </div>,
+      document.getElementById('root')
+      );
   };
 
   //=======================================================================================
@@ -87,7 +95,7 @@ const searchLocation = () => {
         {/* <BasicFireInfo/>, */}
         {/* <PM25Graph />, */}
         {/* <Map /> */}
-        < GoogleMaps />
+        < MAP2 />
       </div>,
       document.getElementById('root')
       );
@@ -102,6 +110,7 @@ const searchLocation = () => {
         {/* Box which allows a user to search through Google Places */}
       <div>
       <Combobox onSelect={handleSelect}>
+      {/* <Combobox onSelect={handleSubmit}> */}
         <ComboboxInput //text box the user types into
           value={value} //value the user has typed in
           onChange={(e) => setValue(e.target.value)} //any time a user changes the value, we have to listen to that event (onChange).  set value, target being the input itself and value being the value they typed into the text box
@@ -123,5 +132,7 @@ const searchLocation = () => {
     </div>
   )
 };
-
+// export default searchLocation({ setLocation }: PlacesProps);
+// export default {searchLocation, Places({ setLocation }: PlacesProps)};
+// export default function searchLocation({ setLocation }: PlacesProps);
 export default searchLocation;
