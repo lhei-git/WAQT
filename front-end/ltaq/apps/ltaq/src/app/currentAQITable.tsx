@@ -19,6 +19,7 @@ function CurrentAQI() {
     }, []);
   //render all data here:
   return (
+    <span>
     <div className={styles["basicTable"]}>
       <tbody>
         <tr>
@@ -37,6 +38,7 @@ function CurrentAQI() {
         }
       </tbody>
     </div>
+    </span>
   );
 }
 

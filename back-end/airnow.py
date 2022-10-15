@@ -44,7 +44,7 @@ def airNowEndpoint():
     # Sample bounds: -83.553673,42.029418,-82.871707,42.451216	
     # Sample date: 2022-09-12T00
     # Will return in json format 
-    def getAllData(startDate, endDate, parameters, bbox):   
+    def getAllData(startDate, endDate, parameters, bbox, top10):   
 
         downloadDataBBOX(startDate, endDate, parameters, bbox)
         #example paramaters:
@@ -62,8 +62,14 @@ def airNowEndpoint():
         
         #sort the data
         res = sorted(jsonResponse, key=lambda k: k['Value'], reverse=True)
+        top10Results = []
         #return data for the highest value o
-        return res[0]['Value']
+        if(top10):
+            for i in range(len(res)):
+                top10Results.append(res[i]['Value'])
+            return top10Results
+        else:
+            return res[0]['Value']
 
     #This grabs pm 2.5 values for a bounding box
     #sample request url: localhost:8000/pm25?startDate=2022-09-17T16&endDate=2022-09-17T17&bbox=-83.553673,42.029418,-82.871707,42.451216
@@ -76,10 +82,10 @@ def airNowEndpoint():
         #get data for the previous 8 quarters 
 
         #retrieve sorted json data (this method only calls for pm2.5)
-        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=3))+"T00", str(CURRENT_DATE)+"T00", "PM25", str(bbox))
-        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month - 3))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=6))+"T00", str(CURRENT_DATE - relativedelta(months=3))+"T00", "PM25", str(bbox))
-        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month - 6))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=9))+"T00", str(CURRENT_DATE - relativedelta(months=6))+"T00", "PM25", str(bbox))
-        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month - 9))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=12))+"T00", str(CURRENT_DATE - relativedelta(months=9))+"T00", "PM25", str(bbox))
+        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=3))+"T00", str(CURRENT_DATE)+"T00", "PM25", str(bbox), False)
+        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month - 3))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=6))+"T00", str(CURRENT_DATE - relativedelta(months=3))+"T00", "PM25", str(bbox), False)
+        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month - 6))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=9))+"T00", str(CURRENT_DATE - relativedelta(months=6))+"T00", "PM25", str(bbox), False)
+        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month - 9))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=12))+"T00", str(CURRENT_DATE - relativedelta(months=9))+"T00", "PM25", str(bbox), False)
         return jsonify(highestValuesPerQuarter)
     @app.route("/pm10", methods=['GET'])
     def getPM10():
@@ -90,10 +96,10 @@ def airNowEndpoint():
         #get data for the previous 8 quarters 
 
         #retrieve sorted json data (this method only calls for pm2.5)
-        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=3))+"T00", str(CURRENT_DATE)+"T00", "PM10", str(bbox))
-        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month - 3))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=6))+"T00", str(CURRENT_DATE - relativedelta(months=3))+"T00", "PM10", str(bbox))
-        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month - 6))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=9))+"T00", str(CURRENT_DATE - relativedelta(months=6))+"T00", "PM10", str(bbox))
-        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month - 9))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=12))+"T00", str(CURRENT_DATE - relativedelta(months=9))+"T00", "PM10", str(bbox))
+        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=3))+"T00", str(CURRENT_DATE)+"T00", "PM10", str(bbox), False)
+        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month - 3))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=6))+"T00", str(CURRENT_DATE - relativedelta(months=3))+"T00", "PM10", str(bbox), False)
+        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month - 6))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=9))+"T00", str(CURRENT_DATE - relativedelta(months=6))+"T00", "PM10", str(bbox), False)
+        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month - 9))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=12))+"T00", str(CURRENT_DATE - relativedelta(months=9))+"T00", "PM10", str(bbox), False)
         return jsonify(highestValuesPerQuarter)
     
     @app.route("/ozone", methods=['GET'])
@@ -105,10 +111,10 @@ def airNowEndpoint():
         #get data for the previous 8 quarters 
 
         #retrieve sorted json data (this method only calls for pm2.5)
-        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=3))+"T00", str(CURRENT_DATE)+"T00", "OZONE", str(bbox))
-        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month - 3))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=6))+"T00", str(CURRENT_DATE - relativedelta(months=3))+"T00", "OZONE", str(bbox))
-        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month - 6))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=9))+"T00", str(CURRENT_DATE - relativedelta(months=6))+"T00", "OZONE", str(bbox))
-        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month - 9))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=12))+"T00", str(CURRENT_DATE - relativedelta(months=9))+"T00", "OZONE", str(bbox))
+        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=3))+"T00", str(CURRENT_DATE)+"T00", "OZONE", str(bbox), False)
+        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month - 3))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=6))+"T00", str(CURRENT_DATE - relativedelta(months=3))+"T00", "OZONE", str(bbox), False)
+        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month - 6))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=9))+"T00", str(CURRENT_DATE - relativedelta(months=6))+"T00", "OZONE", str(bbox), False)
+        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month - 9))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=12))+"T00", str(CURRENT_DATE - relativedelta(months=9))+"T00", "OZONE", str(bbox), False)
         return jsonify(highestValuesPerQuarter)
     
     @app.route("/all", methods=['GET'])
@@ -142,6 +148,20 @@ def airNowEndpoint():
         #print(jsonResponse)
         print(jsonResponse)
         return jsonify(jsonResponse)
+    @app.route("/top10PM25", methods=['GET'])
+    def getTopTenPM25():
+        #get url parameters 
+        bbox = request.args.get("bbox")
+        #results
+        topPM25 = []
+        #get data for the previous 8 quarters 
+        topPM25.extend(getAllData(str(CURRENT_DATE - relativedelta(months=3))+"T00", str(CURRENT_DATE)+"T00", "PM25", str(bbox), True))
+        #topPM25.extend(getAllData(str(CURRENT_DATE - relativedelta(months=6))+"T00", str(CURRENT_DATE - relativedelta(months=3))+"T00", "PM25", str(bbox), True))
+        #topPM25.extend(getAllData(str(CURRENT_DATE - relativedelta(months=9))+"T00", str(CURRENT_DATE - relativedelta(months=6))+"T00", "PM25", str(bbox), True))
+        #topPM25.extend(getAllData(str(CURRENT_DATE - relativedelta(months=12))+"T00", str(CURRENT_DATE - relativedelta(months=9))+"T00", "PM25", str(bbox), True))
+        #print(topPM25)
+        return json.dumps(topPM25)
+
 
     return app
 

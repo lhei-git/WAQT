@@ -23,7 +23,7 @@ def create_app(config=None):
     # Definition of the routes. Put them into their own file. See also
     # Flask Blueprints: http://flask.pocoo.org/docs/latest/blueprints
     @app.route("/search", methods=['GET'])
-    
+        
     def WildFire():
        # TODO Add suport for county, state, zip
        city = request.args.get("location")

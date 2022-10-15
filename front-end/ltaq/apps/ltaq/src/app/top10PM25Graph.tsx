@@ -9,10 +9,10 @@ Chart.register(...registerables);
 //This data can be in a specific date range
 
 //TODO: Add coordinate support
-export default function PM10Graph() {
+export default function Top10PM25() {
   const bbox = '-83.553673,42.029418,-82.871707,42.451216';
   const url =
-    'http://localhost:8000/pm10?bbox='+bbox;
+    'http://localhost:8000/top10PM25?bbox='+bbox;
   console.log(url);
   const [data, setData] = useState<any[]>([]);
 
@@ -22,14 +22,13 @@ export default function PM10Graph() {
   return (
     <span>
     <div className={styles["graph"]}>
-      <Line
+      <Bar
         data={{
-          labels: Object.keys(data),
           datasets: [
             {
-              label: 'PM 10 ',
+              label: 'PM 25',
               backgroundColor: ["#3e95cd"],
-              data: Object.values(data),
+              data: data.slice(0,10),
             },
           ],
         }}
@@ -44,7 +43,7 @@ export default function PM10Graph() {
             },
             title: {
               display: true,
-              text: 'Worst PM 10 Chart',
+              text: ' Top 10 Worst PM 25 Chart',
             },
           },
         }}
