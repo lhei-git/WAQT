@@ -35,8 +35,8 @@ export let userLocation: string = "Anaheim";
 // function searchLocation() {
   //Pass in the setLocation prop
   // function searchLocation({ setLocation }: PlacesProps) {
-// export default function searchLocation ({ setLocation }: PlacesProps) {
-const searchLocation = () => {
+export default function searchLocation ({ setLocation }: PlacesProps) {
+// const searchLocation = () => {
   // const searchLocation = ( {setLocation}: PlacesProps) => {
   const {
     ready, //boolean, is the script ready to be used?
@@ -55,7 +55,7 @@ const searchLocation = () => {
     //convert from address string into lat/long coordinates
     const results = await getGeocode({ address: val }); //Geocode takes in an object that has a text address of whatever text the user selects
     const { lat, lng } = await getLatLng(results[0]); //getLatLng of single result (results[0]) of whatever the first result is
-    // setLocation({ lat, lng }); //call setLocation function that recieves a latlngLiteral
+    setLocation({ lat, lng }); //call setLocation function that recieves a latlngLiteral
 
         ReactDOM.render(
       <div>
@@ -135,4 +135,4 @@ const searchLocation = () => {
 // export default searchLocation({ setLocation }: PlacesProps);
 // export default {searchLocation, Places({ setLocation }: PlacesProps)};
 // export default function searchLocation({ setLocation }: PlacesProps);
-export default searchLocation;
+// export default searchLocation;

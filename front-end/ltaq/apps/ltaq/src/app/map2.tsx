@@ -6,7 +6,7 @@ import {
   Circle,
   MarkerClusterer,
 } from "@react-google-maps/api";
-import Places from "./places";
+import SearchLocation from "./places";
 
 
 //Typescript variables
@@ -44,7 +44,7 @@ export default function Map() {
       {/* Google places search */}
       <div className="controls">
         <h1>WAQ</h1>
-        <Places
+        <SearchLocation
           //Pass in setLocation which updates a state called 'position', which stores the lat and lon of the location they selected.  receives a position/location
           setLocation={(position) => {
             setLocation(position); //position calls the setLocation function.  Set position into the setLocation state
