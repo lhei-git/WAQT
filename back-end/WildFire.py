@@ -8,6 +8,59 @@ from flask_cors import CORS
 
 WildfireResponse = {}
 
+states = {
+    "ALABAMA": "AL",
+    "ALASKA": "AK",
+    "ARIZONA": "AZ",
+    "ARKANSAS": "AR",
+    "CALIFORNIA": "CA",
+    "COLORADO": "CO",
+    "CONNECTICUT": "CT",
+    "DELAWARE": "DE",
+    "FLORIDA": "FL",
+    "GEORGIA": "GA",
+    "HAWAII": "HI",
+    "IDAHO": "ID",
+    "ILLINOIS": "IL",
+    "INDIANA": "IN",
+    "IOWA": "IA",
+    "KANSAS": "KS",
+    "KENTUCKY": "KY",
+    "LOUISIANA": "LA",
+    "MAINE": "ME",
+    "MARYLAND": "MD",
+    "MASSACHUSETTS": "MA",
+    "MICHIGAN": "MI",
+    "MINNESOTA": "MN",
+    "MISSISSIPPI": "MS",
+    "MISSOURI": "MO",
+    "MONTANA": "MT",
+    "NEBRASKA": "NE",
+    "NEVADA": "NV",
+    "NEW HAMPSHIRE": "NH",
+    "NEW JERSEY": "NJ",
+    "NEW MEXICO": "NM",
+    "NEW YORK": "NY",
+    "NORTH CAROLINA": "NC",
+    "NORTH DAKOTA": "ND",
+    "OHIO": "OH",
+    "OKLAHOMA": "OK",
+    "OREGON": "OR",
+    "PENNSYLVANIA": "PA",
+    "RHODE ISLAND": "RI",
+    "SOUTH CAROLINA": "SC",
+    "SOUTH DAKOTA": "SD",
+    "TENNESSEE": "TN",
+    "TEXAS": "TX",
+    "UTAH": "UT",
+    "VERMONT": "VT",
+    "VIRGINIA": "VA",
+    "WASHINGTON": "WA",
+    "WEST VIRGINIA": "WV",
+    "WISCONSIN": "WI",
+    "WYOMING": "WY",
+}
+
 def timeConverter(timeToConvert):
     formatTime = str(timeToConvert)[:-3]
     return str(datetime.datetime.fromtimestamp(int(formatTime)))
@@ -82,10 +135,33 @@ def create_app(config=None):
     # Definition of the routes. Put them into their own file. See also
     # Flask Blueprints: http://flask.pocoo.org/docs/latest/blueprints
     @app.route("/Wildfire", methods=['GET'])
-    def WildFire():
-        location = request.args.get("county").strip("+")
-        print(location)
+    def WildFireCounty():
+        location = request.args.get("location").strip("+")
+        print(states.get(location.upper))
         url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20%20(DailyAcres%20%3D%201%20OR%20DailyAcres%20%3D%202000)%20&outFields=DailyAcres,FireOutDateTime,FireDiscoveryDateTime,IncidentName&outSR=4326&f=json"
+        response_API = requests.get(url)
+        
+        output = json.loads(response_API.text)
+        # count = len(output['features'])
+        # print(output['features'][0]['attributes']['FireDiscoveryDateTime'])
+        # print(output['features'][count-1]['attributes']['FireDiscoveryDateTime'])
+        
+        # WildfireResponse["FireCount"] = count 
+        # WildfireResponse["StartDate"] = (output['features'][0]['attributes']['FireDiscoveryDateTime'])
+        # WildfireResponse["EndDate"] = (output['features'][count-1]['attributes']['FireDiscoveryDateTime'])
+        #print(output['features'][0]['attributes']['FireDiscoveryDateTime'])
+
+        getMostRecentFire(output)
+        longestBurningFire(output)
+        averageFireDuration(output)
+        return jsonify(WildfireResponse)
+
+    @app.route("/wildfire/state", methods=['GET'])
+    def WildFireState():
+        location = request.args.get("location").strip("+")
+        print(states.get(location.upper()))
+        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOState%20%3D%20'US-"+states.get(location.upper())+"'%20AND%20%20(DailyAcres%20%3D%201%20OR%20DailyAcres%20%3D%202000)%20&outFields=DailyAcres,FireOutDateTime,FireDiscoveryDateTime,IncidentName&outSR=4326&f=json"
+        print(url)
         response_API = requests.get(url)
         
         output = json.loads(response_API.text)
