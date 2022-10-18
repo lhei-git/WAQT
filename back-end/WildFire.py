@@ -134,10 +134,9 @@ def create_app(config=None):
 
     # Definition of the routes. Put them into their own file. See also
     # Flask Blueprints: http://flask.pocoo.org/docs/latest/blueprints
-    @app.route("/Wildfire", methods=['GET'])
+    @app.route("/wildfire/county", methods=['GET'])
     def WildFireCounty():
         location = request.args.get("location").strip("+")
-        print(states.get(location.upper))
         url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20%20(DailyAcres%20%3D%201%20OR%20DailyAcres%20%3D%202000)%20&outFields=DailyAcres,FireOutDateTime,FireDiscoveryDateTime,IncidentName&outSR=4326&f=json"
         response_API = requests.get(url)
         
