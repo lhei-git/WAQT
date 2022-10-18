@@ -6,7 +6,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 
 
-API_KEY = ""
+WildfireResponse = {}
 
 def timeConverter(timeToConvert):
     formatTime = str(timeToConvert)[:-3]
@@ -21,11 +21,56 @@ def convertSecondsToTime(seconds):
      
     return "%d:%02d:%02d" % (hour, minutes, seconds)
 
+def getMostRecentFire(output):
+    #most recent fire row
+    mostRecentFireDate = output['features'][len(output['features'])-1]['attributes']['FireDiscoveryDateTime'] 
+    WildfireResponse["MostRecentFireDate"] = timeConverter(mostRecentFireDate)
+    WildfireResponse["MostRecentFireName"] = output['features'][len(output['features'])-1]['attributes']['IncidentName']
+
+def longestBurningFire(output):
+     #longest burning fire
+    marker = 0
+    timeDifference = 0
+    for i in range(len(output['features'])):
+        start = str(output['features'][i]['attributes']['FireDiscoveryDateTime'])
+        end = str(output['features'][i]['attributes']['FireOutDateTime'])
+        if(start != "None" and end != "None"):
+            if (timeDifference == 0):
+                timeDifference = int(end) - int(start)
+                marker = i
+                i = i + 1
+            elif (output['features'][i]['attributes']['FireOutDateTime'] - output['features'][i]['attributes']['FireDiscoveryDateTime'] > timeDifference):
+                timeDifference = output['features'][i]['attributes']['FireOutDateTime'] - output['features'][i]['attributes']['FireDiscoveryDateTime']
+                marker = i
+                i = i + 1
+            else:
+                i = i + 1
+        else:
+            i = i + 1
+    WildfireResponse["LongestFireName"] = output['features'][marker]['attributes']['IncidentName']
+    longestFireStart = output['features'][marker]['attributes']['FireDiscoveryDateTime']
+    longestFireEnd = output['features'][marker]['attributes']['FireOutDateTime']
+    WildfireResponse["LongestStartDate"] = timeConverter(longestFireStart)
+    WildfireResponse["LongestEndDate"] = timeConverter(longestFireEnd)
+
+def averageFireDuration(output):       
+     #Average Fire Duration
+    avgDiff = 0
+    amount = 0
+    for j in range(len(output['features'])):
+        start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
+        end = str(output['features'][j]['attributes']['FireOutDateTime'])
+        if(start != "None" and end != "None"):
+            avgDiff += (int(end[:-3]) - int(start[:-3]))
+            amount = j
+            j = j + 1
+        else:
+            j = j + 1
+
+    WildfireResponse["AverageDuration"] = convertSecondsToTime(avgDiff / amount)
 
 def create_app(config=None):
     app = Flask(__name__)
-
-
     # See http://flask.pocoo.org/docs/latest/config/
     app.config.update(dict(DEBUG=True))
     app.config.update(config or {})
@@ -42,64 +87,20 @@ def create_app(config=None):
         print(location)
         url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20%20(DailyAcres%20%3D%201%20OR%20DailyAcres%20%3D%202000)%20&outFields=DailyAcres,FireOutDateTime,FireDiscoveryDateTime,IncidentName&outSR=4326&f=json"
         response_API = requests.get(url)
-        WildfireResponse = {}
+        
         output = json.loads(response_API.text)
         # count = len(output['features'])
         # print(output['features'][0]['attributes']['FireDiscoveryDateTime'])
         # print(output['features'][count-1]['attributes']['FireDiscoveryDateTime'])
         
-
         # WildfireResponse["FireCount"] = count 
         # WildfireResponse["StartDate"] = (output['features'][0]['attributes']['FireDiscoveryDateTime'])
         # WildfireResponse["EndDate"] = (output['features'][count-1]['attributes']['FireDiscoveryDateTime'])
         #print(output['features'][0]['attributes']['FireDiscoveryDateTime'])
 
-        #most recent fire row
-        mostRecentFireDate = output['features'][len(output['features'])-1]['attributes']['FireDiscoveryDateTime']
-        
-        WildfireResponse["MostRecentFireDate"] = timeConverter(mostRecentFireDate)
-        WildfireResponse["MostRecentFireName"] = output['features'][len(output['features'])-1]['attributes']['IncidentName']
-
-        #longest burning fire
-        marker = 0
-        timeDifference = 0
-        for i in range(len(output['features'])):
-            start = str(output['features'][i]['attributes']['FireDiscoveryDateTime'])
-            end = str(output['features'][i]['attributes']['FireOutDateTime'])
-            if(start != "None" and end != "None"):
-                if (timeDifference == 0):
-                    timeDifference = int(end) - int(start)
-                    marker = i
-                    i = i + 1
-                elif (output['features'][i]['attributes']['FireOutDateTime'] - output['features'][i]['attributes']['FireDiscoveryDateTime'] > timeDifference):
-                    timeDifference = output['features'][i]['attributes']['FireOutDateTime'] - output['features'][i]['attributes']['FireDiscoveryDateTime']
-                    marker = i
-                    i = i + 1
-                else:
-                    i = i + 1
-            else:
-                i = i + 1
-        WildfireResponse["LongestFireName"] = output['features'][marker]['attributes']['IncidentName']
-        longestFireStart = output['features'][marker]['attributes']['FireDiscoveryDateTime']
-        longestFireEnd = output['features'][marker]['attributes']['FireOutDateTime']
-        WildfireResponse["LongestStartDate"] = timeConverter(longestFireStart)
-        WildfireResponse["LongestEndDate"] = timeConverter(longestFireEnd)
-        
-
-        #Average Fire Duration
-        avgDiff = 0
-        amount = 0
-        for j in range(len(output['features'])):
-            start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-            end = str(output['features'][j]['attributes']['FireOutDateTime'])
-            if(start != "None" and end != "None"):
-                avgDiff += (int(end[:-3]) - int(start[:-3]))
-                amount = j
-                j = j + 1
-            else:
-                j = j + 1
-
-        WildfireResponse["AverageDuration"] = convertSecondsToTime(avgDiff / amount)
+        getMostRecentFire(output)
+        longestBurningFire(output)
+        averageFireDuration(output)
         return jsonify(WildfireResponse)
 
     return app
