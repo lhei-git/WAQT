@@ -5,60 +5,82 @@ import axios from "axios"
 
 //This returns a table from the wildfire API
 //returns Date, Name, Acres and Cause when available
-function FireStatsTable() {
 
-  const [data, setData] = useState<any[]>([]);
-  const url = 'http://localhost:8001/Wildfire?county=LOS+ANGELES'
+function FireStatsTable() {
+  const url = 'http://localhost:8001/wildfire/county?location=LOS+ANGELES'
+  const url2 = 'http://localhost:8001/wildfire/state?location=california'
   console.log(url)
+  const [data, setData] = useState<any[]>([]);
+  const [stateData, setStateData] = useState<any[]>([]);
+  const [isLoading, setLoading] = useState(true);
+
   useEffect(() => {
-    axios.get(url)
-      .then((response) => setData(response.data));
-    }, []);
+    axios.get(url).then(response => {
+      data.push(response.data);
+    });
+  }, []);
+
+  useEffect(() => {
+    axios.get(url2).then(response => {
+      stateData.push(response.data);
+      setLoading(false);
+    });
+  }, []);
   
-  return (
-    <div className={styles["basicTable"]}>
-      <tbody>
-        <tr>
-          <td>{data}</td>
-        </tr>
-        {data.map((item, index) => (
-          <tr key={index}>
-            <td>"Most Recent Fire Date"</td>
-            <td>{item.MostRecentFireDate}</td>
+  if (isLoading) {
+    return <div className="App">Loading...</div>;
+  }
+
+    return (
+      <div className={styles["basicTable"]}>
+          <tr>
+            {/* Headers */}
+            <th></th>
+            <th>City/County</th>
+            <th>State</th>
           </tr>
-        ))
-        }
-        {data.map((item, index) => (
-          <tr key={index}>
-            <td>"Longest Fire Name"</td>
-            <td>{item.LongestFireName}</td>
+          <tr > 
+            {/* access json data using each key you need, this will be dynamically allocated */}
+            <td>Most Recent Fire Name</td>
+            <td>{data[0].MostRecentFireName}</td>
+            <td>{stateData[0].MostRecentFireName}</td>
           </tr>
-        ))
-        }
-        {data.map((item, index) => (
-          <tr key={index}>
-            <td>"Longest Fire Start Date"</td>
-            <td>{item.LongestStartDate}</td>
+          <tr > 
+            {/* access json data using each key you need, this will be dynamically allocated */}
+            <td>Most Recent Fire Start Date</td>
+            <td>{data[0].MostRecentFireDate}</td>
+            <td>{stateData[0].MostRecentFireDate}</td>
           </tr>
-        ))
-        }
-        {data.map((item, index) => (
-          <tr key={index}>
-            <td>"Longest Fire End Date"</td>
-            <td>{item.LongestEndDate}</td>
+          <tr > 
+            {/* access json data using each key you need, this will be dynamically allocated */}
+            <td>Longest Burning Fire Name</td>
+            <td>{data[0].LongestFireName}</td>
+            <td>{stateData[0].LongestFireName}</td>
           </tr>
-        ))
-        }
-        {data.map((item, index) => (
-          <tr key={index}>
-            <td>"Average Fire Duration"</td>
-            <td>{item.AverageDuration}</td>
+          <tr > 
+            {/* access json data using each key you need, this will be dynamically allocated */}
+            <td>Longest Burning Fire Start Date</td>
+            <td>{data[0].LongestStartDate}</td>
+            <td>{stateData[0].LongestStartDate}</td>
           </tr>
-        ))
-        }
-      </tbody>
-    </div>
-  );
+          <tr > 
+            {/* access json data using each key you need, this will be dynamically allocated */}
+            <td>Longest Burning End Date</td>
+            <td>{data[0].LongestEndDate}</td>
+            <td>{stateData[0].LongestEndDate}</td>
+          </tr>
+          <tr > 
+            {/* access json data using each key you need, this will be dynamically allocated */}
+            <td>Average Fire Duration</td>
+            <td>{data[0].AverageDuration}</td>
+            <td>{stateData[0].AverageDuration}</td>
+          </tr>
+        
+      </div>
+    );
+  
+
+  
 }
 
 export default FireStatsTable;
