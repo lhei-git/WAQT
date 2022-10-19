@@ -7,8 +7,11 @@ import axios from "axios"
 //returns Date, Name, Acres and Cause when available
 
 function FireStatsTable() {
-  const url = 'http://localhost:8001/wildfire/county?location=LOS+ANGELES'
-  const url2 = 'http://localhost:8001/wildfire/state?location=california'
+  //TODO: get data from map
+  const county = 'Wayne'
+  const state = 'Michigan'
+  const url = 'http://localhost:8001/wildfire/county?location='+county
+  const url2 = 'http://localhost:8001/wildfire/state?location='+state
   console.log(url)
   const [data, setData] = useState<any[]>([]);
   const [stateData, setStateData] = useState<any[]>([]);
@@ -28,16 +31,15 @@ function FireStatsTable() {
   }, []);
   
   if (isLoading) {
-    return <div className="App">Loading...</div>;
-  }
-
+    return <div >Loading...</div>;
+  }else{
     return (
       <div className={styles["basicTable"]}>
           <tr>
             {/* Headers */}
             <th></th>
-            <th>City/County</th>
-            <th>State</th>
+            <th>{county}</th>
+            <th>{state}</th>
           </tr>
           <tr > 
             {/* access json data using each key you need, this will be dynamically allocated */}
@@ -78,6 +80,9 @@ function FireStatsTable() {
         
       </div>
     );
+  }
+
+    
   
 
   
