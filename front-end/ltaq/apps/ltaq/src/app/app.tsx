@@ -1,8 +1,6 @@
-import Location from './searchLocation';
 import { useLoadScript} from "@react-google-maps/api";
 import "./app.css";
-import Places from "./places";
-import MAP2 from './map2';
+import HOME from './home';
 
 //This renders the search and greeting page of our web app
 const App = () => {
@@ -16,7 +14,7 @@ const App = () => {
     return (
         <>
         {/* <Location /> */}
-        <MAP2 />
+        <HOME />
         {/* <Places /> */}
         </>
     );
