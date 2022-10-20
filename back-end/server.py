@@ -40,13 +40,26 @@ def create_app(config=None):
         WildfireResponse['UnderControl'] = count
         WildfireResponse["StartDate"] = (output['features'][0]['attributes']['FireDiscoveryDateTime'])
         WildfireResponse["EndDate"] = (output['features'][count-1]['attributes']['FireDiscoveryDateTime'])
-    
-        
+
+#total acres
+
+        sum = 0 
+        for i in range(len(output['features'])):
+            print(output['features'][i]['attributes']['DailyAcres'])
+            if (isinstance(output['features'][i]['attributes']['DailyAcres'], int)):
+                sum = sum + output['features'][i]['attributes']['DailyAcres']
+                i = i + 1
+            else: 
+                i = i + 1
+        WildfireResponse["TotalAcres"] = sum
+
+
         return json.dumps(WildfireResponse)
+
 
 #1 url keep same function
     
-   
+    @app.route("/WildfireData", methods=['GET'])
     def WildFireData(IncidentName, CalculatedAcres, DailyAcres, ContainmentDateTime, ControlDateTime, DiscoveryAcres, FireDiscoveryDateTime, FireOutDateTime ):
         options = {}
         options["url"] = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=1%3D1&outFields=CalculatedAcres,DailyAcres,IncidentName,FireOutDateTime,FireDiscoveryDateTime,ControlDateTime,ContainmentDateTime,DiscoveryAcres&outSR=4326&f=json"
@@ -70,6 +83,3 @@ if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))
     app = create_app()
     app.run(host="0.0.0.0", port=port)
-
-
-
