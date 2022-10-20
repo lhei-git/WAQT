@@ -7,6 +7,7 @@ from flask_cors import CORS
 
 
 WildfireResponse = {}
+ActiveFireResponse = {}
 
 states = {
     "ALABAMA": "AL",
@@ -97,7 +98,7 @@ def getMostRecentFire(output):
     if(mostRecentEnd):
         WildfireResponse["MostRecentFireEnd"] = timeConverter(mostRecentEnd)
     else:
-        WildfireResponse["MostRecentFireEnd"] = "Active"
+        WildfireResponse["MostRecentFireEnd"] = "N/A"
 
 def longestBurningFire(output):
      #longest burning fire
@@ -211,7 +212,19 @@ def create_app(config=None):
         longestBurningFire(output)
         averageFireDuration(output)
         return jsonify(WildfireResponse)
+    @app.route("/active", methods=['GET'])
+    def ActiveFires():
+        location = request.args.get("location").strip("+")
+        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/last24h_WildlandFire_Locations/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'&outFields=FireDiscoveryDateTime,IncidentName,POOCounty,IsCpxChild&outSR=4326&f=json"
 
+        response_API = requests.get(url)
+        output = json.loads(response_API.text)
+        for i in range(len(output['features'])):
+            ActiveFireResponse[str(i)] = output['features'][i]['attributes']
+        
+
+        return jsonify(ActiveFireResponse)
+    
     return app
 
 
