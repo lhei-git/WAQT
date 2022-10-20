@@ -88,18 +88,6 @@ function FireStatsTable() {
           </tr>
         </table>
       </div>
-      
-      <div className={styles['column']}>
-        <table>
-          <tr>
-            {/* Headers */}
-            <th>Active Fires</th>
-            <th>Name</th>
-            <th>Location</th>
-          </tr>
-         
-          </table>
-      </div>
     </div>
     );
   }
