@@ -8,10 +8,10 @@ import axios from "axios"
 
 function FireStatsTable() {
   //TODO: get data from map
-  const county = 'Wayne'
+  const county = 'Oscoda'
   const state = 'Michigan'
-  const url = 'http://localhost:8001/wildfire/county?location='+county
-  const url2 = 'http://localhost:8001/wildfire/state?location='+state
+  const url = 'http://localhost:8001/wildfire/county?location='+county+'&state='+state
+  const url2 = 'http://localhost:8001/wildfire/stateonly?location='+state
   console.log(url)
   const [data, setData] = useState<any[]>([]);
   const [stateData, setStateData] = useState<any[]>([]);
@@ -34,7 +34,10 @@ function FireStatsTable() {
     return <div >Loading...</div>;
   }else{
     return (
-      <div className={styles["basicTable"]}>
+      
+      <div className={styles['row']}>
+      <div className={styles['column']}>
+        <table>
           <tr>
             {/* Headers */}
             <th></th>
@@ -50,8 +53,14 @@ function FireStatsTable() {
           <tr > 
             {/* access json data using each key you need, this will be dynamically allocated */}
             <td>Most Recent Fire Start Date</td>
-            <td>{data[0].MostRecentFireDate}</td>
-            <td>{stateData[0].MostRecentFireDate}</td>
+            <td>{data[0].MostRecentFireStart}</td>
+            <td>{stateData[0].MostRecentFireStart}</td>
+          </tr>
+          <tr > 
+            {/* access json data using each key you need, this will be dynamically allocated */}
+            <td>Most Recent Fire End Date</td>
+            <td>{data[0].MostRecentFireEnd}</td>
+            <td>{stateData[0].MostRecentFireEnd}</td>
           </tr>
           <tr > 
             {/* access json data using each key you need, this will be dynamically allocated */}
@@ -77,8 +86,21 @@ function FireStatsTable() {
             <td>{data[0].AverageDuration}</td>
             <td>{stateData[0].AverageDuration}</td>
           </tr>
-        
+        </table>
       </div>
+      
+      <div className={styles['column']}>
+        <table>
+          <tr>
+            {/* Headers */}
+            <th>Active Fires</th>
+            <th>Name</th>
+            <th>Location</th>
+          </tr>
+         
+          </table>
+      </div>
+    </div>
     );
   }
 
