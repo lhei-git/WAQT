@@ -9,7 +9,7 @@ import axios from "axios"
 function ActiveFiresTable() {
   //TODO: get data from map
   const county = 'Perry'
-  const url = 'http://localhost:8001/active?location=Perry'+county
+  const url = 'http://localhost:8001/active?location=Trinity'
   console.log(url)
   const [data, setData] = useState<any[]>([]);
   const [stateData, setStateData] = useState<any[]>([]);
@@ -17,7 +17,7 @@ function ActiveFiresTable() {
 
   useEffect(() => {
     axios.get(url).then(response => {
-      setData(response.data);
+      data.push(response.data);
       setLoading(false);
     });
   }, []);
@@ -37,8 +37,8 @@ function ActiveFiresTable() {
             <th>County</th>
           </tr>
           <tr>
-            <th>{data[0].IncidentName}</th>
-            <th>{data[0].POOCounty}</th>
+            <th>{data["0"][0].IncidentName}</th>
+            <th>{data["0"][0].POOCounty}</th>
           </tr>
         </table>
       </div>
