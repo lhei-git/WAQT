@@ -216,11 +216,11 @@ def create_app(config=None):
     def ActiveFires():
         location = request.args.get("location").strip("+")
         url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/last24h_WildlandFire_Locations/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'&outFields=FireDiscoveryDateTime,IncidentName,POOCounty,IsCpxChild&outSR=4326&f=json"
-
+        print(url)
         response_API = requests.get(url)
         output = json.loads(response_API.text)
         for i in range(len(output['features'])):
-            ActiveFireResponse[str(i)] = output['features'][i]['attributes']
+            ActiveFireResponse[i] = output['features'][i]['attributes']
         
 
         return jsonify(ActiveFireResponse)

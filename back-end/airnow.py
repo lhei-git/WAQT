@@ -74,6 +74,37 @@ StateAbbrv = {
     "WISCONSIN": "WI",
     "WYOMING": "WY",
 }
+PM25Trends = {}
+PM10Trends = {}
+OzoneTrends = {}
+#function to get air quality trends
+def extractTrendData(output, year):
+    quarter = 1
+    while quarter <= 4:
+        PM25Total = 0
+        PM10Total = 0
+        OzoneTotal = 0
+        for i in range(len(output['Data'])):
+            if contains(output['Data'][i]['parameter'], "PM2.5") and contains(output['Data'][i]['quarter'], "1"):
+                PM25Total = PM25Total + output['Data'][i]['arithmetic_mean']
+            else:
+                i = i + 1
+        for i in range(len(output['Data'])):
+            if contains(output['Data'][i]['parameter'], "PM10") and contains(output['Data'][i]['quarter'], "1"):
+                PM10Total = PM10Total + output['Data'][i]['arithmetic_mean']
+            else:
+                i = i + 1
+        for i in range(len(output['Data'])):
+            if contains(output['Data'][i]['parameter'], "Ozone") and contains(output['Data'][i]['quarter'], "1"):
+                OzoneTotal = OzoneTotal + output['Data'][i]['arithmetic_mean']
+            else:
+                i = i + 1  
+        PM25Trends["Q"+str(quarter)+str(year)] = PM25Total
+        PM10Trends["Q"+str(quarter)+str(year)] = PM10Total
+        OzoneTrends["Q"+str(quarter)+str(year)] = OzoneTotal
+        quarter = quarter + 1
+    
+
 #endpoint to access air now data: 
 def airNowEndpoint():
     app = Flask(__name__)
@@ -131,7 +162,15 @@ def airNowEndpoint():
         response_API = requests.get(url)
         output = json.loads(response_API.text)
 
-        return jsonify(output)
+        AllTrends = {}
+
+        getTrends(output, 2022)
+
+        AllTrends[0] = PM25Trends
+        AllTrends[1] = PM10Trends
+        AllTrends[2] = OzoneTrends
+
+        return jsonify(AllTrends)
 
     return app
 
