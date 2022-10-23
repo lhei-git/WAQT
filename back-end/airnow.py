@@ -8,132 +8,128 @@ import os
 import json
 from datetime import date
 from dateutil.relativedelta import relativedelta
+import csv
+from operator import contains
 
 # API is in secrets
 # Do not push API_KEY to GitHub
+#Air Now
 API_KEY = ""
+
+#AQS
+EMAIL = "" 
+AQS_KEY = ""
 CURRENT_DATE = date.today()
 
-#convert month to quarter
-month2quarter = {
-        1:1,2:1,3:1,
-        4:2,5:2,6:2,
-        7:3,8:3,9:3,
-        10:4,11:4,12:4,
-    }.get
-
+#states
+StateAbbrv = {
+    "ALABAMA": "AL",
+    "ALASKA": "AK",
+    "ARIZONA": "AZ",
+    "ARKANSAS": "AR",
+    "CALIFORNIA": "CA",
+    "COLORADO": "CO",
+    "CONNECTICUT": "CT",
+    "DELAWARE": "DE",
+    "FLORIDA": "FL",
+    "GEORGIA": "GA",
+    "HAWAII": "HI",
+    "IDAHO": "ID",
+    "ILLINOIS": "IL",
+    "INDIANA": "IN",
+    "IOWA": "IA",
+    "KANSAS": "KS",
+    "KENTUCKY": "KY",
+    "LOUISIANA": "LA",
+    "MAINE": "ME",
+    "MARYLAND": "MD",
+    "MASSACHUSETTS": "MA",
+    "MICHIGAN": "MI",
+    "MINNESOTA": "MN",
+    "MISSISSIPPI": "MS",
+    "MISSOURI": "MO",
+    "MONTANA": "MT",
+    "NEBRASKA": "NE",
+    "NEVADA": "NV",
+    "NEW HAMPSHIRE": "NH",
+    "NEW JERSEY": "NJ",
+    "NEW MEXICO": "NM",
+    "NEW YORK": "NY",
+    "NORTH CAROLINA": "NC",
+    "NORTH DAKOTA": "ND",
+    "OHIO": "OH",
+    "OKLAHOMA": "OK",
+    "OREGON": "OR",
+    "PENNSYLVANIA": "PA",
+    "RHODE ISLAND": "RI",
+    "SOUTH CAROLINA": "SC",
+    "SOUTH DAKOTA": "SD",
+    "TENNESSEE": "TN",
+    "TEXAS": "TX",
+    "UTAH": "UT",
+    "VERMONT": "VT",
+    "VIRGINIA": "VA",
+    "WASHINGTON": "WA",
+    "WEST VIRGINIA": "WV",
+    "WISCONSIN": "WI",
+    "WYOMING": "WY",
+}
+PM25Trends = {}
+PM10Trends = {}
+OzoneTrends = {}
+#function to get air quality trends
+def extractTrendData(output, year):
+    quarter = 1
+    while quarter <= 4:
+        PM25Total = 0
+        PM10Total = 0
+        OzoneTotal = 0
+        for i in range(len(output['Data'])):
+            if contains(output['Data'][i]['parameter'], "PM2.5") and contains(output['Data'][i]['quarter'], "1"):
+                PM25Total = PM25Total + output['Data'][i]['arithmetic_mean']
+            else:
+                i = i + 1
+        for i in range(len(output['Data'])):
+            if contains(output['Data'][i]['parameter'], "PM10") and contains(output['Data'][i]['quarter'], "1"):
+                PM10Total = PM10Total + output['Data'][i]['arithmetic_mean']
+            else:
+                i = i + 1
+        for i in range(len(output['Data'])):
+            if contains(output['Data'][i]['parameter'], "Ozone") and contains(output['Data'][i]['quarter'], "1"):
+                OzoneTotal = OzoneTotal + output['Data'][i]['arithmetic_mean']
+            else:
+                i = i + 1  
+        PM25Trends["Q"+str(quarter)+str(year)] = PM25Total
+        PM10Trends["Q"+str(quarter)+str(year)] = PM10Total
+        OzoneTrends["Q"+str(quarter)+str(year)] = OzoneTotal
+        quarter = quarter + 1
+    
 
 #endpoint to access air now data: 
 def airNowEndpoint():
     app = Flask(__name__)
     CORS(app)
 
-    #this function sets up the url and downloads the json 
-    
-    def downloadDataBBOX(startDate, endDate, parameters, bbox):
-        # API request URL
-        REQUEST_URL = "https://www.airnowapi.org/aq/data/?startDate="+startDate+"&endDate="+endDate+"&parameters="+ parameters+"&BBOX="+bbox+"&dataType=B&format=application/json&verbose=0&monitorType=2&includerawconcentrations=0&API_KEY="+API_KEY
-        print(REQUEST_URL)
-        r = requests.get(REQUEST_URL)
-        with open("output.txt",'wb') as f:
-            f.write(r.content)
-    
-    #endpoint to get all the data
-    # Contract: https://docs.airnowapi.org/Data/docs
-    # Returns Ozone, PM25, PM10, CO, N02 and S02 Values for a location
-    # Sample bounds: -83.553673,42.029418,-82.871707,42.451216	
-    # Sample date: 2022-09-12T00
-    # Will return in json format 
-    def getAllData(startDate, endDate, parameters, bbox):   
-
-        downloadDataBBOX(startDate, endDate, parameters, bbox)
-        #example paramaters:
-        #downloadData("2022-09-17T16","2022-09-17T17","PM25", "-83.553673,42.029418,-82.871707,42.451216")
-
-        #read output.txt 
-        #contains json response from air now
-        responseData = open('output.txt')
-        jsonResponse = json.load(responseData)
-        #delete the json file
-        if os.path.exists("output.txt"):
-            os.remove("output.txt")
-        else:
-            print("The file does not exist")
-        
-        #sort the data
-        res = sorted(jsonResponse, key=lambda k: k['Value'], reverse=True)
-        #return data for the highest value o
-        return res[0]['Value']
-
-    #This grabs pm 2.5 values for a bounding box
-    #sample request url: localhost:8000/pm25?startDate=2022-09-17T16&endDate=2022-09-17T17&bbox=-83.553673,42.029418,-82.871707,42.451216
-    @app.route("/pm25", methods=['GET'])
-    def getPM25():
-        #get url parameters 
-        bbox = request.args.get("bbox")
-        #results
-        highestValuesPerQuarter = {}
-        #get data for the previous 8 quarters 
-
-        #retrieve sorted json data (this method only calls for pm2.5)
-        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=3))+"T00", str(CURRENT_DATE)+"T00", "PM25", str(bbox))
-        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month - 3))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=6))+"T00", str(CURRENT_DATE - relativedelta(months=3))+"T00", "PM25", str(bbox))
-        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month - 6))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=9))+"T00", str(CURRENT_DATE - relativedelta(months=6))+"T00", "PM25", str(bbox))
-        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month - 9))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=12))+"T00", str(CURRENT_DATE - relativedelta(months=9))+"T00", "PM25", str(bbox))
-        return jsonify(highestValuesPerQuarter)
-    @app.route("/pm10", methods=['GET'])
-    def getPM10():
-        #get url parameters 
-        bbox = request.args.get("bbox")
-        #results
-        highestValuesPerQuarter = {}
-        #get data for the previous 8 quarters 
-
-        #retrieve sorted json data (this method only calls for pm2.5)
-        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=3))+"T00", str(CURRENT_DATE)+"T00", "PM10", str(bbox))
-        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month - 3))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=6))+"T00", str(CURRENT_DATE - relativedelta(months=3))+"T00", "PM10", str(bbox))
-        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month - 6))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=9))+"T00", str(CURRENT_DATE - relativedelta(months=6))+"T00", "PM10", str(bbox))
-        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month - 9))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=12))+"T00", str(CURRENT_DATE - relativedelta(months=9))+"T00", "PM10", str(bbox))
-        return jsonify(highestValuesPerQuarter)
-    
-    @app.route("/ozone", methods=['GET'])
-    def getOzone():
-        #get url parameters 
-        bbox = request.args.get("bbox")
-        #results
-        highestValuesPerQuarter = {}
-        #get data for the previous 8 quarters 
-
-        #retrieve sorted json data (this method only calls for pm2.5)
-        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=3))+"T00", str(CURRENT_DATE)+"T00", "OZONE", str(bbox))
-        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month - 3))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=6))+"T00", str(CURRENT_DATE - relativedelta(months=3))+"T00", "OZONE", str(bbox))
-        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month - 6))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=9))+"T00", str(CURRENT_DATE - relativedelta(months=6))+"T00", "OZONE", str(bbox))
-        highestValuesPerQuarter['Q'+str(month2quarter(CURRENT_DATE.month - 9))+str(CURRENT_DATE.year)] = getAllData(str(CURRENT_DATE - relativedelta(months=12))+"T00", str(CURRENT_DATE - relativedelta(months=9))+"T00", "OZONE", str(bbox))
-        return jsonify(highestValuesPerQuarter)
-    
-    @app.route("/all", methods=['GET'])
-    def getAllAQI():
-        #get url parameters 
-        startDate = request.args.get("startDate")
-        endDate = request.args.get("endDate")
-        bbox = request.args.get("bbox")
-        #retrieve json data (this method only calls for pm2.5)
-        return getAllData(str(startDate), str(endDate), "OZONE,PM25,PM10,CO,SO2", str(bbox))
 
     @app.route("/aqi", methods=['GET'])
     def getCurrentAQI():
+        #endpoint url sample: localhost:8000/aqi?lat=36.6002&lon=121.8947
         #get these from GMAPS 
-        lat = str(36.6002)
-        lon = str(121.8947)
+        #lat = str(36.6002)
+        #lon = str(121.8947)
+        lat = request.args.get("lat")
+        lon = request.args.get("lon")
         REQUEST_URL = "https://www.airnowapi.org/aq/observation/latLong/current/?format=application/json&latitude="+lat+"&longitude=-"+lon+"&distance=25&API_KEY="+API_KEY
         print(REQUEST_URL)
         r = requests.get(REQUEST_URL)
         with open("outputAQI.txt",'wb') as f:
             f.write(r.content) 
+        f.close()
         #read output.txt 
         #contains json response from air now
         responseData = open('outputAQI.txt')
         jsonResponse = json.load(responseData)
+        responseData.close()
         #delete the json file
         if os.path.exists("outputAQI.txt"):
             os.remove("outputAQI.txt")
@@ -142,6 +138,39 @@ def airNowEndpoint():
         #print(jsonResponse)
         print(jsonResponse)
         return jsonify(jsonResponse)
+
+    @app.route("/trends", methods=['GET'])
+    def getTrends():
+        #https://aqs.epa.gov/aqsweb/documents/data_api.html#quarterly
+        county = request.args.get("county")
+        state = request.args.get("state")
+        with open('fips.csv', newline='') as f:
+            reader = csv.reader(f)
+            for row in reader:
+                if (contains(row[1], county) and contains(row[2], StateAbbrv[state.upper()])):
+                    print(str(row[0])[-3:])
+                    countyFips = str(row[0])[-3:]
+            f.close()
+        with open('statefips.csv', newline='') as f:
+            reader = csv.reader(f)
+            for name in reader:
+                if (contains(name[0], state.capitalize())):
+                    print(str(name[3]))
+                    stateFips = str(name[3])
+            f.close
+        url = "https://aqs.epa.gov/data/api/quarterlyData/byCounty?email="+EMAIL+"&key="+AQS_KEY+"&param=88101,44201,81102&bdate=20160101&edate=20161231&state="+stateFips+"&county="+countyFips
+        response_API = requests.get(url)
+        output = json.loads(response_API.text)
+
+        AllTrends = {}
+
+        getTrends(output, 2022)
+
+        AllTrends[0] = PM25Trends
+        AllTrends[1] = PM10Trends
+        AllTrends[2] = OzoneTrends
+
+        return jsonify(AllTrends)
 
     return app
 
