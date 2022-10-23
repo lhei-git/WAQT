@@ -12,7 +12,10 @@ import usePlacesAutocomplete, {
   import "@reach/combobox/styles.css";
 import ReactDOM from "react-dom";
 import DISPLAY from "./display";
-  
+import Nav from "./nav";
+import styles from "./nav.module.css";
+import homeStyle from "./home.module.css";
+
   //Pass in the setLocation prop
   export default function Places() {
     const {
@@ -29,9 +32,10 @@ import DISPLAY from "./display";
       setValue(val, false); //update the value to be what the user has selected.  we're not asking it to go and load more data, because we've chosen a selection
       clearSuggestions(); //once a user selects a location, we shouldn't show the list of suggestions to the user
     //   localStorage.setItem("userLocation", JSON.stringify(val));
-    //   console.log(localStorage);
+      console.log(val);
       const results = await getGeocode({ address: val });
       const { lat, lng } = await getLatLng(results[0]);
+      localStorage.setItem('val', JSON.stringify(val));
       localStorage.setItem('lat', JSON.stringify(+lat));
       localStorage.setItem('lng', JSON.stringify(+lng));
       console.log(localStorage);
@@ -39,7 +43,7 @@ import DISPLAY from "./display";
           //render all components here:
     ReactDOM.render(
         <div>
-          <h1>{val}</h1>
+          {/* <h1>{val}</h1> */}
           {/* <BasicFireInfo/>, */}
           {/* <PM25Graph />, */}
           {/* <Map /> */}
@@ -57,9 +61,12 @@ import DISPLAY from "./display";
     return (
         //Box which allows a user to search through Google Places
         <>
-        <h1>Wildfire Air Quality (WAQ) Protoype 2</h1>
+        <div className = {homeStyle['container']}>
+        <div className = {homeStyle['searchbar']}>
+        {/* <Nav/> */}
+        <h1>Search Location</h1>
       <Combobox onSelect={handleSelect}>
-        Search Location: 
+        {/* Search Location:  */}
         <ComboboxInput //text box the user types into
           value={value} //value the user has typed in
           onChange={(e) => setValue(e.target.value)} //any time a user changes the value, we have to listen to that event (onChange).  set value, target being the input itself and value being the value they typed into the text box
@@ -77,6 +84,8 @@ import DISPLAY from "./display";
           </ComboboxList>
         </ComboboxPopover>
       </Combobox>
+      </div>
+      </div>
       </>
     );
   }

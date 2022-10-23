@@ -1,16 +1,24 @@
 import { useLoadScript } from '@react-google-maps/api';
 import './app.css';
 import { useState, useMemo, useCallback, useRef, useEffect } from 'react';
-import { GoogleMap, Marker, DirectionsRenderer, Circle, MarkerClusterer } from '@react-google-maps/api';
-import usePlacesAutocomplete, { getGeocode, getLatLng } from 'use-places-autocomplete';
+import {
+  GoogleMap,
+  Marker,
+  DirectionsRenderer,
+  Circle,
+  MarkerClusterer,
+} from '@react-google-maps/api';
+import usePlacesAutocomplete, {
+  getGeocode,
+  getLatLng,
+} from 'use-places-autocomplete';
+import Nav from "./nav";
 
-//Grab lat and lng from local storage
-const lattitude = localStorage.getItem('lat');
-const longitude = localStorage.getItem('lng');
 
 //Typescript variables
 type LatLngLiteral = google.maps.LatLngLiteral;
 type MapOptions = google.maps.MapOptions;
+// const String = "place";
 
 export default function App() {
   //This renders the search and greeting page of our web app
@@ -34,27 +42,35 @@ export default function App() {
     []
   );
   const [location, setLocation] = useState<LatLngLiteral>(); //Literal object containing Lat and Long
-  const [isInitialRender, setIsInitialRender] = useState(true);
-    // Similar to componentDidMount and componentDidUpdate:
-    useEffect(() => {
-      if (isInitialRender) {
-        setIsInitialRender(false);
-      const lat = Number(lattitude);
-      const lng = Number(longitude);
-      Number(lat);
-      Number(lng);
-      setLocation({ lat, lng });
-      }
-      // setLocation((l) => ({ lat, lng }));
-    }, [location, isInitialRender]);
+  const [place, setPlace] = useState<string | undefined>(); 
+
+  const updateLocation = useCallback(() => {
+    const val = localStorage.getItem('val');
+    console.log(val);
+    setPlace(typeof val === 'string' ? val : '');
+    //Grab lat and lng from local storage
+    const lattitude = localStorage.getItem('lat');
+    const longitude = localStorage.getItem('lng');
+    const lat = Number(lattitude);
+    const lng = Number(longitude);
+    Number(lat);
+    Number(lng);
+    setLocation({ lat, lng });
+  }, []);
+
+  useEffect(() => {
+    updateLocation();
+  }, [updateLocation]);
 
   if (!isLoaded) return <div>Loading...</div>;
   console.log(location);
   return (
     <>
+    <Nav/>
+    <h1>{place}</h1>
       <div>
-        <h2>Lattitude: {lattitude}</h2>
-        <h2>Longitude: {longitude}</h2>
+        {/* <h2>Lattitude: {lattitude}</h2>
+        <h2>Longitude: {longitude}</h2> */}
       </div>
       <div className="map">
         <GoogleMap
@@ -67,13 +83,11 @@ export default function App() {
           {/* If there is a location, then pass in the location, which is a latlngliteral, to place a marker on the location */}
           {location && (
             <>
-              <Marker
-                position={location}
-              />
+              <Marker position={location} />
             </>
           )}
         </GoogleMap>
       </div>
     </>
   );
-};
+}
