@@ -1,4 +1,5 @@
 import usePlacesAutocomplete, {
+  getDetails,
     getGeocode,
     getLatLng,
   } from "use-places-autocomplete";
@@ -24,8 +25,14 @@ import homeStyle from "./home.module.css";
       setValue, //change THIS everytime the user types a letter
       suggestions: { status, data }, //get suggestions from Google Places.  status = whether we recieved some suggestions ok or not; data = data of those suggestions themselves
       clearSuggestions, //whenever they've selected one, we can remove the list of suggestions from the screen
-    } = usePlacesAutocomplete();
-  
+    } = usePlacesAutocomplete( {
+          requestOptions: {
+            types: ['locality', 'administrative_area_level_2', 'postal_code'],
+            componentRestrictions:
+              {country: 'us'}
+          }
+        } );
+
     //Function we call when the user select the location
     //This function receives the value that the user selects as a string
     const handleSelect = async (val: string) => {
@@ -34,6 +41,13 @@ import homeStyle from "./home.module.css";
     //   localStorage.setItem("userLocation", JSON.stringify(val));
       console.log(val);
       const results = await getGeocode({ address: val });
+      console.log(results);
+      const elements = JSON.stringify(results);
+      const elementsJSON = JSON.parse(elements);
+
+      // console.log(elements.address_components[1].long_name);
+      // const details = await getDetails(Request, {results});
+
       const { lat, lng } = await getLatLng(results[0]);
       localStorage.setItem('val', JSON.stringify(val));
       localStorage.setItem('lat', JSON.stringify(+lat));
@@ -62,16 +76,17 @@ import homeStyle from "./home.module.css";
         //Box which allows a user to search through Google Places
         <>
         <div className = {homeStyle['container']}>
-        <div className = {homeStyle['searchbar']}>
+        <div className = {homeStyle['searchArea']}>
         {/* <Nav/> */}
-        <h1>Search Location</h1>
+        <h2>Search Location</h2>
+        {/* <div className = {homeStyle['comboBox']}> */}
       <Combobox onSelect={handleSelect}>
         {/* Search Location:  */}
         <ComboboxInput //text box the user types into
           value={value} //value the user has typed in
           onChange={(e) => setValue(e.target.value)} //any time a user changes the value, we have to listen to that event (onChange).  set value, target being the input itself and value being the value they typed into the text box
-          disabled={!ready} //disalble this if it isn't ready to be used
-          className="combobox-input"
+          disabled={!ready} //disable this if it isn't ready to be used
+          className={homeStyle['combobox-input']}
           placeholder="Search location address" //place holder for text box
         />
         <ComboboxPopover>
@@ -79,13 +94,14 @@ import homeStyle from "./home.module.css";
           <ComboboxList>
             {status === "OK" && //check if the status is ok.  Google telling us that we've been able to load the places correclty and you have some suggestions to work with
               data.map(({ place_id, description }) => ( //2 things that we want to extract: place_id = use as a key for all of the options we show in the list; description = description of the place itself
-                <ComboboxOption key={place_id} value={description} /> //pass in the key of the place id, and give it the value of the description
+                <ComboboxOption key={place_id} value={description}/> //pass in the key of the place id, and give it the value of the description
               ))}
           </ComboboxList>
         </ComboboxPopover>
       </Combobox>
       </div>
       </div>
+      {/* </div> */}
       </>
     );
   }
