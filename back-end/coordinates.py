@@ -1,11 +1,13 @@
 import requests, os
 import json
 from flask import Flask, jsonify, request
-
+from flask_cors import CORS
 
 def coordinates(config=None):
     app = Flask(__name__)
-
+    app.config.update(dict(DEBUG=True))
+    app.config.update(config or {})
+    CORS(app)
 
 #route for url to connect
     @app.route("/search", methods=['GET'])
@@ -13,7 +15,7 @@ def coordinates(config=None):
     def downloadData():
             # API request URL
             city = request.args.get("City")
-            URL = "https://geocode.maps.co/search?q="+str(city)
+            URL = "https://geocode.maps.co/search?q="+str(city).upper()
             print(URL)
             response = requests.get(URL)
             res = json.loads(response.text)
