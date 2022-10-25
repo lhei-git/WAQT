@@ -214,8 +214,7 @@ def create_app(config=None):
         return jsonify(WildfireResponse)
     @app.route("/active", methods=['GET'])
     def ActiveFires():
-        location = request.args.get("location").strip("+")
-        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/last24h_WildlandFire_Locations/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'&outFields=FireDiscoveryDateTime,IncidentName,POOCounty,IsCpxChild&outSR=4326&f=json"
+        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Current_WildlandFire_Perimeters/FeatureServer/0/query?where=1%3D1&outFields=irwin_DiscoveryAcres,irwin_InitialLongitude,irwin_POOCity,irwin_POOCounty,irwin_FireDiscoveryDateTime,irwin_IncidentName,irwin_InitialLatitude&outSR=4326&f=json"
         print(url)
         response_API = requests.get(url)
         output = json.loads(response_API.text)
