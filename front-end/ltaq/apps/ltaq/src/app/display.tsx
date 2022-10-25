@@ -13,6 +13,7 @@ import usePlacesAutocomplete, {
   getLatLng,
 } from 'use-places-autocomplete';
 import Nav from "./nav";
+import axios from "axios"
 
 
 //Typescript variables
@@ -46,6 +47,8 @@ export default function App() {
 
   const updateLocation = useCallback(() => {
     const val = localStorage.getItem('val');
+    const county = localStorage.getItem('county');
+    console.log(county);
     console.log(val);
     setPlace(typeof val === 'string' ? val : '');
     //Grab lat and lng from local storage
