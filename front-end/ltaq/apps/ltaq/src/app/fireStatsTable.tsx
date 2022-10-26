@@ -1,4 +1,3 @@
-// App.js
 import { useEffect, useState } from "react";
 import styles from "./app.module.css";
 import axios from "axios"
@@ -8,8 +7,8 @@ import axios from "axios"
 
 function FireStatsTable() {
   //TODO: get data from map
-  const county = 'Trinity'
-  const state = 'California'
+  const county = 'Oscoda'
+  const state = 'Michigan'
   const url = 'http://localhost:8001/wildfire/county?location='+county+'&state='+state
   const url2 = 'http://localhost:8001/wildfire/stateonly?location='+state
   console.log(url)
@@ -43,6 +42,30 @@ function FireStatsTable() {
             <th></th>
             <th>{county}</th>
             <th>{state}</th>
+          </tr>
+          <tr > 
+            {/* access json data using each key you need, this will be dynamically allocated */}
+            <td>Total Fires</td>
+            <td>{data[0].FireCount}</td>
+            <td>{stateData[0].FireCount}</td>
+          </tr>
+          <tr > 
+            {/* access json data using each key you need, this will be dynamically allocated */}
+            <td>Contained Fires</td>
+            <td>{data[0].Contained}</td>
+            <td>{stateData[0].Contained}</td>
+          </tr>
+          <tr > 
+            {/* access json data using each key you need, this will be dynamically allocated */}
+            <td>Controlled Fires</td>
+            <td>{data[0].UnderControl}</td>
+            <td>{stateData[0].UnderControl}</td>
+          </tr>
+          <tr > 
+            {/* access json data using each key you need, this will be dynamically allocated */}
+            <td>Total Acres</td>
+            <td>{data[0].TotalAcres}</td>
+            <td>{stateData[0].TotalAcres}</td>
           </tr>
           <tr > 
             {/* access json data using each key you need, this will be dynamically allocated */}
@@ -93,8 +116,6 @@ function FireStatsTable() {
   }
 
     
-  
-
   
 }
 
