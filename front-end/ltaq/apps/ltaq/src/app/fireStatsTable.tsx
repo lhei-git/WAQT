@@ -16,104 +16,64 @@ function FireStatsTable({county, state}: Props) {
   const [data, setData] = useState<any[]>([]);
   const [stateData, setStateData] = useState<any[]>([]);
   const [isLoading, setLoading] = useState(true);
+  let dataAvalable = false
+  useEffect(() => {
+    axios.get(url)
+      .then((response) => setData(response.data));
+    }, []);
 
   useEffect(() => {
-    axios.get(url).then(response => {
-      data.push(response.data);
-    });
-  }, []);
+    axios.get(url2)
+      .then((response) => setStateData(response.data));
+    }, []);
+  console.log(data)
+  console.log(stateData)
+  if (data && stateData) {
+    return (
+      <>
+      <div className={styles['row']}>
+        <div className={styles['column']}>
+          <table>
+              {/* access json data using each key you need, this will be dynamically allocated */}
+              <td><b>Fire Statistics</b></td>
+              {Object.keys(data).map((key) => {
+                return (
+                  <tr key={key}>
+                    <td>
+                      {key}: {data[key]}
+                    </td>
 
-  useEffect(() => {
-    axios.get(url2).then(response => {
-      stateData.push(response.data);
-      setLoading(false);
-    });
-  }, []);
-  
-  if (isLoading) {
-    return <div >Loading...</div>;
+                    <hr />
+                  </tr>
+                );
+              })}
+          </table>
+        </div>
+        <div className={styles['column']}>
+          <table>
+              {/* access json data using each key you need, this will be dynamically allocated */}
+              <td><b>{state} Fire Statistics</b></td>
+              {Object.keys(stateData).map((key) => {
+                return (
+                  <tr key={key}>
+                    <td>
+                      {key}: {stateData[key]}
+                    </td>
+
+                    <hr />
+                  </tr>
+                );
+              })}
+          </table>
+        </div>
+      </div>
+      </>
+    );
   }else{
     return (
-      
-      <div className={styles['row']}>
-      <div className={styles['column']}>
-        <table>
-          <tr>
-            {/* Headers */}
-            <th></th>
-            <th>{county}</th>
-            <th>{state}</th>
-          </tr>
-          <tr > 
-            {/* access json data using each key you need, this will be dynamically allocated */}
-            <td>Total Fires</td>
-            <td>{data[0].FireCount}</td>
-            <td>{stateData[0].FireCount}</td>
-          </tr>
-          <tr > 
-            {/* access json data using each key you need, this will be dynamically allocated */}
-            <td>Contained Fires</td>
-            <td>{data[0].Contained}</td>
-            <td>{stateData[0].Contained}</td>
-          </tr>
-          <tr > 
-            {/* access json data using each key you need, this will be dynamically allocated */}
-            <td>Controlled Fires</td>
-            <td>{data[0].UnderControl}</td>
-            <td>{stateData[0].UnderControl}</td>
-          </tr>
-          <tr > 
-            {/* access json data using each key you need, this will be dynamically allocated */}
-            <td>Total Acres</td>
-            <td>{data[0].TotalAcres}</td>
-            <td>{stateData[0].TotalAcres}</td>
-          </tr>
-          <tr > 
-            {/* access json data using each key you need, this will be dynamically allocated */}
-            <td>Most Recent Fire Name</td>
-            <td>{data[0].MostRecentFireName}</td>
-            <td>{stateData[0].MostRecentFireName}</td>
-          </tr>
-          <tr > 
-            {/* access json data using each key you need, this will be dynamically allocated */}
-            <td>Most Recent Fire Start Date</td>
-            <td>{data[0].MostRecentFireStart}</td>
-            <td>{stateData[0].MostRecentFireStart}</td>
-          </tr>
-          <tr > 
-            {/* access json data using each key you need, this will be dynamically allocated */}
-            <td>Most Recent Fire End Date</td>
-            <td>{data[0].MostRecentFireEnd}</td>
-            <td>{stateData[0].MostRecentFireEnd}</td>
-          </tr>
-          <tr > 
-            {/* access json data using each key you need, this will be dynamically allocated */}
-            <td>Longest Burning Fire Name</td>
-            <td>{data[0].LongestFireName}</td>
-            <td>{stateData[0].LongestFireName}</td>
-          </tr>
-          <tr > 
-            {/* access json data using each key you need, this will be dynamically allocated */}
-            <td>Longest Burning Fire Start Date</td>
-            <td>{data[0].LongestStartDate}</td>
-            <td>{stateData[0].LongestStartDate}</td>
-          </tr>
-          <tr > 
-            {/* access json data using each key you need, this will be dynamically allocated */}
-            <td>Longest Burning End Date</td>
-            <td>{data[0].LongestEndDate}</td>
-            <td>{stateData[0].LongestEndDate}</td>
-          </tr>
-          <tr > 
-            {/* access json data using each key you need, this will be dynamically allocated */}
-            <td>Average Fire Duration</td>
-            <td>{data[0].AverageDuration}</td>
-            <td>{stateData[0].AverageDuration}</td>
-          </tr>
-        </table>
-      </div>
-    </div>
-    );
+      <h3>Fire Data Not Available At This Time</h3>
+    )
+    
   }
 
     
