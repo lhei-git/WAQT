@@ -6,6 +6,25 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
+#divcontainer {
+  max-width:100%;
+  
+}
+#first {
+  width: 800px;
+  float: left;
+  padding-left: 200px;
+  padding-top: 50px;
+  
+}
+#second {
+  width: 800px;
+  float: right;
+  padding-right: 200px;
+  padding-top: 50px;
+  
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -33,13 +52,10 @@ a {
 
 .map-container {
   width: 100%;
-  height: 100vh;
+  height: 50vh;
 }
 
-.map {
-  width: 80%;
-  height: 100vh;
-}
+
 
 .highlight {
   font-size: 1.25rem;
@@ -48,4 +64,4 @@ a {
 
 
 
-body {background-color: darkgray;}
+body {background-color: white;}

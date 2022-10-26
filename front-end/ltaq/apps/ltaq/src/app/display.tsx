@@ -16,6 +16,7 @@ import Nav from "./nav";
 import axios from "axios"
 import CurrentAQI from './currentAQITable';
 import ActiveFiresTable from './activeFireTable';
+import FireStatsTable from './fireStatsTable';
 
 let lat: number;
 let lng: number;
@@ -58,10 +59,15 @@ export default function App() {
     if(splitVal){
       console.log(splitVal[1])
     }
+    if(val?.includes("County")){
+      console.log(splitVal[0].replace(" County", ""))
+      countyFormatted = splitVal[0].replace(" County", "")
+    }else{
+      const county = localStorage.getItem('county')?.slice(0, -7);
+      countyFormatted = county!.replace(/ /g,"+");
+      console.log(countyFormatted)
+    }
 
-    const county = localStorage.getItem('county')?.slice(0, -7);
-    countyFormatted = county!.replace(/ /g,"+");
-    console.log(countyFormatted)
     //Grab lat and lng from local storage
     const lattitude = localStorage.getItem('lat');
     const longitude = localStorage.getItem('lng');
@@ -81,35 +87,42 @@ export default function App() {
   return (
     <>
     <Nav/>
-    <h1>{place}</h1>
-      <div>
-        {/* <h2>Lattitude: {lattitude}</h2>
-        <h2>Longitude: {longitude}</h2> */}
-      </div>
-      <div className="map">
-        <GoogleMap
-          options={options} //Google Map render options
-          zoom={10} //Level of Zoom when user first loads the page
-          center={location}
-          mapContainerClassName="map-container" //Map CSS
-          //   onLoad={onLoad} //upon loading, call the onLoad function
-        >
-          {/* If there is a location, then pass in the location, which is a latlngliteral, to place a marker on the location */}
-          {location && (
-            <>
-              <Marker position={location} />
-            </>
-          )}
-        </GoogleMap>
-        <CurrentAQI 
-          lat={lat}
-          lng={lng}
-        />
-        <ActiveFiresTable 
-          county={countyFormatted? countyFormatted: "Wayne"}
-          state={splitVal? splitVal[1]: "MI"}
-        
-        />
+    
+      <div id='divcontainer'>
+        <div id='first'>
+          <CurrentAQI 
+            lat={lat}
+            lng={lng}
+          />
+          <br />
+          <FireStatsTable 
+            county={countyFormatted}
+            state={splitVal? splitVal[1]: "MI"}
+          />
+        </div>
+        <div id='second'>
+          <div >
+            <GoogleMap
+              options={options} //Google Map render options
+              zoom={10} //Level of Zoom when user first loads the page
+              center={location}
+              mapContainerClassName="map-container" //Map CSS
+              //   onLoad={onLoad} //upon loading, call the onLoad function
+            >
+              {/* If there is a location, then pass in the location, which is a latlngliteral, to place a marker on the location */}
+              {location && (
+                <>
+                  <Marker position={location} />
+                </>
+              )}
+            </GoogleMap>
+            <br />
+            <ActiveFiresTable 
+              county={countyFormatted}
+              state={splitVal? splitVal[1]: "MI"}
+            />
+            </div>
+        </div>
       </div>
     </>
   );

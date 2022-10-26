@@ -27,7 +27,8 @@ function CurrentAQI({lat, lng}: Props) {
   return (
     <span>
     <div className={styles["basicTable"]}>
-      <tbody>
+    <h3>Current Air Quality</h3>
+      <table>
         <tr>
           {/* Headers */}
           <th>Pollutant</th>
@@ -43,7 +44,7 @@ function CurrentAQI({lat, lng}: Props) {
           </tr>
         ))
         }
-      </tbody>
+      </table>
     </div>
     </span>
   );
