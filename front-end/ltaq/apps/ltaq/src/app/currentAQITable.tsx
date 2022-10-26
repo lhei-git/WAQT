@@ -5,15 +5,19 @@ import { useEffect, useState } from "react";
 import styles from "./app.module.css";
 import axios from "axios"
 
+interface Props {
+  lat: number;
+  lng: number;
+}
 //This returns a table from the wildfire API
 //returns Date, Name, Acres and Cause when available
-function CurrentAQI() {
-
+function CurrentAQI({lat, lng}: Props) {
+  if (lng < 0) {
+    lng = lng * -1;
+}
   //request to get data from your python file:
   const [data, setData] = useState<any[]>([]);
-  const lat = 36.6002;
-  const lon = 121.8947;
-  const url = "http://localhost:8000/aqi?lat="+lat+"&lon="+lon;
+  const url = "http://localhost:8000/aqi?lat="+lat+"&lon="+lng;
   console.log(url)
   useEffect(() => {
     axios.get(url)
