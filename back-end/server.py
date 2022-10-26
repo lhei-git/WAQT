@@ -6,9 +6,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 
 
-
-ActiveFireResponse = {}
-
+WildfireResponse = {}
 
 states = {
     "ALABAMA": "AL",
@@ -88,9 +86,9 @@ def getMostRecentFire(output):
     for i in range(len(output['features'])):
         if(mostRecent < output['features'][i]['attributes']['FireDiscoveryDateTime']):
             mostRecent = output['features'][i]['attributes']['FireDiscoveryDateTime']
-            marker = i
-            i = i + 1
-        else:
+        marker = i
+        i = i + 1
+    else:
             i = i + 1
     mostRecentStart = output['features'][marker]['attributes']['FireDiscoveryDateTime']
     mostRecentEnd = output['features'][marker]['attributes']['FireOutDateTime']
@@ -99,7 +97,8 @@ def getMostRecentFire(output):
     if(mostRecentEnd):
         WildfireResponse["MostRecentFireEnd"] = timeConverter(mostRecentEnd)
     else:
-        WildfireResponse["MostRecentFireEnd"] = "Not Available"
+        WildfireResponse["MostRecentFireEnd"] = "Active"
+
 def longestBurningFire(output):
      #longest burning fire
     marker = 0
@@ -189,20 +188,19 @@ def create_app(config=None):
             sum = 0 
             for i in range(len(output['features'])):
                 print(output['features'][i]['attributes']['DailyAcres'])
-            if(isinstance(output['features'][i]['attributes']['DailyAcres'], int)):
-                sum = sum + output['features'][i]['attributes']['DailyAcres']
-                i = i + 1
-            else: 
-                i = i + 1
-            WildfireResponse["TotalAcres"] = sum
+                if (isinstance(output['features'][i]['attributes']['DailyAcres'], int)):
+                    sum = sum + output['features'][i]['attributes']['DailyAcres']
+                    i = i + 1
+                else: 
+                    i = i + 1
+            WildfireResponse["TotalAcres"] = sum  
 
+        else:
             WildfireResponse["FiresAvailable"] = True
             print("fires available")
             getMostRecentFire(output)
             longestBurningFire(output)
             averageFireDuration(output)
-    
-        else:
 
             print("no fire history")
             WildfireResponse["FiresAvailable"] = False
@@ -217,11 +215,8 @@ def create_app(config=None):
             WildfireResponse["Contained"] = "No History"
             WildfireResponse["UnderControl"] = "No History"
             WildfireResponse["TotalAcres"] = "No History"
-            WildfireResponse["StartDate"] = "No History"
-            WildfireResponse["EndDate"] = "No History"
 
         return jsonify(WildfireResponse)
-
 
     @app.route("/wildfire/stateonly", methods=['GET'])
     def WildFireState():
@@ -245,19 +240,11 @@ def create_app(config=None):
         longestBurningFire(output)
         averageFireDuration(output)
         return jsonify(WildfireResponse)
-    @app.route("/active", methods=['GET'])
-    def ActiveFires():
-        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Current_WildlandFire_Perimeters/FeatureServer/0/query?where=1%3D1&outFields=irwin_DiscoveryAcres,irwin_InitialLongitude,irwin_POOCity,irwin_POOCounty,irwin_FireDiscoveryDateTime,irwin_IncidentName,irwin_InitialLatitude&outSR=4326&f=json"
-        print(url)
-        response_API = requests.get(url)
-        output = json.loads(response_API.text)
-        for i in range(len(output['features'])):
-            ActiveFireResponse[i] = output['features'][i]['attributes']
+
     return app
+
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8001))
     app = create_app()
     app.run(host="0.0.0.0", port=port)
-
-
