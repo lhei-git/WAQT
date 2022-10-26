@@ -246,11 +246,12 @@ def create_app(config=None):
     def ActiveFires():
         url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Current_WildlandFire_Perimeters/FeatureServer/0/query?where=1%3D1&outFields=irwin_DiscoveryAcres,irwin_InitialLongitude,irwin_POOCity,irwin_POOCounty,irwin_FireDiscoveryDateTime,irwin_IncidentName,irwin_InitialLatitude&outSR=4326&f=json"
         print(url)
+        AllActiveFires = {}
         response_API = requests.get(url)
         output = json.loads(response_API.text)
         for i in range(len(output['features'])):
-            ActiveFireResponse[i] = output['features'][i]['attributes']
-    
+            AllActiveFires[i] = output['features'][i]['attributes']
+        return(AllActiveFires)
     @app.route("/activecounty", methods=['GET'])
     def ActiveFiresForCounty():
         county = request.args.get("county").strip("+")
