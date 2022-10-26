@@ -5,63 +5,61 @@ import json
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 
-
-
 ActiveFireResponse = {}
+WildfireResponse = {}
 
-
-states = {
-    "ALABAMA": "AL",
-    "ALASKA": "AK",
-    "ARIZONA": "AZ",
-    "ARKANSAS": "AR",
-    "CALIFORNIA": "CA",
-    "COLORADO": "CO",
-    "CONNECTICUT": "CT",
-    "DELAWARE": "DE",
-    "FLORIDA": "FL",
-    "GEORGIA": "GA",
-    "HAWAII": "HI",
-    "IDAHO": "ID",
-    "ILLINOIS": "IL",
-    "INDIANA": "IN",
-    "IOWA": "IA",
-    "KANSAS": "KS",
-    "KENTUCKY": "KY",
-    "LOUISIANA": "LA",
-    "MAINE": "ME",
-    "MARYLAND": "MD",
-    "MASSACHUSETTS": "MA",
-    "MICHIGAN": "MI",
-    "MINNESOTA": "MN",
-    "MISSISSIPPI": "MS",
-    "MISSOURI": "MO",
-    "MONTANA": "MT",
-    "NEBRASKA": "NE",
-    "NEVADA": "NV",
-    "NEW HAMPSHIRE": "NH",
-    "NEW JERSEY": "NJ",
-    "NEW MEXICO": "NM",
-    "NEW YORK": "NY",
-    "NORTH CAROLINA": "NC",
-    "NORTH DAKOTA": "ND",
-    "OHIO": "OH",
-    "OKLAHOMA": "OK",
-    "OREGON": "OR",
-    "PENNSYLVANIA": "PA",
-    "RHODE ISLAND": "RI",
-    "SOUTH CAROLINA": "SC",
-    "SOUTH DAKOTA": "SD",
-    "TENNESSEE": "TN",
-    "TEXAS": "TX",
-    "UTAH": "UT",
-    "VERMONT": "VT",
-    "VIRGINIA": "VA",
-    "WASHINGTON": "WA",
-    "WEST VIRGINIA": "WV",
-    "WISCONSIN": "WI",
-    "WYOMING": "WY",
-}
+# states = {
+#     "ALABAMA": "AL",
+#     "ALASKA": "AK",
+#     "ARIZONA": "AZ",
+#     "ARKANSAS": "AR",
+#     "CALIFORNIA": "CA",
+#     "COLORADO": "CO",
+#     "CONNECTICUT": "CT",
+#     "DELAWARE": "DE",
+#     "FLORIDA": "FL",
+#     "GEORGIA": "GA",
+#     "HAWAII": "HI",
+#     "IDAHO": "ID",
+#     "ILLINOIS": "IL",
+#     "INDIANA": "IN",
+#     "IOWA": "IA",
+#     "KANSAS": "KS",
+#     "KENTUCKY": "KY",
+#     "LOUISIANA": "LA",
+#     "MAINE": "ME",
+#     "MARYLAND": "MD",
+#     "MASSACHUSETTS": "MA",
+#     "MICHIGAN": "MI",
+#     "MINNESOTA": "MN",
+#     "MISSISSIPPI": "MS",
+#     "MISSOURI": "MO",
+#     "MONTANA": "MT",
+#     "NEBRASKA": "NE",
+#     "NEVADA": "NV",
+#     "NEW HAMPSHIRE": "NH",
+#     "NEW JERSEY": "NJ",
+#     "NEW MEXICO": "NM",
+#     "NEW YORK": "NY",
+#     "NORTH CAROLINA": "NC",
+#     "NORTH DAKOTA": "ND",
+#     "OHIO": "OH",
+#     "OKLAHOMA": "OK",
+#     "OREGON": "OR",
+#     "PENNSYLVANIA": "PA",
+#     "RHODE ISLAND": "RI",
+#     "SOUTH CAROLINA": "SC",
+#     "SOUTH DAKOTA": "SD",
+#     "TENNESSEE": "TN",
+#     "TEXAS": "TX",
+#     "UTAH": "UT",
+#     "VERMONT": "VT",
+#     "VIRGINIA": "VA",
+#     "WASHINGTON": "WA",
+#     "WEST VIRGINIA": "WV",
+#     "WISCONSIN": "WI",
+#     "WYOMING": "WY",
+# }
 
 def timeConverter(timeToConvert):
     formatTime = str(timeToConvert)[:-3]
@@ -159,7 +157,7 @@ def create_app(config=None):
         location = request.args.get("location").strip("+")
         state = request.args.get("state").strip("+")
         #oldurl = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20%20(DailyAcres%20%3D%201%20OR%20DailyAcres%20%3D%202000)%20&outFields=DailyAcres,FireOutDateTime,FireDiscoveryDateTime,IncidentName&outSR=4326&f=json"
-        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+states.get(state.upper())+"'&outFields=FireDiscoveryDateTime,FireOutDateTime,CpxName,IsCpxChild,POOState,ControlDateTime,ContainmentDateTime,DailyAcres,DiscoveryAcres,IncidentName&outSR=4326&f=json"
+        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'&outFields=FireDiscoveryDateTime,FireOutDateTime,CpxName,IsCpxChild,POOState,ControlDateTime,ContainmentDateTime,DailyAcres,DiscoveryAcres,IncidentName&outSR=4326&f=json"
         print(url)
         response_API = requests.get(url)
         
@@ -253,8 +251,21 @@ def create_app(config=None):
         output = json.loads(response_API.text)
         for i in range(len(output['features'])):
             ActiveFireResponse[i] = output['features'][i]['attributes']
-    return app
+    
+    @app.route("/activecounty", methods=['GET'])
+    def ActiveFiresForCounty():
+        county = request.args.get("county").strip("+")
+        state = request.args.get("state").strip("+")
+        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Current_WildlandFire_Perimeters/FeatureServer/0/query?where=irwin_POOCounty%20%3D%20'"+county+"'%20AND%20irwin_POOState%20%3D%20'US-"+state+"'&outFields=poly_IncidentName,irwin_FireDiscoveryDateTime,irwin_POOCity,irwin_POOCounty,irwin_DailyAcres,irwin_IncidentName,irwin_InitialLatitude,irwin_InitialLongitude,irwin_POOState&outSR=4326&f=json"
+        response_API = requests.get(url)
+        output = json.loads(response_API.text)
+        for i in range(len(output['features'])):
+            fireStartDate = output['features'][i]['attributes']["irwin_FireDiscoveryDateTime"]
+            ActiveFireResponse["IncidientName"] = output['features'][i]['attributes']["irwin_IncidentName"]
+            ActiveFireResponse["DiscoveryDate"] = timeConverter(fireStartDate)
 
+        return jsonify(ActiveFireResponse)
+    return app
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8001))
     app = create_app()
