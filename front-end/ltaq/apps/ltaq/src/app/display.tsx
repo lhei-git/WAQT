@@ -14,7 +14,13 @@ import usePlacesAutocomplete, {
 } from 'use-places-autocomplete';
 import Nav from "./nav";
 import axios from "axios"
+import CurrentAQI from './currentAQITable';
+import ActiveFiresTable from './activeFireTable';
 
+let lat: number;
+let lng: number;
+let countyFormatted;
+let splitVal;
 
 //Typescript variables
 type LatLngLiteral = google.maps.LatLngLiteral;
@@ -47,15 +53,20 @@ export default function App() {
 
   const updateLocation = useCallback(() => {
     const val = localStorage.getItem('val');
-    const county = localStorage.getItem('county');
-    console.log(county);
-    console.log(val);
     setPlace(typeof val === 'string' ? val : '');
+    splitVal = val?.split(", ");
+    if(splitVal){
+      console.log(splitVal[1])
+    }
+
+    const county = localStorage.getItem('county')?.slice(0, -7);
+    countyFormatted = county!.replace(/ /g,"+");
+    console.log(countyFormatted)
     //Grab lat and lng from local storage
     const lattitude = localStorage.getItem('lat');
     const longitude = localStorage.getItem('lng');
-    const lat = Number(lattitude);
-    const lng = Number(longitude);
+    lat = Number(lattitude);
+    lng = Number(longitude);
     Number(lat);
     Number(lng);
     setLocation({ lat, lng });
@@ -90,6 +101,15 @@ export default function App() {
             </>
           )}
         </GoogleMap>
+        <CurrentAQI 
+          lat={lat}
+          lng={lng}
+        />
+        <ActiveFiresTable 
+          county={countyFormatted? countyFormatted: "Wayne"}
+          state={splitVal? splitVal[1]: "MI"}
+        
+        />
       </div>
     </>
   );

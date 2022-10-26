@@ -5,11 +5,14 @@ import axios from "axios"
 
 //This returns a table from the wildfire API
 //returns Date, Name, Acres and Cause when available
+interface Props {
+  county: string;
+  state: string;
+}
 
-function ActiveFiresTable() {
+function ActiveFiresTable({county, state}: Props) {
   //TODO: get data from map
-  const county = 'Perry'
-  const url = 'http://localhost:8001/active?location=Trinity'
+  const url = "http://localhost:8001/activecounty?county="+county+"&state="+state
   console.log(url)
   const [data, setData] = useState<any[]>([]);
   const [stateData, setStateData] = useState<any[]>([]);
@@ -34,12 +37,16 @@ function ActiveFiresTable() {
           <tr>
             {/* Headers */}
             <th>Fire Name</th>
-            <th>County</th>
+            <th>Start Date</th>
           </tr>
-          <tr>
-            <th>{data["0"][0].IncidentName}</th>
-            <th>{data["0"][0].POOCounty}</th>
+          {data.map((item, index) => (
+          <tr key={index}>
+            {/* access json data using each key you need, this will be dynamically allocated */}
+            <td>{item.IncidientName}</td>
+            <td>{item.DiscoveryDate}</td>
           </tr>
+        ))
+        }
         </table>
       </div>
     </div>
