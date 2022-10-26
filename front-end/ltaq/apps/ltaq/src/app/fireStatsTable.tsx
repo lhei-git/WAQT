@@ -4,11 +4,12 @@ import axios from "axios"
 
 //This returns a table from the wildfire API
 //returns Date, Name, Acres and Cause when available
-
-function FireStatsTable() {
+interface Props {
+  county: string;
+  state: string;
+}
+function FireStatsTable({county, state}: Props) {
   //TODO: get data from map
-  const county = 'Oscoda'
-  const state = 'Michigan'
   const url = 'http://localhost:8001/wildfire/county?location='+county+'&state='+state
   const url2 = 'http://localhost:8001/wildfire/stateonly?location='+state
   console.log(url)
