@@ -264,6 +264,9 @@ def create_app(config=None):
             ActiveFireResponse["IncidientName"] = output['features'][i]['attributes']["irwin_IncidentName"]
             ActiveFireResponse["DiscoveryDate"] = timeConverter(fireStartDate)
 
+            ActiveFireResponse["irwin_InitialLatitude"] = output['features'][i]['attributes']["irwin_InitialLatitude"]
+            ActiveFireResponse["irwin_InitialLongitude"] = output['features'][i]['attributes']["irwin_InitialLongitude"]
+
         return jsonify(ActiveFireResponse)
     return app
 if __name__ == "__main__":
