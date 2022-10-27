@@ -65,6 +65,7 @@ export default function Places() {
         {/* <PM25Graph />, */}
         {/* <Map /> */}
         <DISPLAY />
+        {/* <DISPLAY county={''} state={''} /> */}
       </div>,
       document.getElementById('root')
     );
