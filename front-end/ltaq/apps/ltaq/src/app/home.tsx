@@ -91,7 +91,7 @@ export default function Places() {
               onChange={(e) => setValue(e.target.value)} //any time a user changes the value, we have to listen to that event (onChange).  set value, target being the input itself and value being the value they typed into the text box
               disabled={!ready} //disable this if it isn't ready to be used
               className={homeStyle['combobox-input']}
-              placeholder="Search location address" //place holder for text box
+              placeholder="Search for a city or county in the USA" //place holder for text box
             />
             <ComboboxPopover>
               {/* list of suggestions */}
