@@ -17,7 +17,7 @@ function ActiveFiresTable({county, state}: Props) {
   const [data, setData] = useState<any[]>([]);
   const [stateData, setStateData] = useState<any[]>([]);
   const [isLoading, setLoading] = useState(true);
-
+  
   useEffect(() => {
     axios.get(url).then(response => {
       data.push(response.data);
@@ -28,9 +28,10 @@ function ActiveFiresTable({county, state}: Props) {
   
   if (isLoading) {
     return <div >Loading...</div>;
-  }else{
+  }else if(data){
     return (
-      
+      <>
+      <h3>Active Wildfires</h3>
       <div className={styles['row']}>
       <div className={styles['column']}>
         <table>
@@ -50,7 +51,13 @@ function ActiveFiresTable({county, state}: Props) {
         </table>
       </div>
     </div>
+    </>
     );
+  }else{
+    return (
+      <h3 color="red">No active wildfires in this location</h3>
+    )
+    
   }
   
 }
