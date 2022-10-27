@@ -131,7 +131,7 @@ export default function App() {
   return (
     <>
 
-    <Nav/>
+    <Nav />
       <div id='divcontainer'>
         <div id='first'>
           <h3 >{val}</h3>
@@ -153,35 +153,36 @@ export default function App() {
         <div id='second'>
           <div >
             <div className="map">
-        <GoogleMap
-          options={options} //Google Map render options
-          zoom={10} //Level of Zoom when user first loads the page
-          center={location}
-          mapContainerClassName="map-container" //Map CSS
-            // onLoad={onLoad} //upon loading, call the onLoad function
-        >
-          {/* If there is a location, then pass in the location, which is a latlngliteral, to place a marker on the location */}
-          {location && (
-            <>
-              <Marker position={location} />
-            </>
-          )}
-          {data.map((item, index) => (
-            <Marker
-              key={index}
-              position={{
-                lat: Number(item.irwin_InitialLatitude),
-                lng: Number(item.irwin_InitialLongitude) 
-              }}
-              icon="https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
-            />
-          ))}
-        </GoogleMap>
+            <GoogleMap
+              options={options} //Google Map render options
+              zoom={10} //Level of Zoom when user first loads the page
+              center={location}
+              mapContainerClassName="map-container" //Map CSS
+                // onLoad={onLoad} //upon loading, call the onLoad function
+            >
+              {/* If there is a location, then pass in the location, which is a latlngliteral, to place a marker on the location */}
+              {location && (
+                <>
+                  <Marker position={location} />
+                </>
+              )}
+              {data.map((item, index) => (
+                <Marker
+                  key={index}
+                  position={{
+                    lat: Number(item.irwin_InitialLatitude),
+                    lng: Number(item.irwin_InitialLongitude) 
+                  }}
+                  icon="https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
+                />
+              ))}
+            </GoogleMap>
             <br />
             <ActiveFiresTable 
               county={countyFormatted}
               state={splitVal? splitVal[1]: "MI"}
             />
+            </div>
             </div>
         </div>
 
