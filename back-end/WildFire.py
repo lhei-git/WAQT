@@ -233,6 +233,12 @@ def create_app(config=None):
     
         else:
             print("no fire history")
+            WildfireResponse["Current Number of Put Out Fires"] = "No History"
+            WildfireResponse["TotalAcres"] = "No History"
+            WildfireResponse["Average Time Until Fire is Out"] = "No History"
+            WildfireResponse["Most Recent Fire"] = "No History"
+            WildfireResponse["Longest Fire"] = "No History"
+
         return jsonify(WildfireResponse)
 
 
@@ -276,6 +282,9 @@ def create_app(config=None):
         url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Current_WildlandFire_Perimeters/FeatureServer/0/query?where=irwin_POOCounty%20%3D%20'"+county+"'%20AND%20irwin_POOState%20%3D%20'US-"+state+"'&outFields=poly_IncidentName,irwin_FireDiscoveryDateTime,irwin_POOCity,irwin_POOCounty,irwin_DailyAcres,irwin_IncidentName,irwin_InitialLatitude,irwin_InitialLongitude,irwin_POOState&outSR=4326&f=json"
         response_API = requests.get(url)
         output = json.loads(response_API.text)
+        if(len(output['features']) == 0):
+            ActiveFireResponse["IncidientName"] = "No Active Fires"
+            ActiveFireResponse["DiscoveryDate"] = "No Active Fires"
         for i in range(len(output['features'])):
             fireStartDate = output['features'][i]['attributes']["irwin_FireDiscoveryDateTime"]
             ActiveFireResponse["IncidientName"] = output['features'][i]['attributes']["irwin_IncidentName"]
@@ -317,7 +326,8 @@ def create_app(config=None):
         if(counts2015 != 0):
             format = convertSecondsToTime(avg2015/counts2015).split(":")
             WildfireAvgRes[2015] = int(format[0])
-
+        else:
+            WildfireAvgRes[2015] = -1
         #Avg 2016
         dateStart2016 = 1451624400
         dateEnd2016 = 1483160400
@@ -342,7 +352,8 @@ def create_app(config=None):
         if(counts2016 != 0):
             format = convertSecondsToTime(avg2016/counts2016).split(":")
             WildfireAvgRes[2016] = int(format[0])
-
+        else:
+            WildfireAvgRes[2016] = -1
 
         #Avg2017
         dateStart2017 = 1483246800
@@ -368,7 +379,8 @@ def create_app(config=None):
         if(counts2017 != 0):
             format = convertSecondsToTime(avg2017/counts2017).split(":")
             WildfireAvgRes[2017] = int(format[0])
-
+        else:
+            WildfireAvgRes[2017] = -1
     
     #Avg2018
 
@@ -395,7 +407,8 @@ def create_app(config=None):
         if(counts2018 != 0):
             format = convertSecondsToTime(avg2018/counts2018).split(":")
             WildfireAvgRes[2018] = int(format[0])
-
+        else:
+            WildfireAvgRes[2018] = -1
     
     #Avg2019
 
@@ -422,7 +435,8 @@ def create_app(config=None):
         if(counts2019 != 0):
             format = convertSecondsToTime(avg2019/counts2019).split(":")
             WildfireAvgRes[2019] = int(format[0])
-
+        else:
+            WildfireAvgRes[2019] = -1
     
     #Avg2020
 
@@ -449,7 +463,8 @@ def create_app(config=None):
         if(counts2020 != 0):
             format = convertSecondsToTime(avg2020/counts2020).split(":")
             WildfireAvgRes[2020] = int(format[0])
-
+        else:
+            WildfireAvgRes[2020] = -1
 
     #Avg2021
 
@@ -476,7 +491,8 @@ def create_app(config=None):
         if(counts2021 != 0):
             format = convertSecondsToTime(avg2021/counts2021).split(":")
             WildfireAvgRes[2021] = int(format[0])
-
+        else:
+            WildfireAvgRes[2021] = -1
 
     #Avg2022
 
@@ -503,6 +519,8 @@ def create_app(config=None):
         if(counts2022 != 0):
             format = convertSecondsToTime(avg2022/counts2022).split(":")
             WildfireAvgRes[2022] = int(format[0])
+        else:
+            WildfireAvgRes[2022] = -1
 
 
         print(WildfireAvgRes)
