@@ -7,47 +7,56 @@ Chart.register(...registerables);
 
 //returns a graph which displays Data
 //This data can be in a specific date range
+interface Props {
+  county: string;
+  state: string;
+}
 
-//TODO: Add coordinate support
-export default function AverageGraph() {
-  const bbox = '-83.553673,42.029418,-82.871707,42.451216';
-  const url ='http://localhost:8001/wildfire/average?location=Tulare&state=california';
+export default function AverageGraph({county, state}: Props) {
+  const url ="http://localhost:8001/wildfire/average?location="+county+"&state="+state;
   console.log(url);
   const [data, setData] = useState<any[]>([]);
 
   useEffect(() => {
     axios.get(url).then((response) => setData(response.data));
   }, []);
-  return (
-    <span>
-    <div className={styles["graph"]}>
-      <Line
-        data={{
-          labels: Object.keys(data),
-          datasets: [
-            {
-              label: 'Average Fire Duration',
-              backgroundColor: ["#3e95cd"],
-              data: Object.values(data),
-            },
-          ],
-        }}
-        options={{
-          responsive: true,
-          plugins: {
-            legend: {
-              display: true,
-              labels: {
-                color: 'rgb(255, 99, 132)',
+  if(data[2022] == -1 && data[2021] == -1 && data[2020] == -1 && data[2019] == -1) {
+    return (
+      <></>
+    )
+  }else {
+    return (
+      <span>
+      <div className={styles["graph"]}>
+        <Line
+          data={{
+            labels: Object.keys(data),
+            datasets: [
+              {
+                label: 'Average Fire Duration (Days)',
+                backgroundColor: ["#3e95cd"],
+                data: Object.values(data),
+              },
+            ],
+          }}
+          options={{
+            responsive: true,
+            plugins: {
+              legend: {
+                display: true,
+                labels: {
+                  color: 'rgb(255, 99, 132)',
+                },
+              },
+              title: {
+                display: true,
               },
             },
-            title: {
-              display: true,
-            },
-          },
-        }}
-      />
-    </div>
-    </span> 
-  );
+          }}
+        />
+      </div>
+      </span> 
+    );
+  }
+  
 }
