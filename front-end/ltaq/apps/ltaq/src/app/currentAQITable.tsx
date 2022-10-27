@@ -54,7 +54,7 @@ function CurrentAQI({lat, lng}: Props) {
       <br />
       <p><b>PM10: </b>Particulates with a diameter of 10 μm or less.</p>
       <br />
-      <p><b>Ozone: </b>Formed by the sun’s ultraviolet rays. Exposure can lead to skin cancer and similar complications.</p>
+      <p><b>O3 (Ozone): </b>Formed by the sun’s ultraviolet rays. Exposure can lead to skin cancer and similar complications.</p>
       <br />
     </div>
     </span>
