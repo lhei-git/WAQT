@@ -17,6 +17,7 @@ import axios from "axios"
 import CurrentAQI from './currentAQITable';
 import ActiveFiresTable from './activeFireTable';
 import FireStatsTable from './fireStatsTable';
+import AverageGraph from './AvgGraph';
 
 let lat: number;
 let lng: number;
@@ -97,6 +98,10 @@ export default function App() {
           />
           <br />
           <FireStatsTable 
+            county={countyFormatted}
+            state={splitVal? splitVal[1]: "MI"}
+          />
+          <AverageGraph 
             county={countyFormatted}
             state={splitVal? splitVal[1]: "MI"}
           />

@@ -7,11 +7,13 @@ Chart.register(...registerables);
 
 //returns a graph which displays Data
 //This data can be in a specific date range
+interface Props {
+  county: string;
+  state: string;
+}
 
-//TODO: Add coordinate support
-export default function AverageGraph() {
-  const bbox = '-83.553673,42.029418,-82.871707,42.451216';
-  const url ='http://localhost:8001/wildfire/average?location=Tulare&state=california';
+export default function AverageGraph({county, state}: Props) {
+  const url ="http://localhost:8001/wildfire/average?location="+county+"&state="+state;
   console.log(url);
   const [data, setData] = useState<any[]>([]);
 
@@ -26,7 +28,7 @@ export default function AverageGraph() {
           labels: Object.keys(data),
           datasets: [
             {
-              label: 'Average Fire Duration',
+              label: 'Average Fire Duration (Days)',
               backgroundColor: ["#3e95cd"],
               data: Object.values(data),
             },
