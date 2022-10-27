@@ -52,7 +52,7 @@ function FireStatsTable({county, state}: Props) {
         <div className={styles['column']}>
           <table>
               {/* access json data using each key you need, this will be dynamically allocated */}
-              <td><b>{state} Fire Statistics</b></td>
+              <td><b>State Fire Statistics</b></td>
               {Object.keys(stateData).map((key) => {
                 return (
                   <tr key={key}>
@@ -71,7 +71,7 @@ function FireStatsTable({county, state}: Props) {
     );
   }else{
     return (
-      <h3>Fire Data Not Available At This Time</h3>
+      <h3>Fire Data Not Available For This Location</h3>
     )
     
   }

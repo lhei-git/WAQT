@@ -38,7 +38,7 @@ function CurrentAQI({lat, lng}: Props) {
         {data.map((item, index) => (
           <tr key={index}>
             {/* access json data using each key you need, this will be dynamically allocated */}
-            <td>{item.ParameterName}</td>
+            <td >{item.ParameterName}</td>
             <td>{item.AQI}</td>
             <td>{item.Category.Name}</td>
           </tr>

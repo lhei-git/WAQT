@@ -22,7 +22,7 @@ let lat: number;
 let lng: number;
 let countyFormatted;
 let splitVal;
-
+let val;
 //Typescript variables
 type LatLngLiteral = google.maps.LatLngLiteral;
 type MapOptions = google.maps.MapOptions;
@@ -53,7 +53,7 @@ export default function App() {
   const [place, setPlace] = useState<string | undefined>(); 
 
   const updateLocation = useCallback(() => {
-    const val = localStorage.getItem('val');
+    val = localStorage.getItem('val');
     setPlace(typeof val === 'string' ? val : '');
     splitVal = val?.split(", ");
     if(splitVal){
@@ -87,9 +87,10 @@ export default function App() {
   return (
     <>
     <Nav/>
-    
       <div id='divcontainer'>
         <div id='first'>
+          <h3 >{val}</h3>
+          <br />
           <CurrentAQI 
             lat={lat}
             lng={lng}
