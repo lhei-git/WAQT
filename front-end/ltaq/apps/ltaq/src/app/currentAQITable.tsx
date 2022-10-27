@@ -27,7 +27,8 @@ function CurrentAQI({lat, lng}: Props) {
   return (
     <span>
     <div className={styles["basicTable"]}>
-      <tbody>
+    <h3>Current Air Quality</h3>
+      <table>
         <tr>
           {/* Headers */}
           <th>Pollutant</th>
@@ -37,13 +38,13 @@ function CurrentAQI({lat, lng}: Props) {
         {data.map((item, index) => (
           <tr key={index}>
             {/* access json data using each key you need, this will be dynamically allocated */}
-            <td>{item.ParameterName}</td>
+            <td >{item.ParameterName}</td>
             <td>{item.AQI}</td>
             <td>{item.Category.Name}</td>
           </tr>
         ))
         }
-      </tbody>
+      </table>
     </div>
     </span>
   );
