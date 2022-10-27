@@ -6,7 +6,9 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 
 
-WildfireResponse = {}
+
+ActiveFireResponse = {}
+
 
 states = {
     "ALABAMA": "AL",
@@ -97,8 +99,7 @@ def getMostRecentFire(output):
     if(mostRecentEnd):
         WildfireResponse["MostRecentFireEnd"] = timeConverter(mostRecentEnd)
     else:
-        WildfireResponse["MostRecentFireEnd"] = "Active"
-
+        WildfireResponse["MostRecentFireEnd"] = "Not Available"
 def longestBurningFire(output):
      #longest burning fire
     marker = 0
@@ -220,6 +221,7 @@ def create_app(config=None):
             WildfireResponse["EndDate"] = "No History"
 
         return jsonify(WildfireResponse)
+
 
     @app.route("/wildfire/stateonly", methods=['GET'])
     def WildFireState():

@@ -1,3 +1,5 @@
+#Example file for testing only 
+#Do not use in final product
 import requests, os
 # Do not push API_KEY to GitHub
 API_KEY = ""
