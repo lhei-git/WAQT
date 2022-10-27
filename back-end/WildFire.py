@@ -292,6 +292,9 @@ def create_app(config=None):
             ActiveFireResponse["irwin_InitialLatitude"] = output['features'][i]['attributes']["irwin_InitialLatitude"]
             ActiveFireResponse["irwin_InitialLongitude"] = output['features'][i]['attributes']["irwin_InitialLongitude"]
 
+            ActiveFireResponse["irwin_InitialLatitude"] = output['features'][i]['attributes']["irwin_InitialLatitude"]
+            ActiveFireResponse["irwin_InitialLongitude"] = output['features'][i]['attributes']["irwin_InitialLongitude"]
+
         return jsonify(ActiveFireResponse)
 
     #This is Ahmad's code!
