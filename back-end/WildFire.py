@@ -9,6 +9,7 @@ from flask_cors import CORS
 ActiveFireResponse = {}
 WildfireResponse = {}
 WildfireStateResponse = {}
+WildfireAvgRes = {}
 
 # states = {
 #     "ALABAMA": "AL",
@@ -109,7 +110,7 @@ def fireOutCount(output, countyOrState):
 def totalAcres(output, countyOrState):
     sum = 0 
     for i in range(len(output['features'])):
-        print(output['features'][i]['attributes']['DailyAcres'])
+        #print(output['features'][i]['attributes']['DailyAcres'])
         if(str(output['features'][i]['attributes']['DailyAcres']) != "None"):
             sum = sum + int(output['features'][i]['attributes']['DailyAcres'])
             i = i + 1
@@ -283,6 +284,230 @@ def create_app(config=None):
             ActiveFireResponse["irwin_InitialLongitude"] = output['features'][i]['attributes']["irwin_InitialLongitude"]
 
         return jsonify(ActiveFireResponse)
+
+    #This is Ahmad's code!
+    @app.route("/wildfire/average", methods=['GET'])
+    def averageGraphResponse():
+        location = request.args.get("location").strip("+")
+        state = request.args.get("state").strip("+")
+        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'&outFields=FireDiscoveryDateTime,FireOutDateTime,CpxName,IsCpxChild,POOState,ControlDateTime,ContainmentDateTime,DailyAcres,DiscoveryAcres,IncidentName&outSR=4326&f=json"
+        print(url)
+        response_API = requests.get(url)
+        output = json.loads(response_API.text)
+        dateStart2015 = 1420088400
+        dateEnd2015 = 1451538000
+        avg2015 = 0
+        counts2015 = 0
+        for j in range(len(output['features'])):
+            print(str(output['features'][j]['attributes']['FireOutDateTime']))
+            if (str(output['features'][j]['attributes']['FireOutDateTime'])!= "None"):
+                str(output['features'][j]['attributes']['FireOutDateTime'])
+                start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
+                end = str(output['features'][j]['attributes']['FireOutDateTime'])
+                if (int(end[:-3]) < dateEnd2015 and int(start[:-3]) > dateStart2015):
+                    avg2015 += int(end[:-3]) - int (start[:-3])
+                    counts2015 = j
+                    print("hello")
+                    j = j + 1
+                else:
+                    j = j + 1
+            else: 
+                j = j + 1
+
+        if(counts2015 != 0):
+            format = convertSecondsToTime(avg2015/counts2015).split(":")
+            WildfireAvgRes[2015] = int(format[0])
+
+        #Avg 2016
+        dateStart2016 = 1451624400
+        dateEnd2016 = 1483160400
+        avg2016 = 0
+        counts2016 = 0
+        for j in range(len(output['features'])):
+            print(str(output['features'][j]['attributes']['FireOutDateTime']))
+            if (str(output['features'][j]['attributes']['FireOutDateTime'])!= "None"):
+                str(output['features'][j]['attributes']['FireOutDateTime'])
+                start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
+                end = str(output['features'][j]['attributes']['FireOutDateTime'])
+                if (int(end[:-3]) < dateEnd2016 and int(start[:-3]) > dateStart2016):
+                    avg2016 += int(end[:-3]) - int (start[:-3])
+                    counts2016 = j
+                    print("hello")
+                    j = j + 1
+                else:
+                    j = j + 1
+            else: 
+                j = j + 1
+
+        if(counts2016 != 0):
+            format = convertSecondsToTime(avg2016/counts2016).split(":")
+            WildfireAvgRes[2016] = int(format[0])
+
+
+        #Avg2017
+        dateStart2017 = 1483246800
+        dateEnd2017 = 1514696400
+        avg2017 = 0
+        counts2017 = 0
+        for j in range(len(output['features'])):
+            print(str(output['features'][j]['attributes']['FireOutDateTime']))
+            if (str(output['features'][j]['attributes']['FireOutDateTime'])!= "None"):
+                str(output['features'][j]['attributes']['FireOutDateTime'])
+                start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
+                end = str(output['features'][j]['attributes']['FireOutDateTime'])
+                if (int(end[:-3]) < dateEnd2017 and int(start[:-3]) > dateStart2017):
+                    avg2017 += int(end[:-3]) - int (start[:-3])
+                    counts2017 = j
+                    print("hello")
+                    j = j + 1
+                else:
+                    j = j + 1
+            else: 
+                j = j + 1
+
+        if(counts2017 != 0):
+            format = convertSecondsToTime(avg2017/counts2017).split(":")
+            WildfireAvgRes[2017] = int(format[0])
+
+    
+    #Avg2018
+
+        dateStart2018 = 1514782800
+        dateEnd2018 = 1546232400
+        avg2018 = 0
+        counts2018 = 0
+        for j in range(len(output['features'])):
+            print(str(output['features'][j]['attributes']['FireOutDateTime']))
+            if (str(output['features'][j]['attributes']['FireOutDateTime'])!= "None"):
+                str(output['features'][j]['attributes']['FireOutDateTime'])
+                start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
+                end = str(output['features'][j]['attributes']['FireOutDateTime'])
+                if (int(end[:-3]) < dateEnd2018 and int(start[:-3]) > dateStart2018):
+                    avg2018 += int(end[:-3]) - int (start[:-3])
+                    counts2018 = j
+                    print("hello")
+                    j = j + 1
+                else:
+                    j = j + 1
+            else: 
+                j = j + 1
+
+        if(counts2018 != 0):
+            format = convertSecondsToTime(avg2018/counts2018).split(":")
+            WildfireAvgRes[2018] = int(format[0])
+
+    
+    #Avg2019
+
+        dateStart2019 = 1546318800
+        dateEnd2019 = 1577768400
+        avg2019 = 0
+        counts2019 = 0
+        for j in range(len(output['features'])):
+            print(str(output['features'][j]['attributes']['FireOutDateTime']))
+            if (str(output['features'][j]['attributes']['FireOutDateTime'])!= "None"):
+                str(output['features'][j]['attributes']['FireOutDateTime'])
+                start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
+                end = str(output['features'][j]['attributes']['FireOutDateTime'])
+                if (int(end[:-3]) < dateEnd2019 and int(start[:-3]) > dateStart2019):
+                    avg2019 += int(end[:-3]) - int (start[:-3])
+                    counts2019 = j
+                    print("hello")
+                    j = j + 1
+                else:
+                    j = j + 1
+            else: 
+                j = j + 1
+
+        if(counts2019 != 0):
+            format = convertSecondsToTime(avg2019/counts2019).split(":")
+            WildfireAvgRes[2019] = int(format[0])
+
+    
+    #Avg2020
+
+        dateStart2020 = 1577854800
+        dateEnd2020 = 1609390800
+        avg2020 = 0
+        counts2020 = 0
+        for j in range(len(output['features'])):
+            print(str(output['features'][j]['attributes']['FireOutDateTime']))
+            if (str(output['features'][j]['attributes']['FireOutDateTime'])!= "None"):
+                str(output['features'][j]['attributes']['FireOutDateTime'])
+                start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
+                end = str(output['features'][j]['attributes']['FireOutDateTime'])
+                if (int(end[:-3]) < dateEnd2020 and int(start[:-3]) > dateStart2020):
+                    avg2020 += int(end[:-3]) - int (start[:-3])
+                    counts2020 = j
+                    print("hello")
+                    j = j + 1
+                else:
+                    j = j + 1
+            else: 
+                j = j + 1
+
+        if(counts2020 != 0):
+            format = convertSecondsToTime(avg2020/counts2020).split(":")
+            WildfireAvgRes[2020] = int(format[0])
+
+
+    #Avg2021
+
+        dateStart2021 = 1609477200
+        dateEnd2021 = 1640926800
+        avg2021 = 0
+        counts2021 = 0
+        for j in range(len(output['features'])):
+            print(str(output['features'][j]['attributes']['FireOutDateTime']))
+            if (str(output['features'][j]['attributes']['FireOutDateTime'])!= "None"):
+                str(output['features'][j]['attributes']['FireOutDateTime'])
+                start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
+                end = str(output['features'][j]['attributes']['FireOutDateTime'])
+                if (int(end[:-3]) < dateEnd2021 and int(start[:-3]) > dateStart2021):
+                    avg2021 += int(end[:-3]) - int (start[:-3])
+                    counts2021 = j
+                    print("hello")
+                    j = j + 1
+                else:
+                    j = j + 1
+            else: 
+                j = j + 1
+
+        if(counts2021 != 0):
+            format = convertSecondsToTime(avg2021/counts2021).split(":")
+            WildfireAvgRes[2021] = int(format[0])
+
+
+    #Avg2022
+
+        dateStart2022 = 1641013200
+        dateEnd2022 = 1672462800
+        avg2022 = 0
+        counts2022 = 0
+        for j in range(len(output['features'])):
+            print(str(output['features'][j]['attributes']['FireOutDateTime']))
+            if (str(output['features'][j]['attributes']['FireOutDateTime'])!= "None"):
+                str(output['features'][j]['attributes']['FireOutDateTime'])
+                start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
+                end = str(output['features'][j]['attributes']['FireOutDateTime'])
+                if (int(end[:-3]) < dateEnd2022 and int(start[:-3]) > dateStart2022):
+                    avg2022 += int(end[:-3]) - int (start[:-3])
+                    counts2022 = j
+                    print("hello")
+                    j = j + 1
+                else:
+                    j = j + 1
+            else: 
+                j = j + 1
+
+        if(counts2022 != 0):
+            format = convertSecondsToTime(avg2022/counts2022).split(":")
+            WildfireAvgRes[2022] = int(format[0])
+
+
+        print(WildfireAvgRes)
+        return jsonify(WildfireAvgRes)
+
     return app
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8001))
