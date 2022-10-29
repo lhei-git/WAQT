@@ -1,9 +1,3 @@
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import styles from './app.module.css';
-import NxWelcome from './nx-welcome';
-import FireStatsTable from './fireStatsTable';
-=======
 import { useLoadScript } from '@react-google-maps/api';
 import './app.css';
 import HOME from './home';
@@ -31,11 +25,9 @@ const App = () => {
       break;
   }
 
-
   return (
-
     <>
-
+      AvgGraph
     </>
   );
 };
