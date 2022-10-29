@@ -110,16 +110,16 @@ def fireOutCount(output, countyOrState):
 def totalAcres(output, countyOrState):
     sum = 0 
     for i in range(len(output['features'])):
-        #print(output['features'][i]['attributes']['DailyAcres'])
-        if(str(output['features'][i]['attributes']['DailyAcres']) != "None"):
-            sum = sum + int(output['features'][i]['attributes']['DailyAcres'])
+        #print(output['features'][i]['attributes']['CalculatedAcres'])
+        if(str(output['features'][i]['attributes']['CalculatedAcres']) != "None"):
+            sum = sum + int(output['features'][i]['attributes']['CalculatedAcres'])
             i = i + 1
         else: 
             i = i + 1
     if(countyOrState == "county"):
-        WildfireResponse["TotalAcres"] = sum
+        WildfireResponse["Total Acres"] = sum
     elif(countyOrState == "state"):
-        WildfireStateResponse["TotalAcres"] = sum
+        WildfireStateResponse["Calculated Acres"] = sum
 
 def getMostRecentFire(output, countyOrState):
     #most recent fire row
