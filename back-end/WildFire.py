@@ -11,63 +11,12 @@ WildfireResponse = {}
 WildfireStateResponse = {}
 WildfireAvgRes = {}
 
-# states = {
-#     "ALABAMA": "AL",
-#     "ALASKA": "AK",
-#     "ARIZONA": "AZ",
-#     "ARKANSAS": "AR",
-#     "CALIFORNIA": "CA",
-#     "COLORADO": "CO",
-#     "CONNECTICUT": "CT",
-#     "DELAWARE": "DE",
-#     "FLORIDA": "FL",
-#     "GEORGIA": "GA",
-#     "HAWAII": "HI",
-#     "IDAHO": "ID",
-#     "ILLINOIS": "IL",
-#     "INDIANA": "IN",
-#     "IOWA": "IA",
-#     "KANSAS": "KS",
-#     "KENTUCKY": "KY",
-#     "LOUISIANA": "LA",
-#     "MAINE": "ME",
-#     "MARYLAND": "MD",
-#     "MASSACHUSETTS": "MA",
-#     "MICHIGAN": "MI",
-#     "MINNESOTA": "MN",
-#     "MISSISSIPPI": "MS",
-#     "MISSOURI": "MO",
-#     "MONTANA": "MT",
-#     "NEBRASKA": "NE",
-#     "NEVADA": "NV",
-#     "NEW HAMPSHIRE": "NH",
-#     "NEW JERSEY": "NJ",
-#     "NEW MEXICO": "NM",
-#     "NEW YORK": "NY",
-#     "NORTH CAROLINA": "NC",
-#     "NORTH DAKOTA": "ND",
-#     "OHIO": "OH",
-#     "OKLAHOMA": "OK",
-#     "OREGON": "OR",
-#     "PENNSYLVANIA": "PA",
-#     "RHODE ISLAND": "RI",
-#     "SOUTH CAROLINA": "SC",
-#     "SOUTH DAKOTA": "SD",
-#     "TENNESSEE": "TN",
-#     "TEXAS": "TX",
-#     "UTAH": "UT",
-#     "VERMONT": "VT",
-#     "VIRGINIA": "VA",
-#     "WASHINGTON": "WA",
-#     "WEST VIRGINIA": "WV",
-#     "WISCONSIN": "WI",
-#     "WYOMING": "WY",
-# }
-
+#Time converter for converting UNIX Time
 def timeConverter(timeToConvert):
     formatTime = str(timeToConvert)[:-3]
     return str(datetime.datetime.fromtimestamp(int(formatTime)))
 
+#Convert seconds to time
 def convertSecondsToTime(seconds):
     seconds = seconds % (24 * 3600)
     hour = seconds // 3600
@@ -77,51 +26,56 @@ def convertSecondsToTime(seconds):
      
     return "%d:%02d:%02d" % (hour, minutes, seconds)
 
+#check that fires exist for a specific location
 def fireCheck(output):
     if (len(output['features']) == 0):
         return False
     else:
         return True
 
-def fireControlCount(output, countyOrState):
-    count = 0
-    for i in range(len(output['features'])):
-        if(output['features'][i]['attributes']['ControlDateTime'] != "None" ):
-            count = count + 1
-    WildfireResponse["Current Number of Controlled Fires"] = count
+#Get the count of wildfires
+def getTotalFiresCounty(county, state):
+    countUrl = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+county+"'%20AND%20POOState%20%3D%20'US-"+state+"'&outFields=IncidentName,DailyAcres,ContainmentDateTime,FireDiscoveryDateTime&returnGeometry=false&returnCountOnly=true&outSR=4326&f=json"
+    count_response_API = requests.get(countUrl)    
+    countOutput = json.loads(count_response_API.text)
+    WildfireResponse["Total Fires"] = countOutput["count"]
 
-def fireContainedCount(output, countyOrState):
-    count = 0
-    for i in range(len(output['features'])):
-        if(output['features'][i]['attributes']['ContainmentDateTime'] != "None"):
-            count = count + 1
-    WildfireResponse["Current Number of Contained Fires"] = count
+def getTotalFiresState(state):
+    countUrl = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOState%20%3D%20'US-"+state+"'&outFields=IncidentName,DailyAcres,ContainmentDateTime,FireDiscoveryDateTime&returnGeometry=false&returnCountOnly=true&outSR=4326&f=json"
+    count_response_API = requests.get(countUrl)    
+    countOutput = json.loads(count_response_API.text)
+    WildfireResponse["Total Fires"] = countOutput["count"]
 
-def fireOutCount(output, countyOrState):
-    count = 0
-    for i in range(len(output['features'])):
-        if(output['features'][i]['attributes']['FireOutDateTime'] != "None"):
-            count = count + 1
-    if(countyOrState == "county"):
-        WildfireResponse["Current Number of Put Out Fires"] = count
-    elif(countyOrState == "state"):
-        WildfireStateResponse["Current Number of Put Out Fires"] = count
-
-def totalAcres(output, countyOrState):
+#get fires that are contained but not put out
+def getContainedFires(output, state):
     sum = 0 
     for i in range(len(output['features'])):
-        #print(output['features'][i]['attributes']['CalculatedAcres'])
-        if(str(output['features'][i]['attributes']['CalculatedAcres']) != "None"):
-            sum = sum + int(output['features'][i]['attributes']['CalculatedAcres'])
+        if(str(output['features'][i]['attributes']['ContainmentDateTime']) != "None" and str(output['features'][i]['attributes']['FireOutDateTime']) == "None"):
+            sum = sum + 1
             i = i + 1
         else: 
             i = i + 1
-    if(countyOrState == "county"):
-        WildfireResponse["Total Acres"] = sum
-    elif(countyOrState == "state"):
-        WildfireStateResponse["Calculated Acres"] = sum
+    if(state):
+        WildfireStateResponse["Current Number of Contained Fires"] = sum
+    else:
+        WildfireResponse["Current Number of Contained Fires"] = sum
 
-def getMostRecentFire(output, countyOrState):
+#get total acres burned
+def totalAcres(output, state):
+    sum = 0 
+    for i in range(len(output['features'])):
+        if(str(output['features'][i]['attributes']['DailyAcres']) != "None"):
+            sum = sum + int(output['features'][i]['attributes']['DailyAcres'])
+            i = i + 1
+        else: 
+            i = i + 1
+    if(state):
+        WildfireStateResponse["Total Acres Burned"] = sum
+    else:
+        WildfireResponse["Total Acres Burned"] = sum
+
+
+def getMostRecentFire(output, state):
     #most recent fire row
     marker = 0
     mostRecent = output['features'][0]['attributes']['FireDiscoveryDateTime']
@@ -133,12 +87,13 @@ def getMostRecentFire(output, countyOrState):
         else:
             i = i + 1
     mostRecentStart = timeConverter(output['features'][marker]['attributes']['FireDiscoveryDateTime']).split(" ")
-    if(countyOrState == "county"):
-        WildfireResponse["Most Recent Fire"] = output['features'][marker]['attributes']['IncidentName'] +" " + mostRecentStart[0]
-    elif(countyOrState == "state"):
+    if(state):
         WildfireStateResponse["Most Recent Fire"] = output['features'][marker]['attributes']['IncidentName'] +" " + mostRecentStart[0]
+    else:
+        WildfireResponse["Most Recent Fire"] = output['features'][marker]['attributes']['IncidentName'] +" " + mostRecentStart[0]
+    
 
-def longestBurningFire(output, countyOrState):
+def longestBurningFire(output, state):
      #longest burning fire
     marker = 0
     timeDifference = 0
@@ -161,30 +116,32 @@ def longestBurningFire(output, countyOrState):
      
     longestFireStart = timeConverter(output['features'][marker]['attributes']['FireDiscoveryDateTime']).split(" ")
     longestFireEnd = timeConverter(output['features'][marker]['attributes']['FireOutDateTime']).split(" ")
-    if(countyOrState == "county"):
-        WildfireResponse["Longest Fire"] = output['features'][marker]['attributes']['IncidentName'] + " " + longestFireStart[0] +" - " + longestFireEnd[0]
-    elif(countyOrState == "state"):
+    if(state):
         WildfireStateResponse["Longest Fire"] = output['features'][marker]['attributes']['IncidentName'] + " " + longestFireStart[0] +" - " + longestFireEnd[0]
+    else:
+        WildfireResponse["Longest Fire"] = output['features'][marker]['attributes']['IncidentName'] + " " + longestFireStart[0] +" - " + longestFireEnd[0]
 
-def averageFireDuration(output, countyOrState):       
+
+def averageFireDuration(output, state):       
      #Average Fire Duration
     avgDiff = 0
     amount = 0
     for j in range(len(output['features'])):
         start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-        end = str(output['features'][j]['attributes']['FireOutDateTime'])
+        end = str(output['features'][j]['attributes']['ContainmentDateTime'])
         if(start != "None" and end != "None"):
             avgDiff += (int(end[:-3]) - int(start[:-3]))
-            amount = j
+            amount = amount + 1
             j = j + 1
         else:
             j = j + 1
 
     formatted = convertSecondsToTime(avgDiff / amount).strip(":")
-    if(countyOrState == "county"):
-        WildfireResponse["Average Time Until Fire is Out"] = formatted[0] + " Day(s)"
-    elif(countyOrState == "state"):
-        WildfireStateResponse["Average Time Until Fire is Out"] = formatted[0] + " Day(s)"
+    if(state):
+        WildfireStateResponse["Average Time Until a Fire is Contained"] = formatted[0] + " Day(s)"
+    else:
+        WildfireResponse["Average Time Until a Fire is Contained"] = formatted[0] + " Day(s)"
+
 
 def create_app(config=None):
     app = Flask(__name__)
@@ -203,34 +160,27 @@ def create_app(config=None):
     def WildFireCounty():
         location = request.args.get("location").strip("+")
         state = request.args.get("state").strip("+")
-        #oldurl = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20%20(DailyAcres%20%3D%201%20OR%20DailyAcres%20%3D%202000)%20&outFields=DailyAcres,FireOutDateTime,FireDiscoveryDateTime,IncidentName&outSR=4326&f=json"
-        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'&outFields=FireDiscoveryDateTime,FireOutDateTime,CpxName,IsCpxChild,POOState,ControlDateTime,ContainmentDateTime,DailyAcres,DiscoveryAcres,IncidentName&outSR=4326&f=json"
+        #url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'&outFields=FireDiscoveryDateTime,FireOutDateTime,CpxName,IsCpxChild,POOState,ControlDateTime,ContainmentDateTime,DailyAcres,DiscoveryAcres,IncidentName&outSR=4326&f=json"
+        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND%20%20(DailyAcres >= 0.1)%20&outFields=IncidentName,DailyAcres,ContainmentDateTime,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
         print(url)
         response_API = requests.get(url)
         
         output = json.loads(response_API.text)
-        # count = len(output['features'])
-        # print(output['features'][0]['attributes']['FireDiscoveryDateTime'])
-        # print(output['features'][count-1]['attributes']['FireDiscoveryDateTime'])
-        
-        # WildfireResponse["FireCount"] = count 
-        # WildfireResponse["StartDate"] = (output['features'][0]['attributes']['FireDiscoveryDateTime'])
-        # WildfireResponse["EndDate"] = (output['features'][count-1]['attributes']['FireDiscoveryDateTime'])
-        #print(output['features'][0]['attributes']['FireDiscoveryDateTime'])
+
         if(fireCheck(output)):
             print("fires available")
             #total fires
-            fireOutCount(output, "county")
-            #total acres
-            totalAcres(output, "county")
-            #avg time to put out
-            averageFireDuration(output, "county")
+            getTotalFiresCounty(location, state)
+            #contained fires
+            getContainedFires(output, False)
+            #total acres burned
+            totalAcres(output, False)
             #most recent fire
-            getMostRecentFire(output, "county")
+            getMostRecentFire(output, False)
             #longest fire
-            longestBurningFire(output, "county")
-            
-    
+            longestBurningFire(output, False)
+            #average duration
+            averageFireDuration(output, False)
         else:
             print("no fire history")
             WildfireResponse["Current Number of Put Out Fires"] = "No History"
@@ -244,26 +194,26 @@ def create_app(config=None):
 
     @app.route("/wildfire/stateonly", methods=['GET'])
     def WildFireState():
-        location = request.args.get("location").strip("+")
-        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOState%20%3D%20'US-"+location+"'%20AND%20%20(DailyAcres%20%3D%201%20OR%20DailyAcres%20%3D%202000)%20&outFields=DailyAcres,FireOutDateTime,FireDiscoveryDateTime,IncidentName&outSR=4326&f=json"
+        state = request.args.get("location").strip("+")
+        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOState%20%3D%20'US-"+state+"'%20AND%20%20(DailyAcres >= 10)%20&outFields=IncidentName,DailyAcres,ContainmentDateTime,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
         print(url)
         response_API = requests.get(url)
         
         output = json.loads(response_API.text)
-        print("fires available")
-            #total fires
-        fireOutCount(output, "state")
-            #total acres
-        totalAcres(output, "state")
-            #avg time to put out
-        averageFireDuration(output, "state")
-            #most recent fire
-        getMostRecentFire(output, "state")
-            #longest fire
-        longestBurningFire(output, "state")
-        getMostRecentFire(output, "state")
-        longestBurningFire(output, "state")
-        averageFireDuration(output, "state")
+
+        #total fires
+        getTotalFiresState(state)
+        #contained fires
+        getContainedFires(output, True)
+        #total acres burned
+        totalAcres(output, True)
+        #most recent fire
+        getMostRecentFire(output, True)
+        #longest fire
+        longestBurningFire(output, True)
+        #average duration
+        averageFireDuration(output, True)
+
         return jsonify(WildfireStateResponse)
     @app.route("/active", methods=['GET'])
     def ActiveFires():
@@ -311,7 +261,7 @@ def create_app(config=None):
         avg2015 = 0
         counts2015 = 0
         for j in range(len(output['features'])):
-            print(str(output['features'][j]['attributes']['FireOutDateTime']))
+            #print(str(output['features'][j]['attributes']['FireOutDateTime']))
             if (str(output['features'][j]['attributes']['FireOutDateTime'])!= "None"):
                 str(output['features'][j]['attributes']['FireOutDateTime'])
                 start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
@@ -319,7 +269,7 @@ def create_app(config=None):
                 if (int(end[:-3]) < dateEnd2015 and int(start[:-3]) > dateStart2015):
                     avg2015 += int(end[:-3]) - int (start[:-3])
                     counts2015 = j
-                    print("hello")
+                    #print("hello")
                     j = j + 1
                 else:
                     j = j + 1
@@ -337,7 +287,7 @@ def create_app(config=None):
         avg2016 = 0
         counts2016 = 0
         for j in range(len(output['features'])):
-            print(str(output['features'][j]['attributes']['FireOutDateTime']))
+            #print(str(output['features'][j]['attributes']['FireOutDateTime']))
             if (str(output['features'][j]['attributes']['FireOutDateTime'])!= "None"):
                 str(output['features'][j]['attributes']['FireOutDateTime'])
                 start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
@@ -345,7 +295,7 @@ def create_app(config=None):
                 if (int(end[:-3]) < dateEnd2016 and int(start[:-3]) > dateStart2016):
                     avg2016 += int(end[:-3]) - int (start[:-3])
                     counts2016 = j
-                    print("hello")
+                    #print("hello")
                     j = j + 1
                 else:
                     j = j + 1
@@ -364,7 +314,7 @@ def create_app(config=None):
         avg2017 = 0
         counts2017 = 0
         for j in range(len(output['features'])):
-            print(str(output['features'][j]['attributes']['FireOutDateTime']))
+            #print(str(output['features'][j]['attributes']['FireOutDateTime']))
             if (str(output['features'][j]['attributes']['FireOutDateTime'])!= "None"):
                 str(output['features'][j]['attributes']['FireOutDateTime'])
                 start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
@@ -372,7 +322,7 @@ def create_app(config=None):
                 if (int(end[:-3]) < dateEnd2017 and int(start[:-3]) > dateStart2017):
                     avg2017 += int(end[:-3]) - int (start[:-3])
                     counts2017 = j
-                    print("hello")
+                    #print("hello")
                     j = j + 1
                 else:
                     j = j + 1
@@ -392,7 +342,7 @@ def create_app(config=None):
         avg2018 = 0
         counts2018 = 0
         for j in range(len(output['features'])):
-            print(str(output['features'][j]['attributes']['FireOutDateTime']))
+            #print(str(output['features'][j]['attributes']['FireOutDateTime']))
             if (str(output['features'][j]['attributes']['FireOutDateTime'])!= "None"):
                 str(output['features'][j]['attributes']['FireOutDateTime'])
                 start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
@@ -400,7 +350,7 @@ def create_app(config=None):
                 if (int(end[:-3]) < dateEnd2018 and int(start[:-3]) > dateStart2018):
                     avg2018 += int(end[:-3]) - int (start[:-3])
                     counts2018 = j
-                    print("hello")
+                    #print("hello")
                     j = j + 1
                 else:
                     j = j + 1
@@ -420,7 +370,7 @@ def create_app(config=None):
         avg2019 = 0
         counts2019 = 0
         for j in range(len(output['features'])):
-            print(str(output['features'][j]['attributes']['FireOutDateTime']))
+            #print(str(output['features'][j]['attributes']['FireOutDateTime']))
             if (str(output['features'][j]['attributes']['FireOutDateTime'])!= "None"):
                 str(output['features'][j]['attributes']['FireOutDateTime'])
                 start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
@@ -428,7 +378,7 @@ def create_app(config=None):
                 if (int(end[:-3]) < dateEnd2019 and int(start[:-3]) > dateStart2019):
                     avg2019 += int(end[:-3]) - int (start[:-3])
                     counts2019 = j
-                    print("hello")
+                    #print("hello")
                     j = j + 1
                 else:
                     j = j + 1
@@ -448,7 +398,7 @@ def create_app(config=None):
         avg2020 = 0
         counts2020 = 0
         for j in range(len(output['features'])):
-            print(str(output['features'][j]['attributes']['FireOutDateTime']))
+            #print(str(output['features'][j]['attributes']['FireOutDateTime']))
             if (str(output['features'][j]['attributes']['FireOutDateTime'])!= "None"):
                 str(output['features'][j]['attributes']['FireOutDateTime'])
                 start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
@@ -456,7 +406,7 @@ def create_app(config=None):
                 if (int(end[:-3]) < dateEnd2020 and int(start[:-3]) > dateStart2020):
                     avg2020 += int(end[:-3]) - int (start[:-3])
                     counts2020 = j
-                    print("hello")
+                    #print("hello")
                     j = j + 1
                 else:
                     j = j + 1
@@ -476,7 +426,7 @@ def create_app(config=None):
         avg2021 = 0
         counts2021 = 0
         for j in range(len(output['features'])):
-            print(str(output['features'][j]['attributes']['FireOutDateTime']))
+            #print(str(output['features'][j]['attributes']['FireOutDateTime']))
             if (str(output['features'][j]['attributes']['FireOutDateTime'])!= "None"):
                 str(output['features'][j]['attributes']['FireOutDateTime'])
                 start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
@@ -484,7 +434,7 @@ def create_app(config=None):
                 if (int(end[:-3]) < dateEnd2021 and int(start[:-3]) > dateStart2021):
                     avg2021 += int(end[:-3]) - int (start[:-3])
                     counts2021 = j
-                    print("hello")
+                    #print("hello")
                     j = j + 1
                 else:
                     j = j + 1
@@ -504,7 +454,7 @@ def create_app(config=None):
         avg2022 = 0
         counts2022 = 0
         for j in range(len(output['features'])):
-            print(str(output['features'][j]['attributes']['FireOutDateTime']))
+            #print(str(output['features'][j]['attributes']['FireOutDateTime']))
             if (str(output['features'][j]['attributes']['FireOutDateTime'])!= "None"):
                 str(output['features'][j]['attributes']['FireOutDateTime'])
                 start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
@@ -512,7 +462,7 @@ def create_app(config=None):
                 if (int(end[:-3]) < dateEnd2022 and int(start[:-3]) > dateStart2022):
                     avg2022 += int(end[:-3]) - int (start[:-3])
                     counts2022 = j
-                    print("hello")
+                    #print("hello")
                     j = j + 1
                 else:
                     j = j + 1
