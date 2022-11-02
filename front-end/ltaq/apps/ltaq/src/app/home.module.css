@@ -31,9 +31,18 @@
   height: 35px;
   /* border: 2px solid #610000; */
 }
-
-body, h1, h2, h3, h4, h5, h6 {
-    font-family: Arial, Helvetica, sans-serif;
+.textBackground {
+  font-family: Arial, Helvetica, sans-serif;
+  background: rgba(255, 255, 255, 0.4);
+  padding: 20px;
+  color: #CB6015;
+  text-align: center;
+  font-size: 26px;
+}
+.backBody {
+    background-image: url(heroImage.jpg);
+    background-size: cover; 
+    background-repeat: no-repeat;
   }
 
 /* .comboBox {
