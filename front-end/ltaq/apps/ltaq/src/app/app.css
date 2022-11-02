@@ -6,6 +6,9 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
+h2 {
+  text-align: center;
+}
 #divcontainer {
   max-width:100%;
   

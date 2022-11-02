@@ -11,53 +11,39 @@ interface Props {
 }
 //This returns a table from the wildfire API
 //returns Date, Name, Acres and Cause when available
-function CurrentAQI({lat, lng}: Props) {
+function CurrentAQI({ lat, lng }: Props) {
   if (lng < 0) {
     lng = lng * -1;
-}
+  }
 
   //request to get data from your python file:
   const [data, setData] = useState<any[]>([]);
-  const url = "http://localhost:8000/aqi?lat="+lat+"&lon="+lng;
+  const url = "http://localhost:8000/aqi?lat=" + lat + "&lon=" + lng;
   console.log(url)
   useEffect(() => {
     axios.get(url)
       .then((response) => setData(response.data));
-    }, []);
+  }, []);
   //render all data here:
   return (
-    <span>
-    <div className={styles["basicTable"]}>
-    <h3>Current Air Quality</h3>
-      <table>
-        <tr>
-          {/* Headers */}
-          <th>Pollutant</th>
-          <th>AQI</th>
-          <th>Level of Concern</th>
-        </tr>
-        {data.map((item, index) => (
-          <tr key={index} style={{
-            backgroundColor: (item.Category.Name == "Good") ? 'green' : 'yellow',
-            color: (item.Category.Name == "Good") ? 'white' : 'black',
+    <div>
+      {data.map((item, index) => (
+          <div className="w3-quarter">
+            <div className="w3-container " style={{
+            backgroundColor: (item.Category.Name == "Good") ? 'green' : (item.Category.Name == "Moderate" ? 'yellow': 'red'),
+            color: (item.Category.Name == "Good") ? 'white' : (item.Category.Name == "Moderate" ? 'black': 'white'),
            }}>
-            {/*a ? b : (c ? d : e) */}
-            <td >{item.ParameterName}</td>
-            <td >{item.AQI}</td>
-            <td >{item.Category.Name}</td>
-          </tr>
-        ))
-        }
-      </table>
-      <br />
-      <p><b>PM2.5: </b>Fine particulates with a diameter of 2.5 μm or less.</p>
-      <br />
-      <p><b>PM10: </b>Particulates with a diameter of 10 μm or less.</p>
-      <br />
-      <p><b>O3 (Ozone): </b>Formed by the sun’s ultraviolet rays. Exposure can lead to skin cancer and similar complications.</p>
-      <br />
+              <div className="w3-left"><h1>{item.ParameterName}</h1></div>
+              <div className="w3-center">
+                <h1>{item.AQI}</h1>
+              </div>
+              <div className="w3-clear"></div>
+              <h2>{item.Category.Name}</h2>
+            </div>
+          </div>
+      ))
+      }
     </div>
-    </span>
   );
 }
 
