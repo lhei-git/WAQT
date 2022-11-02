@@ -80,12 +80,12 @@ export default function App() {
     }
 
     splitVals = splitVal[1];
-    if(val?.includes("County")){
+    if (val?.includes("County")) {
       console.log(splitVal[0].replace(" County", ""))
       countyFormatted = splitVal[0].replace(" County", "")
-    }else{
+    } else {
       const county = localStorage.getItem('county')?.slice(0, -7);
-      countyFormatted = county!.replace(/ /g,"+");
+      countyFormatted = county!.replace(/ /g, "+");
       console.log(countyFormatted)
     }
 
@@ -99,7 +99,7 @@ export default function App() {
     Number(lng);
     setLocation({ lat, lng });
   }, []);
- 
+
   useEffect(() => {
     updateLocation();
   }, [updateLocation]);
@@ -116,9 +116,9 @@ export default function App() {
 
   useEffect(() => {
     axios.get(url).then((response) =>
-    data.push(response.data));
+      data.push(response.data));
     // setData(data);
-    console.log(data); 
+    console.log(data);
   }, []);
 
   //=================================================
@@ -131,61 +131,63 @@ export default function App() {
   return (
     <>
 
-    <Nav />
-      <div id='divcontainer'>
-        <div id='first'>
-          <h3 >{val}</h3>
-          <br />
-          <CurrentAQI 
-            lat={lat}
-            lng={lng}
-          />
-          <br />
-          <FireStatsTable 
-            county={countyFormatted}
-            state={splitVal? splitVal[1]: "MI"}
-          />
-          <AverageGraph 
-            county={countyFormatted}
-            state={splitVal? splitVal[1]: "MI"}
-          />
-        </div>
-        <div id='second'>
-          <div >
+      <Nav />
+      <h2 ><b><i className="fa fa-location-arrow"></i> {val}</b></h2>
+      <div className="w3-row-padding w3-margin-bottom">
+        <CurrentAQI
+          lat={lat}
+          lng={lng}
+        />
+      </div>
+      <div className="w3-panel">
+        <div className="w3-row-padding">
+          <div className="w3-twothird">
             <div className="map">
-            <GoogleMap
-              options={options} //Google Map render options
-              zoom={10} //Level of Zoom when user first loads the page
-              center={location}
-              mapContainerClassName="map-container" //Map CSS
-                // onLoad={onLoad} //upon loading, call the onLoad function
-            >
-              {/* If there is a location, then pass in the location, which is a latlngliteral, to place a marker on the location */}
-              {location && (
-                <>
-                  <Marker position={location} />
-                </>
-              )}
-              {data.map((item, index) => (
-                <Marker
-                  key={index}
-                  position={{
-                    lat: Number(item.irwin_InitialLatitude),
-                    lng: Number(item.irwin_InitialLongitude) 
-                  }}
-                  icon="https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
-                />
-              ))}
-            </GoogleMap>
-            <br />
-            <ActiveFiresTable 
+              <GoogleMap
+                options={options} //Google Map render options
+                zoom={10} //Level of Zoom when user first loads the page
+                center={location}
+                mapContainerClassName="map-container" //Map CSS
+              // onLoad={onLoad} //upon loading, call the onLoad function
+              >
+                {/* If there is a location, then pass in the location, which is a latlngliteral, to place a marker on the location */}
+                {location && (
+                  <>
+                    <Marker position={location} />
+                  </>
+                )}
+                {data.map((item, index) => (
+                  <Marker
+                    key={index}
+                    position={{
+                      lat: Number(item.irwin_InitialLatitude),
+                      lng: Number(item.irwin_InitialLongitude)
+                    }}
+                    icon="https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
+                  />
+                ))}
+              </GoogleMap>
+            </div>
+          </div>
+          <div className="w3-third">
+            <ActiveFiresTable
               county={countyFormatted}
-              state={splitVal? splitVal[1]: "MI"}
+              state={splitVal}
             />
-            </div>
-            </div>
+          </div>
         </div>
-
+      </div>
+      <div className="w3-container">
+        <FireStatsTable
+          county={countyFormatted}
+          state={"CA"}
+        />
+      </div>
+      <div className="w3-container">
+      <AverageGraph 
+            county={countyFormatted}
+            state={splitVal? splitVal[1]: "MI"}
+          />
       </div>
     </>
   );
