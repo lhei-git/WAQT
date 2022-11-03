@@ -172,7 +172,7 @@ export default function App() {
           <div className="w3-third">
             <ActiveFiresTable
               county={countyFormatted}
-              state={splitVal}
+              state={splitVals}
             />
           </div>
         </div>
@@ -180,13 +180,13 @@ export default function App() {
       <div className="w3-container">
         <FireStatsTable
           county={countyFormatted}
-          state={"CA"}
+          state={splitVals}
         />
       </div>
       <div className="w3-container">
       <AverageGraph 
             county={countyFormatted}
-            state={splitVal? splitVal[1]: "MI"}
+            state={splitVals}
           />
       </div>
     </>

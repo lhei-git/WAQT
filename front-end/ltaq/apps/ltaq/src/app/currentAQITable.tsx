@@ -28,8 +28,8 @@ function CurrentAQI({ lat, lng }: Props) {
   return (
     <div>
       {data.map((item, index) => (
-          <div className="w3-quarter">
-            <div className="w3-container " style={{
+          <div className="w3-quarter w3-margin-right	">
+            <div className="w3-container" style={{
             backgroundColor: (item.Category.Name == "Good") ? 'green' : (item.Category.Name == "Moderate" ? 'yellow': 'red'),
             color: (item.Category.Name == "Good") ? 'white' : (item.Category.Name == "Moderate" ? 'black': 'white'),
            }}>

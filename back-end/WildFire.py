@@ -44,7 +44,7 @@ def getTotalFiresState(state):
     countUrl = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOState%20%3D%20'US-"+state+"'&outFields=IncidentName,DailyAcres,ContainmentDateTime,FireDiscoveryDateTime&returnGeometry=false&returnCountOnly=true&outSR=4326&f=json"
     count_response_API = requests.get(countUrl)    
     countOutput = json.loads(count_response_API.text)
-    WildfireResponse["Total Fires"] = countOutput["count"]
+    WildfireStateResponse["Total Fires"] = countOutput["count"]
 
 #get fires that are contained but not put out
 def getContainedFires(output, state):
@@ -183,11 +183,12 @@ def create_app(config=None):
             averageFireDuration(output, False)
         else:
             print("no fire history")
-            WildfireResponse["Current Number of Put Out Fires"] = "No History"
-            WildfireResponse["TotalAcres"] = "No History"
-            WildfireResponse["Average Time Until Fire is Out"] = "No History"
+            WildfireResponse["Total Fires"] = "No History"
+            WildfireResponse["Current Number of Contained Fires"] = "No History"
+            WildfireResponse["Total Acres Burned"] = "No History"
             WildfireResponse["Most Recent Fire"] = "No History"
             WildfireResponse["Longest Fire"] = "No History"
+            WildfireResponse["Average Time Until a Fire is Contained"] = "No History"
 
         return jsonify(WildfireResponse)
 
