@@ -10,7 +10,10 @@ ActiveFireResponse = {}
 WildfireResponse = {}
 WildfireStateResponse = {}
 WildfireAvgRes = {}
-
+class ListOfActiveFires: 
+    def __init__(self, name, cpx): 
+        self.name = name 
+        self.cpx = cpx
 #Time converter for converting UNIX Time
 def timeConverter(timeToConvert):
     formatTime = str(timeToConvert)[:-3]
@@ -216,16 +219,30 @@ def create_app(config=None):
         averageFireDuration(output, True)
 
         return jsonify(WildfireStateResponse)
+        
     @app.route("/active", methods=['GET'])
     def ActiveFires():
-        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Current_WildlandFire_Perimeters/FeatureServer/0/query?where=1%3D1&outFields=irwin_DiscoveryAcres,irwin_InitialLongitude,irwin_POOCity,irwin_POOCounty,irwin_FireDiscoveryDateTime,irwin_IncidentName,irwin_InitialLatitude&outSR=4326&f=json"
-        print(url)
-        AllActiveFires = {}
+        county = request.args.get("county").strip("+")
+        state = request.args.get("state").strip("+")
+        currentActiveFires = []
+        activeDictionary = {}
+        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Current_WildlandFire_Locations/FeatureServer/0/query?where=POOCounty%20%3D%20'"+county+"'%20AND%20POOState%20%3D%20'US-"+state+"'&outFields=POOCounty,FireDiscoveryDateTime,IncidentName&returnGeometry=false&outSR=4326&f=json"
         response_API = requests.get(url)
         output = json.loads(response_API.text)
-        for i in range(len(output['features'])):
-            AllActiveFires[i] = output['features'][i]['attributes']
-        return(AllActiveFires)
+        if(len(output['features']) == 0):
+            activeDictionary["name"] = "No Active Fires"
+            activeDictionary["cpx"] = "No Active Fires"
+        else:
+            for i in range(len(output['features'])):
+                fireStart = timeConverter(output['features'][i]['attributes']["FireDiscoveryDateTime"]).split(" ")        
+                activeDictionary["name"] = output['features'][i]['attributes']["IncidentName"]
+                activeDictionary["date"] = fireStart[0]
+                currentActiveFires.append(activeDictionary)
+                activeDictionary = {} 
+            
+        
+        return json.dumps(currentActiveFires)
+
     @app.route("/activecounty", methods=['GET'])
     def ActiveFiresForCounty():
         county = request.args.get("county").strip("+")
