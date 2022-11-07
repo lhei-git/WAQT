@@ -39,11 +39,13 @@ function ActiveFiresTable({county, state}: Props) {
             {/* Headers */}
             <th>Fire Name</th>
             <th>Start Date</th>
+            <th>Fire Cause</th>
           </tr>
       {data.map((item, index) => (
           <tr key={index}>
             <td>{item.name}</td>
             <td>{item.date}</td>
+            <td>{item.cause}</td>
 
           </tr>
         ))

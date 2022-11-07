@@ -10,10 +10,7 @@ ActiveFireResponse = {}
 WildfireResponse = {}
 WildfireStateResponse = {}
 WildfireAvgRes = {}
-class ListOfActiveFires: 
-    def __init__(self, name, cpx): 
-        self.name = name 
-        self.cpx = cpx
+
 #Time converter for converting UNIX Time
 def timeConverter(timeToConvert):
     formatTime = str(timeToConvert)[:-3]
@@ -120,9 +117,9 @@ def longestBurningFire(output, state):
     longestFireStart = timeConverter(output['features'][marker]['attributes']['FireDiscoveryDateTime']).split(" ")
     longestFireEnd = timeConverter(output['features'][marker]['attributes']['FireOutDateTime']).split(" ")
     if(state):
-        WildfireStateResponse["Longest Fire"] = output['features'][marker]['attributes']['IncidentName'] + " " + longestFireStart[0] +" - " + longestFireEnd[0]
+        WildfireStateResponse["Longest Fire (Until Containment)"] = output['features'][marker]['attributes']['IncidentName'] + " " + longestFireStart[0] +" - " + longestFireEnd[0]
     else:
-        WildfireResponse["Longest Fire"] = output['features'][marker]['attributes']['IncidentName'] + " " + longestFireStart[0] +" - " + longestFireEnd[0]
+        WildfireResponse["Longest Fire (Until Containment)"] = output['features'][marker]['attributes']['IncidentName'] + " " + longestFireStart[0] +" - " + longestFireEnd[0]
 
 
 def averageFireDuration(output, state):       
@@ -226,7 +223,7 @@ def create_app(config=None):
         state = request.args.get("state").strip("+")
         currentActiveFires = []
         activeDictionary = {}
-        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Current_WildlandFire_Locations/FeatureServer/0/query?where=POOCounty%20%3D%20'"+county+"'%20AND%20POOState%20%3D%20'US-"+state+"'&outFields=POOCounty,FireDiscoveryDateTime,IncidentName&returnGeometry=false&outSR=4326&f=json"
+        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Current_WildlandFire_Locations/FeatureServer/0/query?where=POOCounty%20%3D%20'"+county+"'%20AND%20POOState%20%3D%20'US-"+state+"'&outFields=POOCounty,FireDiscoveryDateTime,FireCause,IncidentName&returnGeometry=false&outSR=4326&f=json"
         response_API = requests.get(url)
         output = json.loads(response_API.text)
         if(len(output['features']) == 0):
@@ -237,6 +234,7 @@ def create_app(config=None):
                 fireStart = timeConverter(output['features'][i]['attributes']["FireDiscoveryDateTime"]).split(" ")        
                 activeDictionary["name"] = output['features'][i]['attributes']["IncidentName"]
                 activeDictionary["date"] = fireStart[0]
+                activeDictionary["cause"] = output['features'][i]['attributes']["FireCause"]
                 currentActiveFires.append(activeDictionary)
                 activeDictionary = {} 
             
