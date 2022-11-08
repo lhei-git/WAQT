@@ -1,5 +1,7 @@
 # This connects to the AirNow API 
 # Documentation: https://docs.airnowapi.org/webservices
+from calendar import c
+import datetime
 from tracemalloc import start
 from flask import Flask, request, jsonify
 import requests
@@ -14,7 +16,7 @@ from operator import contains
 # API is in secrets
 # Do not push API_KEY to GitHub
 #Air Now
-API_KEY = "KEY_HERE"
+API_KEY = ""
 
 #AQS
 EMAIL = "" 
@@ -81,33 +83,65 @@ OzoneTrends = {}
 def extractTrendData(output, year):
     quarter = 1
     while quarter <= 4:
-        PM25Total = 0
-        PM10Total = 0
-        OzoneTotal = 0
+        PM25Total = 0.0
+        PM10Total = 0.0
+        OzoneTotal = 0.0
+        PM25Count = 0
+        PM10Count = 0
+        OzoneCount = 0
         for i in range(len(output['Data'])):
-            if contains(output['Data'][i]['parameter'], "PM2.5") and contains(output['Data'][i]['quarter'], "1"):
-                PM25Total = PM25Total + output['Data'][i]['arithmetic_mean']
+            if contains(output['Data'][i]['parameter'], "PM2.5") and contains(output['Data'][i]['quarter'], str(quarter)):
+                if(output['Data'][i]['arithmetic_mean']):
+                    #print(output['Data'][i]['arithmetic_mean'])
+                    PM25Total = PM25Total + output['Data'][i]['arithmetic_mean']
+                    PM25Count = PM25Count + 1
+                    i = i + 1
+                else:
+                    i = i + 1
             else:
                 i = i + 1
         for i in range(len(output['Data'])):
-            if contains(output['Data'][i]['parameter'], "PM10") and contains(output['Data'][i]['quarter'], "1"):
-                PM10Total = PM10Total + output['Data'][i]['arithmetic_mean']
+            if contains(output['Data'][i]['parameter'], "PM10") and contains(output['Data'][i]['quarter'], str(quarter)):
+                if(output['Data'][i]['arithmetic_mean']):
+                    #print(output['Data'][i]['arithmetic_mean'])
+                    PM10Total = PM10Total + output['Data'][i]['arithmetic_mean']
+                    PM10Count = PM10Count + 1
+                    i = i + 1
+                else:
+                    i = i + 1
             else:
                 i = i + 1
         for i in range(len(output['Data'])):
-            if contains(output['Data'][i]['parameter'], "Ozone") and contains(output['Data'][i]['quarter'], "1"):
-                OzoneTotal = OzoneTotal + output['Data'][i]['arithmetic_mean']
+            if contains(output['Data'][i]['parameter'], "Ozone") and contains(output['Data'][i]['quarter'], str(quarter)):
+                if(output['Data'][i]['arithmetic_mean']):
+                    #print(output['Data'][i]['arithmetic_mean'])
+                    OzoneTotal = OzoneTotal + output['Data'][i]['arithmetic_mean']
+                    OzoneCount = OzoneCount + 1
+                    i = i + 1
+                else:
+                    i = i + 1
             else:
-                i = i + 1  
-        PM25Trends["Q"+str(quarter)+str(year)] = PM25Total
-        PM10Trends["Q"+str(quarter)+str(year)] = PM10Total
-        OzoneTrends["Q"+str(quarter)+str(year)] = OzoneTotal
+                i = i + 1
+        if(PM25Count != 0):
+            PM25Trends["Q"+str(quarter)+str(year)] = PM25Total / PM25Count
+        else:
+            PM25Trends["Q"+str(quarter)+str(year)] = 0
+        if(PM10Count != 0):
+            PM10Trends["Q"+str(quarter)+str(year)] = PM10Total / PM10Count
+        else:
+            PM10Trends["Q"+str(quarter)+str(year)] = 0
+        if(OzoneCount != 0):
+            OzoneTrends["Q"+str(quarter)+str(year)] = OzoneTotal / OzoneCount
+        else:
+            OzoneTrends["Q"+str(quarter)+str(year)] = 0
+        
         quarter = quarter + 1
     
 
 #endpoint to access air now data: 
 def airNowEndpoint():
     app = Flask(__name__)
+    app.config.update(dict(DEBUG=True))
     CORS(app)
 
 
@@ -143,7 +177,7 @@ def airNowEndpoint():
     def getTrends():
         #https://aqs.epa.gov/aqsweb/documents/data_api.html#quarterly
         county = request.args.get("county")
-        state = request.args.get("state")
+        state = request.args.get("state") 
         with open('fips.csv', newline='') as f:
             reader = csv.reader(f)
             for row in reader:
@@ -158,17 +192,24 @@ def airNowEndpoint():
                     print(str(name[3]))
                     stateFips = str(name[3])
             f.close
-        url = "https://aqs.epa.gov/data/api/quarterlyData/byCounty?email="+EMAIL+"&key="+AQS_KEY+"&param=88101,44201,81102&bdate=20160101&edate=20161231&state="+stateFips+"&county="+countyFips
-        response_API = requests.get(url)
-        output = json.loads(response_API.text)
+    
 
-        AllTrends = {}
+        today = datetime.datetime.now()
+        endYear = today.year
+        year = 2015
+        while(endYear >= year):
+            url = "https://aqs.epa.gov/data/api/quarterlyData/byCounty?email="+EMAIL+"&key="+AQS_KEY+"&param=88101,44201,81102&bdate="+str(year)+"0101&edate="+str(year)+"1231&state="+stateFips+"&county="+countyFips
+            print(url)
+            response_API = requests.get(url)
+            output = json.loads(response_API.text)
 
-        getTrends(output, 2022)
+            AllTrends = {}
+            extractTrendData(output, year)
 
-        AllTrends[0] = PM25Trends
-        AllTrends[1] = PM10Trends
-        AllTrends[2] = OzoneTrends
+            AllTrends["PM25"] = PM25Trends
+            AllTrends["PM10"] = PM10Trends
+            AllTrends["Ozone"] = OzoneTrends
+            year = year + 1
 
         return jsonify(AllTrends)
 
