@@ -241,27 +241,23 @@ def create_app(config=None):
         
         return json.dumps(currentActiveFires)
 
-    @app.route("/activecounty", methods=['GET'])
-    def ActiveFiresForCounty():
+    @app.route("/mapmarkers", methods=['GET'])
+    def ActiveFiresForMap():
+        currentActiveFiresMap = []
+        activeDictionaryMap = {}
         county = request.args.get("county").strip("+")
         state = request.args.get("state").strip("+")
-        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Current_WildlandFire_Perimeters/FeatureServer/0/query?where=irwin_POOCounty%20%3D%20'"+county+"'%20AND%20irwin_POOState%20%3D%20'US-"+state+"'&outFields=poly_IncidentName,irwin_FireDiscoveryDateTime,irwin_POOCity,irwin_POOCounty,irwin_DailyAcres,irwin_IncidentName,irwin_InitialLatitude,irwin_InitialLongitude,irwin_POOState&outSR=4326&f=json"
+        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Current_WildlandFire_Locations/FeatureServer/0/query?where=POOCounty%20%3D%20'"+county+"'%20AND%20POOState%20%3D%20'US-"+state+"'&outFields=InitialLongitude,InitialLatitude&returnGeometry=false&outSR=4326&f=json"
+        print(url)
         response_API = requests.get(url)
         output = json.loads(response_API.text)
-        if(len(output['features']) == 0):
-            ActiveFireResponse["IncidientName"] = "No Active Fires"
-            ActiveFireResponse["DiscoveryDate"] = "No Active Fires"
         for i in range(len(output['features'])):
-            fireStartDate = output['features'][i]['attributes']["irwin_FireDiscoveryDateTime"]
-            ActiveFireResponse["IncidientName"] = output['features'][i]['attributes']["irwin_IncidentName"]
-            ActiveFireResponse["DiscoveryDate"] = timeConverter(fireStartDate)
-            ActiveFireResponse["irwin_InitialLatitude"] = output['features'][i]['attributes']["irwin_InitialLatitude"]
-            ActiveFireResponse["irwin_InitialLongitude"] = output['features'][i]['attributes']["irwin_InitialLongitude"]
+            activeDictionaryMap["irwin_InitialLatitude"] = output['features'][i]['attributes']["InitialLatitude"]
+            activeDictionaryMap["irwin_InitialLongitude"] = output['features'][i]['attributes']["InitialLongitude"]
+            currentActiveFiresMap.append(activeDictionaryMap)
+            activeDictionaryMap = {} 
 
-            ActiveFireResponse["irwin_InitialLatitude"] = output['features'][i]['attributes']["irwin_InitialLatitude"]
-            ActiveFireResponse["irwin_InitialLongitude"] = output['features'][i]['attributes']["irwin_InitialLongitude"]
-
-        return jsonify(ActiveFireResponse)
+        return json.dumps(currentActiveFiresMap)
 
     #This is Ahmad's code!
     @app.route("/wildfire/average", methods=['GET'])
