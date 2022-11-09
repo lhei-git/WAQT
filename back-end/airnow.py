@@ -9,7 +9,6 @@ from flask_cors import CORS
 import os
 import json
 from datetime import date
-from dateutil.relativedelta import relativedelta
 import csv
 from operator import contains
 
@@ -199,19 +198,17 @@ def airNowEndpoint():
         year = 2015
         while(endYear >= year):
             url = "https://aqs.epa.gov/data/api/quarterlyData/byCounty?email="+EMAIL+"&key="+AQS_KEY+"&param=88101,44201,81102&bdate="+str(year)+"0101&edate="+str(year)+"1231&state="+stateFips+"&county="+countyFips
-            print(url)
+            #print(url)
             response_API = requests.get(url)
             output = json.loads(response_API.text)
-
-            AllTrends = {}
-            extractTrendData(output, year)
-
-            AllTrends["PM25"] = PM25Trends
-            AllTrends["PM10"] = PM10Trends
-            AllTrends["Ozone"] = OzoneTrends
+            extractTrendData(output, year) 
             year = year + 1
-
-        return jsonify(AllTrends)
+        
+        AllTrends = {}
+        AllTrends["PM25"] = PM25Trends
+        AllTrends["PM10"] = PM10Trends
+        AllTrends["Ozone"] = OzoneTrends
+        return json.dumps(AllTrends)
 
     return app
 
