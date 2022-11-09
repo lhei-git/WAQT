@@ -82,7 +82,10 @@ export default function Places() {
       <div className={homeStyle['container']}>
         <div className={homeStyle['searchArea']}>
           {/* <Nav/> */}
-          <h2>Search Location</h2>
+          <h2>Wildfire Air Quality Tracker</h2>
+          <br />
+          <p>Search for a city or county within the United States to view any available current and historical wildfire and air quality information.</p>
+          <br />
           {/* <div className = {homeStyle['comboBox']}> */}
           <Combobox onSelect={handleSelect}>
             {/* Search Location:  */}
@@ -91,7 +94,7 @@ export default function Places() {
               onChange={(e) => setValue(e.target.value)} //any time a user changes the value, we have to listen to that event (onChange).  set value, target being the input itself and value being the value they typed into the text box
               disabled={!ready} //disable this if it isn't ready to be used
               className={homeStyle['combobox-input']}
-              placeholder="Search location address" //place holder for text box
+              placeholder="Search for a city or county in the USA" //place holder for text box
             />
             <ComboboxPopover>
               {/* list of suggestions */}
