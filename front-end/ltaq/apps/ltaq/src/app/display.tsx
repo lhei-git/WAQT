@@ -1,13 +1,22 @@
 import { useLoadScript } from '@react-google-maps/api';
 import './app.css';
-import { useState, useMemo, useCallback, useRef, useEffect, useLayoutEffect } from 'react';
+import {
+  useState,
+  useMemo,
+  useCallback,
+  useRef,
+  useEffect,
+  useLayoutEffect,
+  ComponentLifecycle,
+  Component
+} from 'react';
 import {
   GoogleMap,
   Marker,
   DirectionsRenderer,
   Circle,
   MarkerClusterer,
-  InfoWindow
+  InfoWindow,
 } from '@react-google-maps/api';
 import usePlacesAutocomplete, {
   GeocodeResult,
@@ -18,7 +27,8 @@ import Nav from './nav';
 import axios from 'axios';
 import CurrentAQI from './currentAQITable';
 import ActiveFiresTable from './activeFireTable';
-
+import fire from './Fire Icon.jpeg';
+import { AxiosResponse } from "axios";
 import fire from './Fire Icon.jpeg';
 import FireStatsTable from './fireStatsTable';
 import AverageGraph from './AvgGraph';
@@ -67,7 +77,7 @@ export default function App() {
   const [location, setLocation] = useState<LatLngLiteral>(); //Literal object containing Lat and Long
   const [place, setPlace] = useState<string | undefined>();
   const [data, setData] = useState<any[]>([]);
-
+    
   //================================================================================
   //================= Grab county, lat, and lng from local storage =================
   //================================================================================
@@ -99,7 +109,7 @@ export default function App() {
     Number(lng);
     setLocation({ lat, lng });
   }, []);
- 
+
   useEffect(() => {
     updateLocation();
   }, [updateLocation]);
@@ -113,12 +123,27 @@ export default function App() {
     '&state=' +
     splitVals;
   console.log(url);
-
+  
   useEffect(() => {
-    axios.get(url).then((response) =>
-    data.push(response.data));
+    axios.get(url).then((response) => data.push(response.data));
     // setData(data);
-    console.log(data); 
+    console.log(data);
+  }, []); 
+
+  const getData = async () => {
+    const response = await axios.get(url);
+    console.log(response);
+    return response;
+  };
+
+  const [markerData , setMarkerData] = useState<AxiosResponse | null>(null);
+
+  async function fetchMarkerData() {
+    const json = await getData();
+    setMarkerData(json);
+  }
+  useEffect(() => {
+    fetchMarkerData();
   }, []);
 
   //=================================================
@@ -130,7 +155,6 @@ export default function App() {
 
   return (
     <>
-
     <Nav />
       <div id='divcontainer'>
         <div id='first'>
@@ -153,29 +177,29 @@ export default function App() {
         <div id='second'>
           <div >
             <div className="map">
-            <GoogleMap
-              options={options} //Google Map render options
-              zoom={10} //Level of Zoom when user first loads the page
-              center={location}
-              mapContainerClassName="map-container" //Map CSS
-                // onLoad={onLoad} //upon loading, call the onLoad function
-            >
-              {/* If there is a location, then pass in the location, which is a latlngliteral, to place a marker on the location */}
-              {location && (
-                <>
-                  <Marker position={location} />
-                </>
-              )}
-              {data.map((item, index) => (
-                <Marker
-                  key={index}
-                  position={{
-                    lat: Number(item.irwin_InitialLatitude),
-                    lng: Number(item.irwin_InitialLongitude) 
-                  }}
-                  icon="https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
-                />
-              ))}
+           <div className="map">
+        <GoogleMap
+          options={options} //Google Map render options
+          zoom={10} //Level of Zoom when user first loads the page
+          center={location}
+          mapContainerClassName="map-container" //Map CSS
+          // onLoad={onLoad} //upon loading, call the onLoad function
+        >
+          {/* If there is a location, then pass in the location, which is a latlngliteral, to place a marker on the location */}
+          {location && (
+            <>
+              <Marker position={location} />
+            </>
+          )}
+          {data.map((item, index) => (
+            <Marker
+              key={index}
+              visible={true}
+              position={{
+                lat: Number(item.irwin_InitialLatitude),
+                lng: Number(item.irwin_InitialLongitude),
+              }}
+              icon="https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
             </GoogleMap>
             <br />
             <ActiveFiresTable 
