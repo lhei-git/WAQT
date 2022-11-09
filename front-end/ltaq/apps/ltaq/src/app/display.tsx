@@ -29,8 +29,9 @@ import CurrentAQI from './currentAQITable';
 import ActiveFiresTable from './activeFireTable';
 import fire from './Fire Icon.jpeg';
 import { AxiosResponse } from "axios";
-
-
+import fire from './Fire Icon.jpeg';
+import FireStatsTable from './fireStatsTable';
+import AverageGraph from './AvgGraph';
 //=================================================
 //=================== Variables ===================
 //=================================================
@@ -39,7 +40,9 @@ let lat: number;
 let lng: number;
 let countyFormatted;
 let splitVal;
+
 let splitVals;
+let val;
 
 //Typescript variables
 type LatLngLiteral = google.maps.LatLngLiteral;
@@ -79,17 +82,24 @@ export default function App() {
   //================= Grab county, lat, and lng from local storage =================
   //================================================================================
   const updateLocation = useCallback(() => {
-    const val = localStorage.getItem('val');
+    val = localStorage.getItem('val');
     setPlace(typeof val === 'string' ? val : '');
     splitVal = val?.split(', ');
     if (splitVal) {
       console.log(splitVal[1]);
     }
-    splitVals = splitVal[1];
 
-    const county = localStorage.getItem('county')?.slice(0, -7);
-    countyFormatted = county!.replace(/ /g, '+');
-    console.log(countyFormatted);
+    splitVals = splitVal[1];
+    if(val?.includes("County")){
+      console.log(splitVal[0].replace(" County", ""))
+      countyFormatted = splitVal[0].replace(" County", "")
+    }else{
+      const county = localStorage.getItem('county')?.slice(0, -7);
+      countyFormatted = county!.replace(/ /g,"+");
+      console.log(countyFormatted)
+    }
+
+
     //Grab lat and lng from local storage
     const lattitude = localStorage.getItem('lat');
     const longitude = localStorage.getItem('lng');
@@ -145,10 +155,29 @@ export default function App() {
 
   return (
     <>
-      <Nav />
-      <h1>{place}</h1>
-      <div></div>
-      <div className="map">
+    <Nav />
+      <div id='divcontainer'>
+        <div id='first'>
+          <h3 >{val}</h3>
+          <br />
+          <CurrentAQI 
+            lat={lat}
+            lng={lng}
+          />
+          <br />
+          <FireStatsTable 
+            county={countyFormatted}
+            state={splitVal? splitVal[1]: "MI"}
+          />
+          <AverageGraph 
+            county={countyFormatted}
+            state={splitVal? splitVal[1]: "MI"}
+          />
+        </div>
+        <div id='second'>
+          <div >
+            <div className="map">
+           <div className="map">
         <GoogleMap
           options={options} //Google Map render options
           zoom={10} //Level of Zoom when user first loads the page
@@ -171,14 +200,16 @@ export default function App() {
                 lng: Number(item.irwin_InitialLongitude),
               }}
               icon="https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
+            </GoogleMap>
+            <br />
+            <ActiveFiresTable 
+              county={countyFormatted}
+              state={splitVal? splitVal[1]: "MI"}
             />
-          ))}
-        </GoogleMap>
-        <CurrentAQI lat={lat} lng={lng} />
-        <ActiveFiresTable
-          county={countyFormatted ? countyFormatted : 'Wayne'}
-          state={splitVal ? splitVal[1] : 'MI'}
-        />
+            </div>
+            </div>
+        </div>
+
       </div>
     </>
   );

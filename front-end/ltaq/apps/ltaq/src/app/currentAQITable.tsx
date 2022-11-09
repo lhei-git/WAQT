@@ -15,6 +15,7 @@ function CurrentAQI({lat, lng}: Props) {
   if (lng < 0) {
     lng = lng * -1;
 }
+
   //request to get data from your python file:
   const [data, setData] = useState<any[]>([]);
   const url = "http://localhost:8000/aqi?lat="+lat+"&lon="+lng;
@@ -27,7 +28,8 @@ function CurrentAQI({lat, lng}: Props) {
   return (
     <span>
     <div className={styles["basicTable"]}>
-      <tbody>
+    <h3>Current Air Quality</h3>
+      <table>
         <tr>
           {/* Headers */}
           <th>Pollutant</th>
@@ -35,15 +37,25 @@ function CurrentAQI({lat, lng}: Props) {
           <th>Level of Concern</th>
         </tr>
         {data.map((item, index) => (
-          <tr key={index}>
-            {/* access json data using each key you need, this will be dynamically allocated */}
-            <td>{item.ParameterName}</td>
-            <td>{item.AQI}</td>
-            <td>{item.Category.Name}</td>
+          <tr key={index} style={{
+            backgroundColor: (item.Category.Name == "Good") ? 'green' : 'yellow',
+            color: (item.Category.Name == "Good") ? 'white' : 'black',
+           }}>
+            {/*a ? b : (c ? d : e) */}
+            <td >{item.ParameterName}</td>
+            <td >{item.AQI}</td>
+            <td >{item.Category.Name}</td>
           </tr>
         ))
         }
-      </tbody>
+      </table>
+      <br />
+      <p><b>PM2.5: </b>Fine particulates with a diameter of 2.5 μm or less.</p>
+      <br />
+      <p><b>PM10: </b>Particulates with a diameter of 10 μm or less.</p>
+      <br />
+      <p><b>O3 (Ozone): </b>Formed by the sun’s ultraviolet rays. Exposure can lead to skin cancer and similar complications.</p>
+      <br />
     </div>
     </span>
   );
