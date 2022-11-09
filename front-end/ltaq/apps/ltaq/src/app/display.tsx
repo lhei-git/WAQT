@@ -22,6 +22,7 @@ import ActiveFiresTable from './activeFireTable';
 import fire from './Fire Icon.jpeg';
 import FireStatsTable from './fireStatsTable';
 import AverageGraph from './AvgGraph';
+import { AxiosResponse } from "axios"
 //=================================================
 //=================== Variables ===================
 //=================================================
@@ -33,6 +34,8 @@ let splitVal;
 
 let splitVals;
 let val;
+
+let mapUrl;
 
 //Typescript variables
 type LatLngLiteral = google.maps.LatLngLiteral;
@@ -98,6 +101,12 @@ export default function App() {
     Number(lat);
     Number(lng);
     setLocation({ lat, lng });
+
+    mapUrl = 'http://localhost:8001/mapmarkers?county=' +
+      countyFormatted +
+      '&state=' +
+      splitVals;
+
   }, []);
 
   useEffect(() => {
@@ -107,18 +116,27 @@ export default function App() {
   //=================================================
   //============= Grab Active Wildfires =============
   //=================================================
-  const url =
-    'http://localhost:8001/activecounty?county=' +
-    countyFormatted +
-    '&state=' +
-    splitVals;
-  console.log(url);
 
   useEffect(() => {
-    axios.get(url).then((response) =>
-      data.push(response.data));
+    axios.get(mapUrl).then((response) => setData(response.data));
     // setData(data);
     console.log(data);
+  }, []);
+
+  const getData = async () => {
+    const response = await axios.get(mapUrl);
+    console.log(response);
+    return response;
+  };
+
+  const [markerData, setMarkerData] = useState<AxiosResponse | null>(null);
+
+  async function fetchMarkerData() {
+    const json = await getData();
+    setMarkerData(json);
+  }
+  useEffect(() => { 
+    fetchMarkerData();
   }, []);
 
   //=================================================
@@ -159,6 +177,7 @@ export default function App() {
                 {data.map((item, index) => (
                   <Marker
                     key={index}
+                    visible={true}
                     position={{
                       lat: Number(item.irwin_InitialLatitude),
                       lng: Number(item.irwin_InitialLongitude)
@@ -184,10 +203,10 @@ export default function App() {
         />
       </div>
       <div className="w3-container">
-      <AverageGraph 
-            county={countyFormatted}
-            state={splitVals}
-          />
+        <AverageGraph
+          county={countyFormatted}
+          state={splitVals}
+        />
       </div>
     </>
   );
