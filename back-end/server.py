@@ -2,7 +2,11 @@ import datetime
 from operator import contains
 import requests, os
 import json
+import pandas as pd
+from collections import OrderedDict
+import numpy as np
 
+from datetime import date
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 
@@ -11,8 +15,64 @@ WildfireResponse = {}
 WildfireStateResponse = {}
 WildfireAvgRes = {}
 WildfireTotalResponse = {}
+WildfireAcres = {}
+WildfireCount = {}
 
+def averageMonth(dateStart, dateEnd, month, year, output):
+    avg = 0
+    counts = 0
+    for j in range(len(output['features'])):
+            #print(str(output['features'][j]['attributes']['FireOutDateTime']))
+            if (str(output['features'][j]['attributes']['FireOutDateTime'])!= "None"):
+                str(output['features'][j]['attributes']['FireOutDateTime'])
+                start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
+                end = str(output['features'][j]['attributes']['FireOutDateTime'])
+                if (int(end[:-3]) < dateEnd and int(start[:-3]) > dateStart):
+                    avg += int(end[:-3]) - int (start[:-3])
+                    counts = j
+    if(counts != 0):
+            format = convertSecondsToTime(avg/counts).split(":")
+            WildfireAvgRes[month + " " + str(year)] = int(format[0])
+    else:
+            WildfireAvgRes[month + " " + str(year)] = -1
 
+def acresMonth(dateStart, dateEnd, month, year, output):
+    sum = 0
+    for j in range(len(output['features'])):
+        print(str(output['features'][j]['attributes']['DailyAcres']))
+        if (str(output['features'][j]['attributes']['DailyAcres'])!= "None"):
+            str(output['features'][j]['attributes']['DailyAcres'])
+            start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
+            end = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
+            if (int(end[:-3]) < dateEnd and int(start[:-3]) > dateStart):
+                sum = sum + int(output['features'][j]['attributes']['DailyAcres'])
+
+                j = j + 1
+            else:
+                j = j + 1
+        else: 
+            j = j + 1
+
+    WildfireAcres[month + " " + str(year)] = sum
+
+def countMonth(dateStart, dateEnd, month, year, output):
+    total = 0
+    for j in range(len(output['features'])):
+            #print(str(output['features'][j]['attributes']['FireDiscoveryDateTime']))
+            if (str(output['features'][j]['attributes']['FireDiscoveryDateTime'])!= "None"):
+                str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
+                start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
+                end = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
+                if (int(end[:-3]) < dateEnd and int(start[:-3]) > dateStart):
+                    total = total + 1
+                    #print("hello")
+                    j = j + 1
+                else:
+                    j = j + 1
+            else: 
+                j = j + 1
+
+    WildfireCount[month + " " + str(year)] = total
 
 #Time converter for converting UNIX Time
 def timeConverter(timeToConvert):
@@ -259,229 +319,36 @@ def create_app(config=None):
         print(url)
         response_API = requests.get(url)
         output = json.loads(response_API.text)
-        dateStart2015 = 1420088400
-        dateEnd2015 = 1451538000
-        avg2015 = 0
-        counts2015 = 0
-        for j in range(len(output['features'])):
-            #print(str(output['features'][j]['attributes']['FireOutDateTime']))
-            if (str(output['features'][j]['attributes']['FireOutDateTime'])!= "None"):
-                str(output['features'][j]['attributes']['FireOutDateTime'])
-                start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                end = str(output['features'][j]['attributes']['FireOutDateTime'])
-                if (int(end[:-3]) < dateEnd2015 and int(start[:-3]) > dateStart2015):
-                    avg2015 += int(end[:-3]) - int (start[:-3])
-                    counts2015 = j
-                    #print("hello")
-                    j = j + 1
-                else:
-                    j = j + 1
-            else: 
-                j = j + 1
-
-        if(counts2015 != 0):
-            format = convertSecondsToTime(avg2015/counts2015).split(":")
-            WildfireAvgRes[2015] = int(format[0])
-        else:
-            WildfireAvgRes[2015] = -1
-
-        #Avg 2016
-        dateStart2016 = 1451624400
-        dateEnd2016 = 1483160400
-        avg2016 = 0
-        counts2016 = 0
-        for j in range(len(output['features'])):
-            #print(str(output['features'][j]['attributes']['FireOutDateTime']))
-            if (str(output['features'][j]['attributes']['FireOutDateTime'])!= "None"):
-                str(output['features'][j]['attributes']['FireOutDateTime'])
-                start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                end = str(output['features'][j]['attributes']['FireOutDateTime'])
-                if (int(end[:-3]) < dateEnd2016 and int(start[:-3]) > dateStart2016):
-                    avg2016 += int(end[:-3]) - int (start[:-3])
-                    counts2016 = j
-                    #print("hello")
-                    j = j + 1
-                else:
-                    j = j + 1
-            else: 
-                j = j + 1
-
-        if(counts2016 != 0):
-            format = convertSecondsToTime(avg2016/counts2016).split(":")
-            WildfireAvgRes[2016] = int(format[0])
-        else:
-            WildfireAvgRes[2016] = -1
-
-        #Avg2017
-        dateStart2017 = 1483246800
-        dateEnd2017 = 1514696400
-        avg2017 = 0
-        counts2017 = 0
-        for j in range(len(output['features'])):
-            #print(str(output['features'][j]['attributes']['FireOutDateTime']))
-            if (str(output['features'][j]['attributes']['FireOutDateTime'])!= "None"):
-                str(output['features'][j]['attributes']['FireOutDateTime'])
-                start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                end = str(output['features'][j]['attributes']['FireOutDateTime'])
-                if (int(end[:-3]) < dateEnd2017 and int(start[:-3]) > dateStart2017):
-                    avg2017 += int(end[:-3]) - int (start[:-3])
-                    counts2017 = j
-                    #print("hello")
-                    j = j + 1
-                else:
-                    j = j + 1
-            else: 
-                j = j + 1
-
-        if(counts2017 != 0):
-            format = convertSecondsToTime(avg2017/counts2017).split(":")
-            WildfireAvgRes[2017] = int(format[0])
-        else:
-            WildfireAvgRes[2017] = -1
-    
-    #Avg2018
-
-        dateStart2018 = 1514782800
-        dateEnd2018 = 1546232400
-        avg2018 = 0
-        counts2018 = 0
-        for j in range(len(output['features'])):
-            #print(str(output['features'][j]['attributes']['FireOutDateTime']))
-            if (str(output['features'][j]['attributes']['FireOutDateTime'])!= "None"):
-                str(output['features'][j]['attributes']['FireOutDateTime'])
-                start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                end = str(output['features'][j]['attributes']['FireOutDateTime'])
-                if (int(end[:-3]) < dateEnd2018 and int(start[:-3]) > dateStart2018):
-                    avg2018 += int(end[:-3]) - int (start[:-3])
-                    counts2018 = j
-                    #print("hello")
-                    j = j + 1
-                else:
-                    j = j + 1
-            else: 
-                j = j + 1
-
-        if(counts2018 != 0):
-            format = convertSecondsToTime(avg2018/counts2018).split(":")
-            WildfireAvgRes[2018] = int(format[0])
-        else:
-            WildfireAvgRes[2018] = -1
-    
-    #Avg2019
-
-        dateStart2019 = 1546318800
-        dateEnd2019 = 1577768400
-        avg2019 = 0
-        counts2019 = 0
-        for j in range(len(output['features'])):
-            #print(str(output['features'][j]['attributes']['FireOutDateTime']))
-            if (str(output['features'][j]['attributes']['FireOutDateTime'])!= "None"):
-                str(output['features'][j]['attributes']['FireOutDateTime'])
-                start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                end = str(output['features'][j]['attributes']['FireOutDateTime'])
-                if (int(end[:-3]) < dateEnd2019 and int(start[:-3]) > dateStart2019):
-                    avg2019 += int(end[:-3]) - int (start[:-3])
-                    counts2019 = j
-                    #print("hello")
-                    j = j + 1
-                else:
-                    j = j + 1
-            else: 
-                j = j + 1
-
-        if(counts2019 != 0):
-            format = convertSecondsToTime(avg2019/counts2019).split(":")
-            WildfireAvgRes[2019] = int(format[0])
-        else:
-            WildfireAvgRes[2019] = -1
-    
-    #Avg2020
-
-        dateStart2020 = 1577854800
-        dateEnd2020 = 1609390800
-        avg2020 = 0
-        counts2020 = 0
-        for j in range(len(output['features'])):
-            #print(str(output['features'][j]['attributes']['FireOutDateTime']))
-            if (str(output['features'][j]['attributes']['FireOutDateTime'])!= "None"):
-                str(output['features'][j]['attributes']['FireOutDateTime'])
-                start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                end = str(output['features'][j]['attributes']['FireOutDateTime'])
-                if (int(end[:-3]) < dateEnd2020 and int(start[:-3]) > dateStart2020):
-                    avg2020 += int(end[:-3]) - int (start[:-3])
-                    counts2020 = j
-                    #print("hello")
-                    j = j + 1
-                else:
-                    j = j + 1
-            else: 
-                j = j + 1
-
-        if(counts2020 != 0):
-            format = convertSecondsToTime(avg2020/counts2020).split(":")
-            WildfireAvgRes[2020] = int(format[0])
-        else:
-            WildfireAvgRes[2020] = -1
-
-    #Avg2021
-
-        dateStart2021 = 1609477200
-        dateEnd2021 = 1640926800
-        avg2021 = 0
-        counts2021 = 0
-        for j in range(len(output['features'])):
-            #print(str(output['features'][j]['attributes']['FireOutDateTime']))
-            if (str(output['features'][j]['attributes']['FireOutDateTime'])!= "None"):
-                str(output['features'][j]['attributes']['FireOutDateTime'])
-                start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                end = str(output['features'][j]['attributes']['FireOutDateTime'])
-                if (int(end[:-3]) < dateEnd2021 and int(start[:-3]) > dateStart2021):
-                    avg2021 += int(end[:-3]) - int (start[:-3])
-                    counts2021 = j
-                    #print("hello")
-                    j = j + 1
-                else:
-                    j = j + 1
-            else: 
-                j = j + 1
-
-        if(counts2021 != 0):
-            format = convertSecondsToTime(avg2021/counts2021).split(":")
-            WildfireAvgRes[2021] = int(format[0])
-        else:
-            WildfireAvgRes[2021] = -1
-
-    #Avg2022
-
-        dateStart2022 = 1641013200
-        dateEnd2022 = 1672462800
-        avg2022 = 0
-        counts2022 = 0
-        for j in range(len(output['features'])):
-            #print(str(output['features'][j]['attributes']['FireOutDateTime']))
-            if (str(output['features'][j]['attributes']['FireOutDateTime'])!= "None"):
-                str(output['features'][j]['attributes']['FireOutDateTime'])
-                start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                end = str(output['features'][j]['attributes']['FireOutDateTime'])
-                if (int(end[:-3]) < dateEnd2022 and int(start[:-3]) > dateStart2022):
-                    avg2022 += int(end[:-3]) - int (start[:-3])
-                    counts2022 = j
-                    #print("hello")
-                    j = j + 1
-                else:
-                    j = j + 1
-            else: 
-                j = j + 1
-
-        if(counts2022 != 0):
-            format = convertSecondsToTime(avg2022/counts2022).split(":")
-            WildfireAvgRes[2022] = int(format[0])
-        else:
-            WildfireAvgRes[2022] = -1
-
+        dateStart = 1420088400 
+        MonthDict = { 
+        1 : "January",
+        2 : "February",
+        3 : "March",
+        4 : "April",
+        5 : "May",
+        6 : "June",
+        7 : "July",
+        8 : "August",
+        9 : "September",
+        10 : "October",
+        11 : "November",
+        12 : "December"
+        }
+        today = datetime.datetime.now()
+        endYear = today.year
+        month = 1
+        year = 2015
+        while (endYear >= year):
+            averageMonth(dateStart, dateStart + 2764800, MonthDict[month], year, output)
+            dateStart += 2764800
+            if(month == 12): 
+                month = 1 
+                year = year + 1
+            else:
+                month = month + 1
 
         print(WildfireAvgRes)
-        return jsonify(WildfireAvgRes)
+        return json.dumps(WildfireAvgRes)
 
 
     @app.route("/wildfire/acres", methods=['GET'])
@@ -492,182 +359,36 @@ def create_app(config=None):
         print(url)
         response_API = requests.get(url)
         output = json.loads(response_API.text)
-        dateStart2015 = 1420088400
-        dateEnd2015 = 1451538000
-        sum2015 = 0
-        for j in range(len(output['features'])):
-            print(str(output['features'][j]['attributes']['DailyAcres']))
-            if (str(output['features'][j]['attributes']['DailyAcres'])!= "None"):
-                str(output['features'][j]['attributes']['DailyAcres'])
-                start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                end = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                if (int(end[:-3]) < dateEnd2015 and int(start[:-3]) > dateStart2015):
-                    sum2015 = sum2015 + int(output['features'][j]['attributes']['DailyAcres'])
-
-                    j = j + 1
-                else:
-                    j = j + 1
-            else: 
-                j = j + 1
-
-        if(sum2015 != 0):
-            WildfireAvgRes[2015] = (sum2015)
-
-        #2016
-        dateStart2016 = 1451624400
-        dateEnd2016 = 1483160400
-        sum2016 = 0
-        for j in range(len(output['features'])):
-            print(str(output['features'][j]['attributes']['DailyAcres']))
-            if (str(output['features'][j]['attributes']['DailyAcres'])!= "None"):
-                str(output['features'][j]['attributes']['DailyAcres'])
-                start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                end = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                if (int(end[:-3]) < dateEnd2016 and int(start[:-3]) > dateStart2016):
-                    sum2016 = sum2016 + int(output['features'][j]['attributes']['DailyAcres'])
-
-                    j = j + 1
-                else:
-                    j = j + 1
-            else: 
-                j = j + 1
-
-        if(sum2016 != 0):
-            WildfireAvgRes[2016] = (sum2016)
-
-        #2017
-        dateStart2017 = 1483246800
-        dateEnd2017 = 1514696400
-        sum2017 = 0
-        for j in range(len(output['features'])):
-            print(str(output['features'][j]['attributes']['DailyAcres']))
-            if (str(output['features'][j]['attributes']['DailyAcres'])!= "None"):
-                str(output['features'][j]['attributes']['DailyAcres'])
-                start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                end = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                if (int(end[:-3]) < dateEnd2017 and int(start[:-3]) > dateStart2017):
-                    sum2017 = sum2017 + int(output['features'][j]['attributes']['DailyAcres'])
-
-                    j = j + 1
-                else:
-                    j = j + 1
-            else: 
-                j = j + 1
-
-        if(sum2017 != 0):
-            WildfireAvgRes[2017] = (sum2017)
-
-        #2018
-        dateStart2018 = 1514782800
-        dateEnd2018 = 1546232400
-        sum2018 = 0
-        for j in range(len(output['features'])):
-            print(str(output['features'][j]['attributes']['DailyAcres']))
-            if (str(output['features'][j]['attributes']['DailyAcres'])!= "None"):
-                str(output['features'][j]['attributes']['DailyAcres'])
-                start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                end = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                if (int(end[:-3]) < dateEnd2018 and int(start[:-3]) > dateStart2018):
-                    sum2018 = sum2018 + int(output['features'][j]['attributes']['DailyAcres'])
-
-                    j = j + 1
-                else:
-                    j = j + 1
-            else: 
-                j = j + 1
-
-        if(sum2018 != 0):
-            WildfireAvgRes[2018] = (sum2018)
-
-        #2019
-        dateStart2019 = 1546318800
-        dateEnd2019 = 1577768400
-        sum2019 = 0
-        for j in range(len(output['features'])):
-            print(str(output['features'][j]['attributes']['DailyAcres']))
-            if (str(output['features'][j]['attributes']['DailyAcres'])!= "None"):
-                str(output['features'][j]['attributes']['DailyAcres'])
-                start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                end = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                if (int(end[:-3]) < dateEnd2019 and int(start[:-3]) > dateStart2019):
-                    sum2019 = sum2019 + int(output['features'][j]['attributes']['DailyAcres'])
-
-                    j = j + 1
-                else:
-                    j = j + 1
-            else: 
-                j = j + 1
-
-        if(sum2019 != 0):
-            WildfireAvgRes[2019] = (sum2019)
-
-        #2020
-        dateStart2020 = 1577854800
-        dateEnd2020 = 1609390800
-        sum2020 = 0
-        for j in range(len(output['features'])):
-            print(str(output['features'][j]['attributes']['DailyAcres']))
-            if (str(output['features'][j]['attributes']['DailyAcres'])!= "None"):
-                str(output['features'][j]['attributes']['DailyAcres'])
-                start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                end = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                if (int(end[:-3]) < dateEnd2020 and int(start[:-3]) > dateStart2020):
-                    sum2020 = sum2020 + int(output['features'][j]['attributes']['DailyAcres'])
-
-                    j = j + 1
-                else:
-                    j = j + 1
-            else: 
-                j = j + 1
-
-        if(sum2020 != 0):
-            WildfireAvgRes[2020] = (sum2020)
-
-        #2021
-        dateStart2021 = 1609477200
-        dateEnd2021 = 1640926800
-        sum2021 = 0
-        for j in range(len(output['features'])):
-            print(str(output['features'][j]['attributes']['DailyAcres']))
-            if (str(output['features'][j]['attributes']['DailyAcres'])!= "None"):
-                str(output['features'][j]['attributes']['DailyAcres'])
-                start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                end = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                if (int(end[:-3]) < dateEnd2021 and int(start[:-3]) > dateStart2021):
-                    sum2021 = sum2021 + int(output['features'][j]['attributes']['DailyAcres'])
-
-                    j = j + 1
-                else:
-                    j = j + 1
-            else: 
-                j = j + 1
-
-        if(sum2021 != 0):
-            WildfireAvgRes[2021] = (sum2021)
-
-        #2022
-        dateStart2022 = 1641013200
-        dateEnd2022 = 1672462800
-        sum2022 = 0
-        for j in range(len(output['features'])):
-            print(str(output['features'][j]['attributes']['DailyAcres']))
-            if (str(output['features'][j]['attributes']['DailyAcres'])!= "None"):
-                str(output['features'][j]['attributes']['DailyAcres'])
-                start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                end = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                if (int(end[:-3]) < dateEnd2022 and int(start[:-3]) > dateStart2022):
-                    sum2022 = sum2022 + int(output['features'][j]['attributes']['DailyAcres'])
-
-                    j = j + 1
-                else:
-                    j = j + 1
-            else: 
-                j = j + 1
-
-        if(sum2022 != 0):
-            WildfireAvgRes[2022] = (sum2022)
-        return(WildfireAvgRes)
-
+        dateStart = 1420088400
+        MonthDict = { 
+        1 : "January",
+        2 : "February",
+        3 : "March",
+        4 : "April",
+        5 : "May",
+        6 : "June",
+        7 : "July",
+        8 : "August",
+        9 : "September",
+        10 : "October",
+        11 : "November",
+        12 : "December"
+        }
+        today = datetime.datetime.now()
+        endYear = today.year
+        month = 1
+        year = 2015
+        while (endYear >= year):
+            acresMonth(dateStart, dateStart + 2764800, MonthDict[month], year, output)
+            dateStart += 2764800
+            if(month == 12): 
+                month = 1 
+                year = year + 1
+            else:
+                month = month + 1
+    
+        print(WildfireAcres)
+        return json.dumps(WildfireAcres)
 
 
     #Number of fires graph
@@ -681,198 +402,71 @@ def create_app(config=None):
         response_API = requests.get(url)    
         output = json.loads(response_API.text)
         #WildfireTotalResponse["Total Fires"] = output["count"]
-        dateStart2015 = 1420088400
-        dateEnd2015 = 1451538000
-        total2015 = 0
-        for j in range(len(output['features'])):
-            #print(str(output['features'][j]['attributes']['FireDiscoveryDateTime']))
-            if (str(output['features'][j]['attributes']['FireDiscoveryDateTime'])!= "None"):
-                str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                end = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                if (int(end[:-3]) < dateEnd2015 and int(start[:-3]) > dateStart2015):
-                    total2015 = total2015 + 1
-                    #print("hello")
-                    j = j + 1
-                else:
-                    j = j + 1
-            else: 
-                j = j + 1
+        dateStart = 1420088400
+        MonthDict = { 
+        1 : "January",
+        2 : "February",
+        3 : "March",
+        4 : "April",
+        5 : "May",
+        6 : "June",
+        7 : "July",
+        8 : "August",
+        9 : "September",
+        10 : "October",
+        11 : "November",
+        12 : "December"
+        }
+        today = datetime.datetime.now()
+        endYear = today.year
+        month = 1
+        year = 2015
+        while (endYear >= year):
+            countMonth(dateStart, dateStart + 2764800, MonthDict[month], year, output)
+            dateStart += 2764800
+            if(month == 12): 
+                month = 1 
+                year = year + 1
+            else:
+                month = month + 1
+    
+        print(WildfireCount)
+        return json.dumps(WildfireCount)
+        
 
-        if(total2015 != 0):
-            WildfireTotalResponse[2015] = total2015
-        else:
-            WildfireTotalResponse[2015] = -1
+        
+    @app.route("/wildfire/top10", methods=['GET'])
+    def top10Acres():
+        location = request.args.get("location").strip("+")
+        state = request.args.get("state").strip("+")
+        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND%20%20(DailyAcres >= 0.1)%20&outFields=IncidentName,DailyAcres&returnGeometry=false&outSR=4326&f=json"
+        print(url)
+        response_API = requests.get(url)
+        output = json.loads(response_API.text)
+        top10List = []
+        top10 = {}
+        sum = 0 
+        copyDictionary = output['features'].copy()
+        for i in range(len(copyDictionary)):
+            if(copyDictionary[i]['attributes']['DailyAcres']):
+                top10[(copyDictionary[i]['attributes']['IncidentName'])] = copyDictionary[i]['attributes']['DailyAcres']
+                top10List.append(top10)
+                top10 = {}    
+        
 
-        #count2016
-        dateStart2016 = 1451624400
-        dateEnd2016 = 1483160400
-        total2016 = 0
-        for j in range(len(output['features'])):
-            #print(str(output['features'][j]['attributes']['FireDiscoveryDateTime']))
-            if (str(output['features'][j]['attributes']['FireDiscoveryDateTime'])!= "None"):
-                str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                end = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                if (int(end[:-3]) < dateEnd2016 and int(start[:-3]) > dateStart2016):
-                    total2016 = total2016 + 1
-                    #print("hello")
-                    j = j + 1
-                else:
-                    j = j + 1
-            else: 
-                j = j + 1
 
-        if(total2016 != 0):
-            WildfireTotalResponse[2016] = total2016
-        else:
-            WildfireTotalResponse[2016] = -1
+        #sorted_value_index = np.argsort(output['features'].values())
+        #dictionary_keys = list(output['features'].keys())
+        #sorted_dict = {dictionary_keys[i]: sorted(
+        #output['features'].values())[i] for i in range(len(dictionary_keys))}
+        
+        #print(sorted_dict)
 
-        #count2017
-        dateStart2017 = 1483246800
-        dateEnd2017 = 1514696400
-        total2017 = 0
-        for j in range(len(output['features'])):
-            #print(str(output['features'][j]['attributes']['FireDiscoveryDateTime']))
-            if (str(output['features'][j]['attributes']['FireDiscoveryDateTime'])!= "None"):
-                str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                end = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                if (int(end[:-3]) < dateEnd2017 and int(start[:-3]) > dateStart2017):
-                    total2017 = total2017 + 1
-                    #print("hello")
-                    j = j + 1
-                else:
-                    j = j + 1
-            else: 
-                j = j + 1
-
-        if(total2017 != 0):
-            WildfireTotalResponse[2017] = total2017
-        else:
-            WildfireTotalResponse[2017] = -1
-
-        #count2018
-        dateStart2018 = 1514782800
-        dateEnd2018 = 1546232400
-        total2018 = 0
-        for j in range(len(output['features'])):
-            #print(str(output['features'][j]['attributes']['FireDiscoveryDateTime']))
-            if (str(output['features'][j]['attributes']['FireDiscoveryDateTime'])!= "None"):
-                str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                end = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                if (int(end[:-3]) < dateEnd2018 and int(start[:-3]) > dateStart2018):
-                    total2018 = total2018 + 1
-                    #print("hello")
-                    j = j + 1
-                else:
-                    j = j + 1
-            else: 
-                j = j + 1
-
-        if(total2018 != 0):
-            WildfireTotalResponse[2018] = total2018
-        else:
-            WildfireTotalResponse[2018] = -1
-
-        #count2019
-        dateStart2019 = 1546318800
-        dateEnd2019 = 1577768400
-        total2019 = 0
-        for j in range(len(output['features'])):
-            #print(str(output['features'][j]['attributes']['FireDiscoveryDateTime']))
-            if (str(output['features'][j]['attributes']['FireDiscoveryDateTime'])!= "None"):
-                str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                end = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                if (int(end[:-3]) < dateEnd2019 and int(start[:-3]) > dateStart2019):
-                    total2019 = total2019 + 1
-                    #print("hello")
-                    j = j + 1
-                else:
-                    j = j + 1
-            else: 
-                j = j + 1
-
-        if(total2019 != 0):
-            WildfireTotalResponse[2019] = total2019
-        else:
-            WildfireTotalResponse[2019] = -1
-
-        #count2020
-        dateStart2020 = 1577854800
-        dateEnd2020 = 1609390800
-        total2020 = 0
-        for j in range(len(output['features'])):
-            #print(str(output['features'][j]['attributes']['FireDiscoveryDateTime']))
-            if (str(output['features'][j]['attributes']['FireDiscoveryDateTime'])!= "None"):
-                str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                end = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                if (int(end[:-3]) < dateEnd2020 and int(start[:-3]) > dateStart2020):
-                    total2020 = total2020 + 1
-                    #print("hello")
-                    j = j + 1
-                else:
-                    j = j + 1
-            else: 
-                j = j + 1
-
-        if(total2020 != 0):
-            WildfireTotalResponse[2020] = total2020
-        else:
-            WildfireTotalResponse[2020] = -1
-
-        #count2021
-        dateStart2021 = 1609477200
-        dateEnd2021 = 1640926800
-        total2021 = 0
-        for j in range(len(output['features'])):
-            #print(str(output['features'][j]['attributes']['FireDiscoveryDateTime']))
-            if (str(output['features'][j]['attributes']['FireDiscoveryDateTime'])!= "None"):
-                str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                end = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                if (int(end[:-3]) < dateEnd2021 and int(start[:-3]) > dateStart2021):
-                    total2021 = total2021 + 1
-                    #print("hello")
-                    j = j + 1
-                else:
-                    j = j + 1
-            else: 
-                j = j + 1
-
-        if(total2021 != 0):
-            WildfireTotalResponse[2021] = total2021
-        else:
-            WildfireTotalResponse[2021] = -1
-
-        #count2022
-        dateStart2022 = 1641013200
-        dateEnd2022 = 1672462800
-        total2022 = 0
-        for j in range(len(output['features'])):
-            #print(str(output['features'][j]['attributes']['FireDiscoveryDateTime']))
-            if (str(output['features'][j]['attributes']['FireDiscoveryDateTime'])!= "None"):
-                str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                end = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                if (int(end[:-3]) < dateEnd2022 and int(start[:-3]) > dateStart2022):
-                    total2022 = total2022 + 1
-                    #print("hello")
-                    j = j + 1
-                else:
-                    j = j + 1
-            else: 
-                j = j + 1
-
-        if(total2022 != 0):
-            WildfireTotalResponse[2022] = total2022
-        else:
-            WildfireTotalResponse[2022] = -1
-
-        return(WildfireTotalResponse)
+        #data = (response_API.json())
+        #top10 = sorted(data, key=lambda x: x['DailyAcres'])[-10:]
+        #print(top10)
+        
+        return json.dumps(top10List)
 
     return app
 
