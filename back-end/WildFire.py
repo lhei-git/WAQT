@@ -2,6 +2,7 @@ import datetime
 from operator import contains
 import requests, os
 import json
+import dateutil.relativedelta
 
 from flask import Flask, jsonify, request
 from flask_cors import CORS
@@ -124,23 +125,44 @@ def longestBurningFire(output, state):
 
 def averageFireDuration(output, state):       
      #Average Fire Duration
-    avgDiff = 0
-    amount = 0
+    totalDays = 0
+    amountOfFiresWithStartEndDates = 0
     for j in range(len(output['features'])):
-        start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-        end = str(output['features'][j]['attributes']['ContainmentDateTime'])
-        if(start != "None" and end != "None"):
-            avgDiff += (int(end[:-3]) - int(start[:-3]))
-            amount = amount + 1
-            j = j + 1
-        else:
-            j = j + 1
-
-    formatted = convertSecondsToTime(avgDiff / amount).strip(":")
+        #fire out 
+        if(str(output['features'][j]['attributes']['FireOutDateTime']) != "None"):
+            start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
+            end = str(output['features'][j]['attributes']['FireOutDateTime'])
+            startDateConvert = datetime.datetime.fromtimestamp(int(start[:-3])) 
+            endDateConvert = datetime.datetime.fromtimestamp(int(end[:-3]))
+            timeDifference = dateutil.relativedelta.relativedelta (endDateConvert, startDateConvert)
+            totalDays = totalDays + timeDifference.days
+            amountOfFiresWithStartEndDates = amountOfFiresWithStartEndDates + 1
+        #fire containment
+        elif(str(output['features'][j]['attributes']['ContainmentDateTime']) != "None"):
+            start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
+            end = str(output['features'][j]['attributes']['ContainmentDateTime'])
+            startDateConvert = datetime.datetime.fromtimestamp(int(start[:-3])) 
+            endDateConvert = datetime.datetime.fromtimestamp(int(end[:-3]))
+            timeDifference = dateutil.relativedelta.relativedelta (endDateConvert, startDateConvert)
+            totalDays = totalDays + timeDifference.days
+            amountOfFiresWithStartEndDates = amountOfFiresWithStartEndDates + 1
+        #fire control 
+        elif(output['features'][j]['attributes']['ControlDateTime']):
+            start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
+            end = str(output['features'][j]['attributes']['ControlDateTime'])
+            print(start)
+            startDateConvert = datetime.datetime.fromtimestamp(int(start[:-3])) 
+            endDateConvert = datetime.datetime.fromtimestamp(int(end[:-3]))
+            timeDifference = dateutil.relativedelta.relativedelta (endDateConvert, startDateConvert)
+            totalDays = totalDays + timeDifference.days
+            amountOfFiresWithStartEndDates = amountOfFiresWithStartEndDates + 1  
+      
     if(state):
-        WildfireStateResponse["Average Time Until a Fire is Contained"] = formatted[0] + " Day(s)"
+        WildfireStateResponse["Average Days Until a Fire is Contained/Controlled/Out"] = str(int(totalDays/amountOfFiresWithStartEndDates))+" Day(s)"
+        
     else:
-        WildfireResponse["Average Time Until a Fire is Contained"] = formatted[0] + " Day(s)"
+        WildfireResponse["Average Days Until a Fire is Contained/Controlled/Out"] = str(int(totalDays/amountOfFiresWithStartEndDates))+" Day(s)"
+        
 
 
 def create_app(config=None):
@@ -161,7 +183,7 @@ def create_app(config=None):
         location = request.args.get("location").strip("+")
         state = request.args.get("state").strip("+")
         #url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'&outFields=FireDiscoveryDateTime,FireOutDateTime,CpxName,IsCpxChild,POOState,ControlDateTime,ContainmentDateTime,DailyAcres,DiscoveryAcres,IncidentName&outSR=4326&f=json"
-        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND%20%20(DailyAcres >= 0.1)%20&outFields=IncidentName,DailyAcres,ContainmentDateTime,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
+        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND%20%20(DailyAcres >= 0.1)%20&outFields=IncidentName,DailyAcres,ContainmentDateTime,ControlDateTime,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
         print(url)
         response_API = requests.get(url)
         
@@ -196,7 +218,7 @@ def create_app(config=None):
     @app.route("/wildfire/stateonly", methods=['GET'])
     def WildFireState():
         state = request.args.get("location").strip("+")
-        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOState%20%3D%20'US-"+state+"'%20AND%20%20(DailyAcres >= 10)%20&outFields=IncidentName,DailyAcres,ContainmentDateTime,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
+        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOState%20%3D%20'US-"+state+"'%20AND%20%20(DailyAcres >= 10)%20&outFields=IncidentName,DailyAcres,ContainmentDateTime,ControlDateTime,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
         print(url)
         response_API = requests.get(url)
         
