@@ -13,6 +13,7 @@ WildfireAvgRes = {}
 WildfireTotalResponse = {}
 
 
+
 #Time converter for converting UNIX Time
 def timeConverter(timeToConvert):
     formatTime = str(timeToConvert)[:-3]
