@@ -31,23 +31,28 @@ function FireStatsTable({county, state}: Props) {
   if (data && stateData) {
     return (
       <>
+      <h3>Current and Historical Fire Data</h3>
       <div className={styles['row']}>
         <div className={styles['column']}>
-          <table>
-              {/* access json data using each key you need, this will be dynamically allocated */}
-              <td><b>Fire Statistics</b></td>
-              {Object.keys(data).map((key) => {
+        <table>
+          <tr>
+            <th>Fire Statistics</th>
+            <th>Location</th>
+          </tr>
+          {Object.keys(data).map((key) => {
                 return (
-                  <tr key={key}>
+                  <tr > {key}:
                     <td>
-                      {key}: {data[key]}
+                      {data[key]}
                     </td>
+                    <td>
 
+                    </td>
                     <hr />
                   </tr>
                 );
               })}
-          </table>
+        </table>
         </div>
         <div className={styles['column']}>
           <table>
@@ -57,7 +62,7 @@ function FireStatsTable({county, state}: Props) {
                 return (
                   <tr key={key}>
                     <td>
-                      {key}: {stateData[key]}
+                      {stateData[key]}
                     </td>
 
                     <hr />

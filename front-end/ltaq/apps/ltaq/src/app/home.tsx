@@ -79,12 +79,13 @@ export default function Places() {
   return (
     //Box which allows a user to search through Google Places
     <>
+      <div className={homeStyle['backBody']}>
       <div className={homeStyle['container']}>
         <div className={homeStyle['searchArea']}>
           {/* <Nav/> */}
-          <h2>Wildfire Air Quality Tracker</h2>
+          <h2 className={homeStyle['titleBackground']}><b>Wildfire & Air Quality Tracker</b></h2>
           <br />
-          <p>Search for a city or county within the United States to view any available current and historical wildfire and air quality information.</p>
+          <p className={homeStyle['textBackground']}><b>Search for a city or county within the United States to view any available current and historical wildfire and air quality information.</b></p>
           <br />
           {/* <div className = {homeStyle['comboBox']}> */}
           <Combobox onSelect={handleSelect}>
@@ -112,7 +113,7 @@ export default function Places() {
           </Combobox>
         </div>
       </div>
-      {/* </div> */}
+      </div> 
     </>
   );
 }
