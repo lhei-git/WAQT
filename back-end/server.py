@@ -5,6 +5,7 @@ import json
 import pandas as pd
 from collections import OrderedDict
 import numpy as np
+import dateutil.relativedelta
 
 from datetime import date
 from flask import Flask, jsonify, request
@@ -18,32 +19,54 @@ WildfireTotalResponse = {}
 WildfireAcres = {}
 WildfireCount = {}
 
-def averageMonth(dateStart, dateEnd, month, year, output):
-    avg = 0
-    counts = 0
+def averageMonth(dateStart, dateEnd, month, year, output, state):
+    totalDays = 0
+    amountOfFiresWithStartEndDates = 0
     for j in range(len(output['features'])):
-            #print(str(output['features'][j]['attributes']['FireOutDateTime']))
-            if (str(output['features'][j]['attributes']['FireOutDateTime'])!= "None"):
-                str(output['features'][j]['attributes']['FireOutDateTime'])
-                start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                end = str(output['features'][j]['attributes']['FireOutDateTime'])
-                if (int(end[:-3]) < dateEnd and int(start[:-3]) > dateStart):
-                    avg += int(end[:-3]) - int (start[:-3])
-                    counts = j
-    if(counts != 0):
-            format = convertSecondsToTime(avg/counts).split(":")
-            WildfireAvgRes[month + " " + str(year)] = int(format[0])
-    else:
-            WildfireAvgRes[month + " " + str(year)] = -1
+        #fire out 
+        if(str(output['features'][j]['attributes']['FireOutDateTime']) != "None"):
+            start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
+            end = str(output['features'][j]['attributes']['FireOutDateTime'])
+            if (int(end[:-3]) < dateEnd and int(start[:-3]) > dateStart):
+                startDateConvert = datetime.datetime.fromtimestamp(int(start[:-3])) 
+                endDateConvert = datetime.datetime.fromtimestamp(int(end[:-3]))
+                timeDifference = dateutil.relativedelta.relativedelta (endDateConvert, startDateConvert)
+                totalDays = totalDays + timeDifference.days
+                amountOfFiresWithStartEndDates = amountOfFiresWithStartEndDates + 1
+        #fire containment
+        elif(str(output['features'][j]['attributes']['ContainmentDateTime']) != "None"):
+            start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
+            end = str(output['features'][j]['attributes']['ContainmentDateTime'])
+            if (int(end[:-3]) < dateEnd and int(start[:-3]) > dateStart):
+                startDateConvert = datetime.datetime.fromtimestamp(int(start[:-3])) 
+                endDateConvert = datetime.datetime.fromtimestamp(int(end[:-3]))
+                timeDifference = dateutil.relativedelta.relativedelta (endDateConvert, startDateConvert)
+                totalDays = totalDays + timeDifference.days
+                amountOfFiresWithStartEndDates = amountOfFiresWithStartEndDates + 1
+        #fire control 
+        elif(output['features'][j]['attributes']['ControlDateTime']):
+            start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
+            end = str(output['features'][j]['attributes']['ControlDateTime'])
+            if (int(end[:-3]) < dateEnd and int(start[:-3]) > dateStart):
+                startDateConvert = datetime.datetime.fromtimestamp(int(start[:-3])) 
+                endDateConvert = datetime.datetime.fromtimestamp(int(end[:-3]))
+                timeDifference = dateutil.relativedelta.relativedelta (endDateConvert, startDateConvert)
+                totalDays = totalDays + timeDifference.days
+                amountOfFiresWithStartEndDates = amountOfFiresWithStartEndDates + 1  
 
+        if(amountOfFiresWithStartEndDates != 0):
+            WildfireAvgRes[month + " " + str(year)] = (totalDays/amountOfFiresWithStartEndDates)
+       
 def acresMonth(dateStart, dateEnd, month, year, output):
     sum = 0
-    for j in range(len(output['features'])):
-        print(str(output['features'][j]['attributes']['DailyAcres']))
-        if (str(output['features'][j]['attributes']['DailyAcres'])!= "None"):
-            str(output['features'][j]['attributes']['DailyAcres'])
-            start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-            end = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
+    quarter = 1
+    while quarter <= 4:
+        for j in range(len(output['features'])):
+            print(str(output['features'][j]['attributes']['DailyAcres']))
+            if (str(output['features'][j]['attributes']['DailyAcres'])!= "None"):
+                str(output['features'][j]['attributes']['DailyAcres'])
+                start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
+                end = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
             if (int(end[:-3]) < dateEnd and int(start[:-3]) > dateStart):
                 sum = sum + int(output['features'][j]['attributes']['DailyAcres'])
 
@@ -187,23 +210,45 @@ def longestBurningFire(output, state):
 
 def averageFireDuration(output, state):       
      #Average Fire Duration
-    avgDiff = 0
-    amount = 0
+    totalDays = 0
+    amountOfFiresWithStartEndDates = 0
     for j in range(len(output['features'])):
-        start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-        end = str(output['features'][j]['attributes']['ContainmentDateTime'])
-        if(start != "None" and end != "None"):
-            avgDiff += (int(end[:-3]) - int(start[:-3]))
-            amount = amount + 1
-            j = j + 1
-        else:
-            j = j + 1
-
-    formatted = convertSecondsToTime(avgDiff / amount).strip(":")
+        #fire out 
+        if(str(output['features'][j]['attributes']['FireOutDateTime']) != "None"):
+            start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
+            end = str(output['features'][j]['attributes']['FireOutDateTime'])
+            startDateConvert = datetime.datetime.fromtimestamp(int(start[:-3])) 
+            endDateConvert = datetime.datetime.fromtimestamp(int(end[:-3]))
+            timeDifference = dateutil.relativedelta.relativedelta (endDateConvert, startDateConvert)
+            totalDays = totalDays + timeDifference.days
+            amountOfFiresWithStartEndDates = amountOfFiresWithStartEndDates + 1
+        #fire containment
+        elif(str(output['features'][j]['attributes']['ContainmentDateTime']) != "None"):
+            start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
+            end = str(output['features'][j]['attributes']['ContainmentDateTime'])
+            startDateConvert = datetime.datetime.fromtimestamp(int(start[:-3])) 
+            endDateConvert = datetime.datetime.fromtimestamp(int(end[:-3]))
+            timeDifference = dateutil.relativedelta.relativedelta (endDateConvert, startDateConvert)
+            totalDays = totalDays + timeDifference.days
+            amountOfFiresWithStartEndDates = amountOfFiresWithStartEndDates + 1
+        #fire control 
+        elif(output['features'][j]['attributes']['ControlDateTime']):
+            start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
+            end = str(output['features'][j]['attributes']['ControlDateTime'])
+            print(start)
+            startDateConvert = datetime.datetime.fromtimestamp(int(start[:-3])) 
+            endDateConvert = datetime.datetime.fromtimestamp(int(end[:-3]))
+            timeDifference = dateutil.relativedelta.relativedelta (endDateConvert, startDateConvert)
+            totalDays = totalDays + timeDifference.days
+            amountOfFiresWithStartEndDates = amountOfFiresWithStartEndDates + 1  
+      
     if(state):
-        WildfireStateResponse["Average Time Until a Fire is Contained"] = formatted[0] + " Day(s)"
+        WildfireStateResponse["Average Days Until a Fire is Contained/Controlled/Out"] = str(int(totalDays/amountOfFiresWithStartEndDates))+" Day(s)"
+        
     else:
-        WildfireResponse["Average Time Until a Fire is Contained"] = formatted[0] + " Day(s)"
+        WildfireResponse["Average Days Until a Fire is Contained/Controlled/Out"] = str(int(totalDays/amountOfFiresWithStartEndDates))+" Day(s)"
+        
+
 
 
 def create_app(config=None):
@@ -315,7 +360,7 @@ def create_app(config=None):
     def averageGraphResponse():
         location = request.args.get("location").strip("+")
         state = request.args.get("state").strip("+")
-        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND%20%20(DailyAcres >= 0.1)%20&outFields=IncidentName,DailyAcres,ContainmentDateTime,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
+        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND%20%20(DailyAcres >= 0.1)%20&outFields=IncidentName,DailyAcres,ContainmentDateTime,ControlDateTime,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
         print(url)
         response_API = requests.get(url)
         output = json.loads(response_API.text)
@@ -339,7 +384,7 @@ def create_app(config=None):
         month = 1
         year = 2015
         while (endYear >= year):
-            averageMonth(dateStart, dateStart + 2764800, MonthDict[month], year, output)
+            averageMonth(dateStart, dateStart + 2764800, MonthDict[month], year, output, state)
             dateStart += 2764800
             if(month == 12): 
                 month = 1 
@@ -355,7 +400,7 @@ def create_app(config=None):
     def totalAcresResponse():
         location = request.args.get("location").strip("+")
         state = request.args.get("state").strip("+")
-        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND%20%20(DailyAcres >= 0.1)%20&outFields=IncidentName,DailyAcres,ContainmentDateTime,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
+        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND%20%20(DailyAcres >= 0.1)%20&outFields=IncidentName,DailyAcres,ContainmentDateTime,ControlDateTime,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
         print(url)
         response_API = requests.get(url)
         output = json.loads(response_API.text)
@@ -452,21 +497,33 @@ def create_app(config=None):
                 top10[(copyDictionary[i]['attributes']['IncidentName'])] = copyDictionary[i]['attributes']['DailyAcres']
                 top10List.append(top10)
                 top10 = {}    
+        sortedAcres = sorted(
+        output["features"], key=lambda x: x['attributes']["DailyAcres"], reverse=True
+        
+        )
+
+        return sortedAcres[:10]
+
+    @app.route("/wildfire/top10Duration", methods=['GET'])
+    def top10Duration():
+        location = request.args.get("location").strip("+")
+        state = request.args.get("state").strip("+")
+        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND%20%20(DailyAcres >= 0.1)%20&outFields=IncidentName,DailyAcres&returnGeometry=false&outSR=4326&f=json"
+        print(url)
+        response_API = requests.get(url)
+        output = json.loads(response_API.text)
+        top10List = []
+        top10 = {}
         
 
-
-        #sorted_value_index = np.argsort(output['features'].values())
-        #dictionary_keys = list(output['features'].keys())
-        #sorted_dict = {dictionary_keys[i]: sorted(
-        #output['features'].values())[i] for i in range(len(dictionary_keys))}
+        sortedAvg = sorted(
+        output["features"], key=lambda x: x['attributes']["FireDiscoveryDateTime"], reverse=True
         
-        #print(sorted_dict)
+        )
 
-        #data = (response_API.json())
-        #top10 = sorted(data, key=lambda x: x['DailyAcres'])[-10:]
-        #print(top10)
+        return sortedAvg[:10]
         
-        return json.dumps(top10List)
+        
 
     return app
 
