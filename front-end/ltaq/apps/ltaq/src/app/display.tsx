@@ -23,6 +23,8 @@ import fire from './Fire Icon.jpeg';
 import FireStatsTable from './fireStatsTable';
 import AverageGraph from './AvgGraph';
 import { AxiosResponse } from "axios"
+import AirQualityGraphs from './airqualitygraphs';
+import AcresPerMonth from './acresPerMonth';
 //=================================================
 //=================== Variables ===================
 //=================================================
@@ -202,12 +204,14 @@ export default function App() {
           state={splitVals}
         />
       </div>
-      <div className="w3-container">
-        <AverageGraph
+      <AirQualityGraphs 
+          county={countyFormatted}
+          state={splitVals}
+          />
+      <AcresPerMonth
           county={countyFormatted}
           state={splitVals}
         />
-      </div>
     </>
   );
 }
