@@ -16,13 +16,19 @@ export default function AirQualityGraphs({county, state}: Props) {
   const url ="http://localhost:8000/trends?county="+county+"&state="+state;
   console.log(url);
   const [data, setData] = useState<any[]>([]);
+  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(url).then((response) => setData(response.data));
+    axios.get(url).then(response => {
+      setData(response.data);
+      setLoading(false);
+      console.log(data)
+    });
   }, []);
-  if(!data) {
+  
+  if(isLoading) {
     return (
-      <></>
+      <p>Loading...</p>
     )
   }else {
     return (
@@ -34,7 +40,7 @@ export default function AirQualityGraphs({county, state}: Props) {
             labels: Object.keys(data["PM25"]),
             datasets: [
               {
-                label: 'PM2.5 Quartely Values',
+                label: 'PM2.5 Highest Quartely Values',
                 backgroundColor: ["#3e95cd"],
                 data: Object.values(data["PM25"]),
               },
@@ -64,7 +70,7 @@ export default function AirQualityGraphs({county, state}: Props) {
             labels: Object.keys(data["PM10"]),
             datasets: [
               {
-                label: 'PM10 Quartely Values',
+                label: 'PM10 Highest Quartely Values',
                 backgroundColor: ["#3e95cd"],
                 data: Object.values(data["PM10"]),
               },
@@ -94,7 +100,7 @@ export default function AirQualityGraphs({county, state}: Props) {
             labels: Object.keys(data["Ozone"]),
             datasets: [
               {
-                label: 'Ozone Quartely Values',
+                label: 'Ozone Highest Quartely Values',
                 backgroundColor: ["#3e95cd"],
                 data: Object.values(data["Ozone"]),
               },

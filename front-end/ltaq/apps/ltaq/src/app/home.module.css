@@ -14,7 +14,7 @@
 .searchArea {
   text-align: center;
   margin: auto;
-  width: 50%;
+  width: 100%;
   padding: 10px;
   /* border: 3px solid green; */
   /* margin: 0; */
@@ -31,13 +31,18 @@
   height: 35px;
   /* border: 2px solid #610000; */
 }
+.titleBackground {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #fffdfd;
+  text-align: center;
+  font-size: 50px;
+}
+
 .textBackground {
   font-family: Arial, Helvetica, sans-serif;
-  background: rgba(255, 255, 255, 0.4);
-  padding: 20px;
-  color: #CB6015;
+  color: #ffffff;
   text-align: center;
-  font-size: 26px;
+  font-size: 18px;
 }
 .backBody {
     background-image: url(heroImage.jpg);

@@ -11,6 +11,7 @@ ActiveFireResponse = {}
 WildfireResponse = {}
 WildfireStateResponse = {}
 WildfireAvgRes = {}
+WildfireAcres = {}
 
 #Time converter for converting UNIX Time
 def timeConverter(timeToConvert):
@@ -89,9 +90,9 @@ def getMostRecentFire(output, state):
             i = i + 1
     mostRecentStart = timeConverter(output['features'][marker]['attributes']['FireDiscoveryDateTime']).split(" ")
     if(state):
-        WildfireStateResponse["Most Recent Fire"] = output['features'][marker]['attributes']['IncidentName'] +" " + mostRecentStart[0]
+        WildfireStateResponse["Most Recent Fire"] = str(output['features'][marker]['attributes']['IncidentName']).title() +" " + mostRecentStart[0]
     else:
-        WildfireResponse["Most Recent Fire"] = output['features'][marker]['attributes']['IncidentName'] +" " + mostRecentStart[0]
+        WildfireResponse["Most Recent Fire"] = str(output['features'][marker]['attributes']['IncidentName']).title() +" " + mostRecentStart[0]
     
 
 def longestBurningFire(output, state):
@@ -109,18 +110,18 @@ def longestBurningFire(output, state):
             elif (output['features'][i]['attributes']['FireOutDateTime'] - output['features'][i]['attributes']['FireDiscoveryDateTime'] > timeDifference):
                 timeDifference = output['features'][i]['attributes']['FireOutDateTime'] - output['features'][i]['attributes']['FireDiscoveryDateTime']
                 marker = i
-                i = i + 1
-            else:
-                i = i + 1
-        else:
-            i = i + 1
-     
-    longestFireStart = timeConverter(output['features'][marker]['attributes']['FireDiscoveryDateTime']).split(" ")
-    longestFireEnd = timeConverter(output['features'][marker]['attributes']['FireOutDateTime']).split(" ")
+
+    
+    longestFireStart = str(output['features'][marker]['attributes']['FireDiscoveryDateTime'])
+    longestFireEnd = str(output['features'][marker]['attributes']['FireOutDateTime'])
+    longestStartDateConvert = datetime.datetime.fromtimestamp(int(longestFireStart[:-3])) 
+    longestEndDateConvert = datetime.datetime.fromtimestamp(int(longestFireEnd[:-3]))
+    timeDifference = dateutil.relativedelta.relativedelta (longestEndDateConvert, longestStartDateConvert)
+            
     if(state):
-        WildfireStateResponse["Longest Fire (Until Containment)"] = output['features'][marker]['attributes']['IncidentName'] + " " + longestFireStart[0] +" - " + longestFireEnd[0]
+        WildfireStateResponse["Longest Wildfire Duration"] = str(output['features'][marker]['attributes']['IncidentName']).title() + ": "+ str(timeDifference.years) + " Years "  + str(timeDifference.months) + " Months " + str(timeDifference.days) + " Days"
     else:
-        WildfireResponse["Longest Fire (Until Containment)"] = output['features'][marker]['attributes']['IncidentName'] + " " + longestFireStart[0] +" - " + longestFireEnd[0]
+        WildfireResponse["Longest Wildfire Duration"] = str(output['features'][marker]['attributes']['IncidentName']).title() + ": " + str(timeDifference.years) + " Years " +str(timeDifference.months) + " Months " + str(timeDifference.days) + " Days"
 
 
 def averageFireDuration(output, state):       
@@ -162,7 +163,29 @@ def averageFireDuration(output, state):
         
     else:
         WildfireResponse["Average Days Until a Fire is Contained/Controlled/Out"] = str(int(totalDays/amountOfFiresWithStartEndDates))+" Day(s)"
-        
+
+#This is Ahmad's code from server.py
+
+
+#Ahmad's code from server.py
+def acresMonthCalculator(dateStart, dateEnd, month, year, output):
+    sum = 0
+    for j in range(len(output['features'])):
+        print(str(output['features'][j]['attributes']['DailyAcres']))
+        if (str(output['features'][j]['attributes']['DailyAcres'])!= "None"):
+            str(output['features'][j]['attributes']['DailyAcres'])
+            start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
+            end = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
+            if (int(end[:-3]) < dateEnd and int(start[:-3]) > dateStart):
+                sum = sum + int(output['features'][j]['attributes']['DailyAcres'])
+
+                j = j + 1
+            else:
+                j = j + 1
+        else: 
+            j = j + 1
+
+    WildfireAcres[month + " " + str(year)] = sum        
 
 
 def create_app(config=None):
@@ -184,7 +207,7 @@ def create_app(config=None):
         state = request.args.get("state").strip("+")
         #url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'&outFields=FireDiscoveryDateTime,FireOutDateTime,CpxName,IsCpxChild,POOState,ControlDateTime,ContainmentDateTime,DailyAcres,DiscoveryAcres,IncidentName&outSR=4326&f=json"
         url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND%20%20(DailyAcres >= 0.1)%20&outFields=IncidentName,DailyAcres,ContainmentDateTime,ControlDateTime,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
-        print(url)
+        #print(url)
         response_API = requests.get(url)
         
         output = json.loads(response_API.text)
@@ -203,14 +226,15 @@ def create_app(config=None):
             longestBurningFire(output, False)
             #average duration
             averageFireDuration(output, False)
+            #acres per month
         else:
             print("no fire history")
-            WildfireResponse["Total Fires"] = "No History"
-            WildfireResponse["Current Number of Contained Fires"] = "No History"
-            WildfireResponse["Total Acres Burned"] = "No History"
-            WildfireResponse["Most Recent Fire"] = "No History"
-            WildfireResponse["Longest Fire"] = "No History"
-            WildfireResponse["Average Time Until a Fire is Contained"] = "No History"
+            WildfireResponse["Total Fires"] = "Not Available"
+            WildfireResponse["Current Number of Contained Fires"] = "Not Available"
+            WildfireResponse["Total Acres Burned"] = "Not Available"
+            WildfireResponse["Most Recent Fire"] = "Not Available"
+            WildfireResponse["Longest Wildfire Duration"] = "Not Available"
+            WildfireResponse["Average Days Until a Fire is Contained/Controlled/Out"] = "Not Available"
 
         return jsonify(WildfireResponse)
 
@@ -254,14 +278,14 @@ def create_app(config=None):
         else:
             for i in range(len(output['features'])):
                 fireStart = timeConverter(output['features'][i]['attributes']["FireDiscoveryDateTime"]).split(" ")        
-                activeDictionary["name"] = output['features'][i]['attributes']["IncidentName"]
+                activeDictionary["name"] = str(output['features'][i]['attributes']["IncidentName"]).title()
                 activeDictionary["date"] = fireStart[0]
                 activeDictionary["cause"] = output['features'][i]['attributes']["FireCause"]
                 currentActiveFires.append(activeDictionary)
                 activeDictionary = {} 
             
         
-        return json.dumps(currentActiveFires)
+        return json.dumps(list(reversed(currentActiveFires)))
 
     @app.route("/mapmarkers", methods=['GET'])
     def ActiveFiresForMap():
@@ -280,6 +304,47 @@ def create_app(config=None):
             activeDictionaryMap = {} 
 
         return json.dumps(currentActiveFiresMap)
+
+
+    @app.route("/wildfire/acres", methods=['GET'])
+    def totalAcresResponse():
+        location = request.args.get("location").strip("+")
+        state = request.args.get("state").strip("+")
+        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND%20%20(DailyAcres >= 0.1)%20&outFields=IncidentName,DailyAcres,ContainmentDateTime,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
+        print(url)
+        response_API = requests.get(url)
+        output = json.loads(response_API.text)
+        dateStart = 1420088400
+        MonthDict = { 
+        1 : "January",
+        2 : "February",
+        3 : "March",
+        4 : "April",
+        5 : "May",
+        6 : "June",
+        7 : "July",
+        8 : "August",
+        9 : "September",
+        10 : "October",
+        11 : "November",
+        12 : "December"
+        }
+        today = datetime.datetime.now()
+        endYear = today.year
+        month = 1
+        year = 2015
+        while (endYear >= year):
+            acresMonthCalculator(dateStart, dateStart + 2764800, MonthDict[month], year, output)
+            dateStart += 2764800
+            if(month == 12): 
+                month = 1 
+                year = year + 1
+            else:
+                month = month + 1
+    
+        print(WildfireAcres)
+        return json.dumps(WildfireAcres)
+
 
     #This is Ahmad's code!
     @app.route("/wildfire/average", methods=['GET'])
