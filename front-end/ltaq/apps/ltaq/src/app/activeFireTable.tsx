@@ -12,50 +12,52 @@ interface Props {
 
 function ActiveFiresTable({county, state}: Props) {
   //TODO: get data from map
-  const url = "http://localhost:8001/activecounty?county="+county+"&state="+state
+  const url = "http://localhost:8001/active?county="+county+"&state="+state
   console.log(url)
   const [data, setData] = useState<any[]>([]);
-  const [stateData, setStateData] = useState<any[]>([]);
   const [isLoading, setLoading] = useState(true);
   
   useEffect(() => {
     axios.get(url).then(response => {
-      data.push(response.data);
+      setData(response.data);
       setLoading(false);
+      console.log(data)
     });
   }, []);
 
-  
+
   if (isLoading) {
     return <div >Loading...</div>;
   }else if(data){
     return (
       <>
-      <h3>Active Wildfires</h3>
+      <h3>Recent Wildfires</h3>
+      
       <div className={styles['row']}>
       <div className={styles['column']}>
-        <table>
-          <tr>
+      <tr>
             {/* Headers */}
             <th>Fire Name</th>
             <th>Start Date</th>
+            <th>Fire Cause</th>
           </tr>
-          {data.map((item, index) => (
+      {data.map((item, index) => (
           <tr key={index}>
-            {/* access json data using each key you need, this will be dynamically allocated */}
-            <td>{item.IncidientName}</td>
-            <td>{item.DiscoveryDate}</td>
+            <td>{item.name}</td>
+            <td>{item.date}</td>
+            <td>{item.cause}</td>
+
           </tr>
         ))
         }
-        </table>
+        
       </div>
     </div>
     </>
     );
   }else{
     return (
-      <h3 color="red">No active wildfires in this location</h3>
+      <h3 color="red">No active wildfires in this location </h3>
     )
     
   }

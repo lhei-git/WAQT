@@ -4,20 +4,17 @@
 
 .row {
   display: flex;
-  margin-left:-5px;
-  margin-right:-5px;
+  overflow:hidden;
+  overflow-y: scroll;
+  height: 450px; 
 }
 
-.column {
- 
-  padding: 5px;
-}
 
 table {
   border-collapse: collapse;
   border-spacing: 0;
   width: 100%;
-  border: 1px solid #ddd;
+  
 }
 
 th, td {

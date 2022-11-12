@@ -32,7 +32,7 @@ const Nav: React.FC<{}> = () => {
     return (
         <nav className = {styles['navbar']}>
             <div className = {styles['logo-container']}>
-                <span> <a href = " /home">Wildfire Air Quality Tracker</a></span>
+                <span> <a href = " /home"><h3>Wildfire & Air Quality Tracker</h3></a></span>
             </div>
             <Links links = {links} />
         </nav>
