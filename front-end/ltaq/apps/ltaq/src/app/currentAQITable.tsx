@@ -10,6 +10,7 @@ import Modal from '@mui/material/Modal';
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
 import LaunchIcon from '@mui/icons-material/Launch';
 import HelpIcon from '@mui/icons-material/Help';
+import CloseIcon from '@mui/icons-material/Close';
 import {
   Grid,
   Card,
@@ -109,6 +110,9 @@ function CurrentAQI({ lat, lng }: Props) {
                           (highestAqi == 5) ? "Hazardous AQI greater than 300. This would trigger health warnings of emergency conditions. The entire population is more likely to be affected." : "Current AQI information is not available at this time."}
 
               </Typography>
+              <Typography align="center">
+                    <Button onClick={handleClose}>{<CloseIcon fontSize="medium"/>}</Button>
+                    </Typography>
             </Box>
           </Modal>
         </div>
