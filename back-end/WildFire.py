@@ -75,59 +75,65 @@ def totalAcres(output, state):
 
 def getMostRecentFire(output, state):
     #most recent fire row
-    marker = 0
-    mostRecent = output['features'][0]['attributes']['FireDiscoveryDateTime']
-    for i in range(len(output['features'])):
-        if(mostRecent < output['features'][i]['attributes']['FireDiscoveryDateTime']):
-            mostRecent = output['features'][i]['attributes']['FireDiscoveryDateTime']
-            marker = i
-            i = i + 1
+    try:
+        marker = 0
+        mostRecent = output['features'][0]['attributes']['FireDiscoveryDateTime']
+        for i in range(len(output['features'])):
+            if(mostRecent < output['features'][i]['attributes']['FireDiscoveryDateTime']):
+                mostRecent = output['features'][i]['attributes']['FireDiscoveryDateTime']
+                marker = i
+                i = i + 1
+            else:
+                i = i + 1
+        mostRecentStart = timeConverter(output['features'][marker]['attributes']['FireDiscoveryDateTime']).split(" ")
+        if(state):
+            WildfireStateResponse["Most Recent Fire"] = str(output['features'][marker]['attributes']['IncidentName']).title() +" (" + convertDate(mostRecentStart[0]) + " )"
         else:
-            i = i + 1
-    mostRecentStart = timeConverter(output['features'][marker]['attributes']['FireDiscoveryDateTime']).split(" ")
-    if(state):
-        WildfireStateResponse["Most Recent Fire"] = str(output['features'][marker]['attributes']['IncidentName']).title() +" (" + convertDate(mostRecentStart[0]) + " )"
-    else:
-        WildfireResponse["Most Recent Fire"] = str(output['features'][marker]['attributes']['IncidentName']).title() +" (" + convertDate(mostRecentStart[0]) + " )"
-    
+            WildfireResponse["Most Recent Fire"] = str(output['features'][marker]['attributes']['IncidentName']).title() +" (" + convertDate(mostRecentStart[0]) + " )"
+    except:
+        WildfireResponse["Most Recent Fire"] = "Not Available"
+        WildfireStateResponse["Most Recent Fire"] = "Not Available"
 
 def longestBurningFire(output, state):
      #longest burning fire
-    marker = 0
-    timeDifference = 0
-    for i in range(len(output['features'])):
-        start = str(output['features'][i]['attributes']['FireDiscoveryDateTime'])
-        end = str(output['features'][i]['attributes']['FireOutDateTime'])
-        if(start != "None" and end != "None"):
-            if (timeDifference == 0):
-                timeDifference = int(end) - int(start)
-                marker = i
-                i = i + 1
-            elif (output['features'][i]['attributes']['FireOutDateTime'] - output['features'][i]['attributes']['FireDiscoveryDateTime'] > timeDifference):
-                timeDifference = output['features'][i]['attributes']['FireOutDateTime'] - output['features'][i]['attributes']['FireDiscoveryDateTime']
-                marker = i
+    try:
+        marker = 0
+        timeDifference = 0
+        for i in range(len(output['features'])):
+            start = str(output['features'][i]['attributes']['FireDiscoveryDateTime'])
+            end = str(output['features'][i]['attributes']['FireOutDateTime'])
+            if(start != "None" and end != "None"):
+                if (timeDifference == 0):
+                    timeDifference = int(end) - int(start)
+                    marker = i
+                    i = i + 1
+                elif (output['features'][i]['attributes']['FireOutDateTime'] - output['features'][i]['attributes']['FireDiscoveryDateTime'] > timeDifference):
+                    timeDifference = output['features'][i]['attributes']['FireOutDateTime'] - output['features'][i]['attributes']['FireDiscoveryDateTime']
+                    marker = i
 
-    
-    longestFireStart = str(output['features'][marker]['attributes']['FireDiscoveryDateTime'])
-    longestFireEnd = str(output['features'][marker]['attributes']['FireOutDateTime'])
-    longestStartDateConvert = datetime.datetime.fromtimestamp(int(longestFireStart[:-3])) 
-    longestEndDateConvert = datetime.datetime.fromtimestamp(int(longestFireEnd[:-3]))
-    timeDifference = dateutil.relativedelta.relativedelta (longestEndDateConvert, longestStartDateConvert)
+        
+        longestFireStart = str(output['features'][marker]['attributes']['FireDiscoveryDateTime'])
+        longestFireEnd = str(output['features'][marker]['attributes']['FireOutDateTime'])
+        longestStartDateConvert = datetime.datetime.fromtimestamp(int(longestFireStart[:-3])) 
+        longestEndDateConvert = datetime.datetime.fromtimestamp(int(longestFireEnd[:-3]))
+        timeDifference = dateutil.relativedelta.relativedelta (longestEndDateConvert, longestStartDateConvert)
 
-    multiYearFormat = str(timeDifference.years) + " Years " if int(timeDifference.years) > 1 else ""
-    yearFormat = multiYearFormat if int(timeDifference.years) != 1 else str(timeDifference.years) + " Year "
+        multiYearFormat = str(timeDifference.years) + " Years " if int(timeDifference.years) > 1 else ""
+        yearFormat = multiYearFormat if int(timeDifference.years) != 1 else str(timeDifference.years) + " Year "
 
-    multiMonthFormat = str(timeDifference.months) + " Months " if int(timeDifference.months) > 1 else ""
-    monthFormat = multiMonthFormat if int(timeDifference.months) != 1 else str(timeDifference.months) + " Month "
+        multiMonthFormat = str(timeDifference.months) + " Months " if int(timeDifference.months) > 1 else ""
+        monthFormat = multiMonthFormat if int(timeDifference.months) != 1 else str(timeDifference.months) + " Month "
 
-    multiDayFormat = str(timeDifference.days) + " Days" if int(timeDifference.days) > 1 else ""
-    dayFormat = multiDayFormat if int(timeDifference.days) != 1 else str(timeDifference.days) + " Day "
-            
-    if(state):
-        WildfireStateResponse["Longest Wildfire Duration"] = str(output['features'][marker]['attributes']['IncidentName']).title() + ": "+ yearFormat + monthFormat + dayFormat
-    else:
-        WildfireResponse["Longest Wildfire Duration"] = str(output['features'][marker]['attributes']['IncidentName']).title() + ": " + yearFormat + monthFormat + dayFormat
-
+        multiDayFormat = str(timeDifference.days) + " Days" if int(timeDifference.days) > 1 else ""
+        dayFormat = multiDayFormat if int(timeDifference.days) != 1 else str(timeDifference.days) + " Day "
+                
+        if(state):
+            WildfireStateResponse["Longest Wildfire Duration"] = str(output['features'][marker]['attributes']['IncidentName']).title() + ": "+ yearFormat + monthFormat + dayFormat
+        else:
+            WildfireResponse["Longest Wildfire Duration"] = str(output['features'][marker]['attributes']['IncidentName']).title() + ": " + yearFormat + monthFormat + dayFormat
+    except:
+         WildfireStateResponse["Longest Wildfire Duration"] = "Not Available"
+         WildfireResponse["Longest Wildfire Duration"] = "Not Available"
 
 def averageFireDuration(output, state):       
      #Average Fire Duration
@@ -170,10 +176,10 @@ def averageFireDuration(output, state):
             totalDays = totalDays + (timeDifference.years * 365)            
             amountOfFiresWithStartEndDates = amountOfFiresWithStartEndDates + 1   
     if(state):
-        WildfireStateResponse["Average Fire Duration*"] = str(int(totalDays/amountOfFiresWithStartEndDates))+" Day(s)"
+        WildfireStateResponse["Average Fire Duration**"] = str(int(totalDays/amountOfFiresWithStartEndDates))+" Day(s)"
         
     else:
-        WildfireResponse["Average Fire Duration*"] = str(int(totalDays/amountOfFiresWithStartEndDates))+" Day(s)"
+        WildfireResponse["Average Fire Duration**"] = str(int(totalDays/amountOfFiresWithStartEndDates))+" Day(s)"
 
 def fireCause(output, state):
     humanCause = 0
@@ -257,7 +263,7 @@ def create_app(config=None):
             WildfireResponse["Current Number of Contained Fires"] = "Not Available"
             WildfireResponse["Total Acres Burned"] = "Not Available"
             WildfireResponse["Most Recent Fire"] = "Not Available"
-            WildfireResponse["Longest Wildfire Duration"] = "Not Available"
+            WildfireResponse["Longest Wildfire Duration**"] = "Not Available"
             WildfireResponse["Average Fire Duration*"] = "Not Available"
             WildfireResponse["Total Fires Caused by Humans"] = "Not Available"
             WildfireResponse["Total Fires Caused by Nature"] = "Not Available"
