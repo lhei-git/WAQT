@@ -60,15 +60,25 @@ export default function AirQualityGraphs({ county, state }: Props) {
                   labels: Object.keys(data["PM25"]),
                   datasets: [
                     {
-
-
                       data: Object.values(data["PM25"]),
+                      backgroundColor: ["#3e95cd"],
+                      borderColor: ["#3e95cd"],
                     },
                   ],
                 }}
                 options={{
                   responsive: true,
-
+                  plugins: {
+                    legend: {
+                      display: false,
+                      labels: {
+                        color: 'rgb(255, 99, 132)',
+                      },
+                    },
+                    title: {
+                      display: true,
+                    },
+                  },
                 }}
               />
             </div>
@@ -94,8 +104,8 @@ export default function AirQualityGraphs({ county, state }: Props) {
                   labels: Object.keys(data["PM10"]),
                   datasets: [
                     {
-                      label: 'PM10 Highest Quartely Values',
                       backgroundColor: ["#3e95cd"],
+                      borderColor: ["#3e95cd"],
                       data: Object.values(data["PM10"]),
                     },
                   ],
@@ -104,7 +114,7 @@ export default function AirQualityGraphs({ county, state }: Props) {
                   responsive: true,
                   plugins: {
                     legend: {
-                      display: true,
+                      display: false,
                       labels: {
                         color: 'rgb(255, 99, 132)',
                       },
@@ -137,8 +147,8 @@ export default function AirQualityGraphs({ county, state }: Props) {
                   labels: Object.keys(data["Ozone"]),
                   datasets: [
                     {
-                      label: 'Ozone Highest Quartely Values',
                       backgroundColor: ["#3e95cd"],
+                      borderColor: ["#3e95cd"],
                       data: Object.values(data["Ozone"]),
                     },
                   ],
@@ -147,7 +157,7 @@ export default function AirQualityGraphs({ county, state }: Props) {
                   responsive: true,
                   plugins: {
                     legend: {
-                      display: true,
+                      display: false,
                       labels: {
                         color: 'rgb(255, 99, 132)',
                       },
