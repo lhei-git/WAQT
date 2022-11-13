@@ -10,6 +10,7 @@
 
 .logo-container {
     margin-left: 80px;
+    color: white;
 }
 
 .logo-container span {
@@ -30,6 +31,8 @@
 .link a {
     text-decoration: none;
     float: left;
+    color: white;
+    font-size: large;
 }
 
 .link a:hover {
