@@ -34,7 +34,7 @@ function FireStatsTable({ county, state, fullName }: Props) {
   if (data && stateData) {
     return (
       <>
-        <h3><LocalFireDepartmentIcon />Current and Historical Fire Data</h3>
+        <h1><LocalFireDepartmentIcon fontSize="large" />Current and Historical Fire Data</h1>
         <div className={styles['row']}>
           <div className={styles['column']}> 
             <table>

@@ -2,7 +2,7 @@
 // Use this as an example for other tables
 // see airnow.py for the endpoint 
 import { useEffect, useRef, useState } from "react";
-import "./aqi.module.css";
+import styles from "./aqi.module.css";
 import axios from "axios"
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -78,7 +78,7 @@ function CurrentAQI({ lat, lng }: Props) {
     ))
     return (
       <>
-        <div>
+        <div className={styles["centerText"]}>
           <h1><WbSunnyIcon /> Current AQI: {
             (highestAqi == 0) ? "Good" :
               (highestAqi == 1) ? "Moderate" :
@@ -141,7 +141,7 @@ function CurrentAQI({ lat, lng }: Props) {
           </Grid>
 
         </div>
-        <div>
+        <div className={styles["centerText"]}>
           <br/>
         <p> <a href = "https://www.airnow.gov/"> Source: Air Now <LaunchIcon fontSize="small"/></a></p>
         <p> <a href = "https://www.airnow.gov/aqi/aqi-basics/"> More Information on AQI <LaunchIcon fontSize="small"/></a></p>
