@@ -2,23 +2,38 @@
   box-sizing: border-box;
 }
 
+div {
+  margin-left: auto;
+  margin-right: auto;
+  
+}
+
+h2, h3 {
+  text-align: center;
+}
+
 .row {
+  display: flex;
+  height: 400px; 
+
+}
+
+.activeRow {
   display: flex;
   overflow:hidden;
   overflow-y: scroll;
-  height: 450px; 
+  height: 600px; 
 }
-
 
 table {
   border-collapse: collapse;
   border-spacing: 0;
   width: 100%;
-  
+  font-size: larger;
 }
 
 th, td {
-  text-align: left;
+  text-align: center;
   padding: 16px;
 }
 
@@ -26,9 +41,11 @@ tr:nth-child(even) {
   background-color: #f2f2f2;
 }
 .graph {
-  position: relative; 
-  height:20vh; 
-  width:40vw;
-  margin-bottom: 150px;
+  display: flex; 
+  height:200px; 
+  width:1200px;
+ 
+  margin-bottom: 400px;
+  line-height: 1100px;  
 }
 

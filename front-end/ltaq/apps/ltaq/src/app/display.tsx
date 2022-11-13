@@ -18,13 +18,14 @@ import Nav from './nav';
 import axios from 'axios';
 import CurrentAQI from './currentAQITable';
 import ActiveFiresTable from './activeFireTable';
-
+import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import fire from './Fire Icon.jpeg';
 import FireStatsTable from './fireStatsTable';
 import AverageGraph from './AvgGraph';
 import { AxiosResponse } from "axios"
 import AirQualityGraphs from './airqualitygraphs';
 import AcresPerMonth from './acresPerMonth';
+
 //=================================================
 //=================== Variables ===================
 //=================================================
@@ -153,7 +154,8 @@ export default function App() {
 
       <Nav />
       <h2 ><b><i className="fa fa-location-arrow"></i> {val}</b></h2>
-      <div className="w3-row-padding w3-margin-bottom">
+      
+      <div className="w3-row-padding  w3-margin-bottom ">
         <CurrentAQI
           lat={lat}
           lng={lng}
@@ -161,7 +163,9 @@ export default function App() {
       </div>
       <div className="w3-panel">
         <div className="w3-row-padding">
+        <h2><LocalFireDepartmentIcon /> Active Wildfires</h2>
           <div className="w3-twothird">
+          
             <div className="map">
               <GoogleMap
                 options={options} //Google Map render options
@@ -198,20 +202,26 @@ export default function App() {
           </div>
         </div>
       </div>
-      <div className="w3-container">
+      <div className="w3-container w3-margin-bottom">
         <FireStatsTable
+          county={countyFormatted}
+          state={splitVals}
+          fullName={val}
+        />
+      </div>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <div className="w3-container w3-margin-bottom">
+        <AirQualityGraphs 
           county={countyFormatted}
           state={splitVals}
         />
       </div>
-      <AirQualityGraphs 
-          county={countyFormatted}
-          state={splitVals}
-          />
-      <AcresPerMonth
-          county={countyFormatted}
-          state={splitVals}
-        />
+      
     </>
   );
 }
