@@ -143,6 +143,8 @@ def averageFireDuration(output, state):
             timeDifference = dateutil.relativedelta.relativedelta (endDateConvert, startDateConvert)
             #print(timeDifference.days)
             totalDays = totalDays + timeDifference.days
+            totalDays = totalDays + (timeDifference.months * 30)
+            totalDays = totalDays + (timeDifference.years * 365)
             amountOfFiresWithStartEndDates = amountOfFiresWithStartEndDates + 1
         #fire containment
         elif(str(output['features'][j]['attributes']['ContainmentDateTime']) != "None"):
@@ -152,6 +154,8 @@ def averageFireDuration(output, state):
             endDateConvert = datetime.datetime.fromtimestamp(int(end[:-3]))
             timeDifference = dateutil.relativedelta.relativedelta (endDateConvert, startDateConvert)
             totalDays = totalDays + timeDifference.days
+            totalDays = totalDays + (timeDifference.months * 30)
+            totalDays = totalDays + (timeDifference.years * 365)
             amountOfFiresWithStartEndDates = amountOfFiresWithStartEndDates + 1
         #fire control 
         elif(output['features'][j]['attributes']['ControlDateTime']):
@@ -162,6 +166,8 @@ def averageFireDuration(output, state):
             endDateConvert = datetime.datetime.fromtimestamp(int(end[:-3]))
             timeDifference = dateutil.relativedelta.relativedelta (endDateConvert, startDateConvert)
             totalDays = totalDays + timeDifference.days
+            totalDays = totalDays + (timeDifference.months * 30)
+            totalDays = totalDays + (timeDifference.years * 365)            
             amountOfFiresWithStartEndDates = amountOfFiresWithStartEndDates + 1   
     if(state):
         WildfireStateResponse["Average Fire Duration*"] = str(int(totalDays/amountOfFiresWithStartEndDates))+" Day(s)"
@@ -169,14 +175,26 @@ def averageFireDuration(output, state):
     else:
         WildfireResponse["Average Fire Duration*"] = str(int(totalDays/amountOfFiresWithStartEndDates))+" Day(s)"
 
-#This is Ahmad's code from server.py
-
+def fireCause(output, state):
+    humanCause = 0
+    naturalCause = 0
+    for j in range(len(output['features'])):
+        if(str(output['features'][j]['attributes']['FireCause']) == "Human"):
+            humanCause = humanCause + 1
+        elif (str(output['features'][j]['attributes']['FireCause']) == "Natural"):
+            naturalCause = naturalCause + 1
+    if(state):
+        WildfireStateResponse["Total Fires Caused by Humans"] = humanCause
+        WildfireStateResponse["Total Fires Caused by Nature"] = naturalCause
+    else:
+        WildfireResponse["Total Fires Caused by Humans"] = humanCause
+        WildfireResponse["Total Fires Caused by Nature"] = naturalCause
 
 #Ahmad's code from server.py
 def acresMonthCalculator(dateStart, dateEnd, month, year, output):
     sum = 0
     for j in range(len(output['features'])):
-        print(str(output['features'][j]['attributes']['DailyAcres']))
+        #print(str(output['features'][j]['attributes']['DailyAcres']))
         if (str(output['features'][j]['attributes']['DailyAcres'])!= "None"):
             str(output['features'][j]['attributes']['DailyAcres'])
             start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
@@ -211,7 +229,7 @@ def create_app(config=None):
         location = request.args.get("location").strip("+")
         state = request.args.get("state").strip("+")
         #url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'&outFields=FireDiscoveryDateTime,FireOutDateTime,CpxName,IsCpxChild,POOState,ControlDateTime,ContainmentDateTime,DailyAcres,DiscoveryAcres,IncidentName&outSR=4326&f=json"
-        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND%20%20(DailyAcres >= 0.1)%20&outFields=IncidentName,DailyAcres,ContainmentDateTime,ControlDateTime,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
+        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND%20%20(DailyAcres >= 0.1)%20&outFields=IncidentName,DailyAcres,ContainmentDateTime,ControlDateTime,FireDiscoveryDateTime,FireOutDateTime,FireCause&returnGeometry=false&outSR=4326&f=json"
         #print(url)
         response_API = requests.get(url)
         
@@ -231,7 +249,8 @@ def create_app(config=None):
             longestBurningFire(output, False)
             #average duration
             averageFireDuration(output, False)
-            #acres per month
+            #fire cause
+            fireCause(output, False)
         else:
             print("no fire history")
             WildfireResponse["Total Fires"] = "Not Available"
@@ -240,6 +259,8 @@ def create_app(config=None):
             WildfireResponse["Most Recent Fire"] = "Not Available"
             WildfireResponse["Longest Wildfire Duration"] = "Not Available"
             WildfireResponse["Average Fire Duration*"] = "Not Available"
+            WildfireResponse["Total Fires Caused by Humans"] = "Not Available"
+            WildfireResponse["Total Fires Caused by Nature"] = "Not Available"
 
         return jsonify(WildfireResponse)
 
@@ -247,7 +268,7 @@ def create_app(config=None):
     @app.route("/wildfire/stateonly", methods=['GET'])
     def WildFireState():
         state = request.args.get("location").strip("+")
-        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOState%20%3D%20'US-"+state+"'%20AND%20%20(DailyAcres >= 10)%20&outFields=IncidentName,DailyAcres,ContainmentDateTime,ControlDateTime,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
+        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOState%20%3D%20'US-"+state+"'%20AND%20%20(DailyAcres >= 10)%20&outFields=IncidentName,DailyAcres,ContainmentDateTime,ControlDateTime,FireDiscoveryDateTime,FireOutDateTime,FireCause&returnGeometry=false&outSR=4326&f=json"
         print(url)
         response_API = requests.get(url)
         
@@ -265,6 +286,8 @@ def create_app(config=None):
         longestBurningFire(output, True)
         #average duration
         averageFireDuration(output, True)
+        #fire cause
+        fireCause(output, True)
 
         return jsonify(WildfireStateResponse)
         
