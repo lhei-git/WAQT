@@ -127,8 +127,11 @@ function CurrentAQI({ lat, lng }: Props) {
             alignItems="center"
           >
             {data.map((item) => (
-              <Grid item xs={1} key={item.ParameterName}>
-                <Card style={{backgroundColor: (item.Category.Name == "Good") ? 'green' : (item.Category.Name == "Moderate" ? 'yellow' : 'red')}}>
+              <Grid 
+              key={item.ParameterName}
+              xs={3}
+              >
+                <Card style={{backgroundColor: (item.Category.Name == "Good") ? 'green' : (item.Category.Name == "Moderate" ? 'yellow' : 'red'), textAlign: "center"}}>
                   <CardHeader
                     title={item.ParameterName}
                     style={{color: (item.Category.Name == "Good") ? 'white' : (item.Category.Name == "Moderate" ? 'black' : 'white')}}
