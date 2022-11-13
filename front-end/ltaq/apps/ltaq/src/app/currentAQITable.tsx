@@ -2,23 +2,39 @@
 // Use this as an example for other tables
 // see airnow.py for the endpoint 
 import { useEffect, useRef, useState } from "react";
-import styles from "./app.module.css";
+import "./aqi.module.css";
 import axios from "axios"
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Modal from '@mui/material/Modal';
+import WbSunnyIcon from '@mui/icons-material/WbSunny';
+import LaunchIcon from '@mui/icons-material/Launch';
+import HelpIcon from '@mui/icons-material/Help';
 import {
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalTitle,
-} from '@react-ui-org/react-ui';
+  Grid,
+  Card,
+  CardContent,
+  Typography,
+  CardHeader,
+  CardActions
+} from "@material-ui/core/";
 
 interface Props {
   lat: number;
   lng: number;
 }
+
+const modalStyle = {
+  position: 'absolute' as 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 
 let highestAqi = -1
 //This returns a table from the wildfire API
@@ -27,7 +43,9 @@ function CurrentAQI({ lat, lng }: Props) {
   if (lng < 0) {
     lng = lng * -1;
   }
-  const [modal, openModal] = useState(false)
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   const modalClose = useRef()
   //request to get data from your python file:
   const [data, setData] = useState<any[]>([]);
@@ -61,7 +79,7 @@ function CurrentAQI({ lat, lng }: Props) {
     return (
       <>
         <div>
-          <h1><i className="fa fa-sun-o" aria-hidden="true"></i> Current AQI: {
+          <h1><WbSunnyIcon /> Current AQI: {
             (highestAqi == 0) ? "Good" :
               (highestAqi == 1) ? "Moderate" :
                 (highestAqi == 2) ? "Unhealthy for Sensitive Groups" :
@@ -69,71 +87,64 @@ function CurrentAQI({ lat, lng }: Props) {
                     (highestAqi == 4) ? "Very Unhealthy" :
                       (highestAqi == 5) ? "Hazardous" : "Not Available"
           }
-          <Button
-            label={<sup><i className="fa fa-question-circle-o" aria-hidden="true"></i></sup>}
-            onClick={() => openModal(true)}
-            priority="outline"
-          />
+            <Button onClick={handleOpen}>{<HelpIcon />}</Button>
+
           </h1>
-        </div>
-        <div>
-          {modal && (
-            <Modal
-              closeButton={modalClose}
-              style={{
-                position: 'absolute',
-                border: '2px solid #000',
-                backgroundColor: 'white',
-                boxShadow: '2px solid black',
-                height: 250,
-                width: 500,
-                margin: 'auto'
-              }}
-            >
-              <ModalHeader>
-                <ModalTitle>Current AQI Information:</ModalTitle>
-                <ModalCloseButton onClick={() => openModal(false)} />
-              </ModalHeader>
-              <ModalBody>
-                <ModalContent>
-                  <p>
-                    {(highestAqi == 0) ? "Good AQI is 0 - 50. Air quality is considered satisfactory, and air pollution poses little or no risk." :
-                      (highestAqi == 1) ? "Moderate AQI is 51 - 100. Air quality is acceptable; however, for some pollutants there may be a moderate health concern for a very small number of people. For example, people who are unusually sensitive to ozone may experience respiratory symptoms." :
-                        (highestAqi == 2) ? "Unhealthy for Sensitive Groups AQI is 101 - 150. Although general public is not likely to be affected at this AQI range, people with lung disease, older adults and children are at a greater risk from exposure to ozone, whereas persons with heart and lung disease, older adults and children are at greater risk from the presence of particles in the air." :
-                          (highestAqi == 3) ? "Unhealthy AQI is 151 - 200. Everyone may begin to experience some adverse health effects, and members of the sensitive groups may experience more serious effects." :
-                            (highestAqi == 4) ? "Very Unhealthy AQI is 201 - 300. This would trigger a health alert signifying that everyone may experience more serious health effects." :
-                              (highestAqi == 5) ? "Hazardous AQI greater than 300. This would trigger health warnings of emergency conditions. The entire population is more likely to be affected." : "Current AQI information is not available at this time."}
-                  </p>
-                </ModalContent>
-              </ModalBody>
-              <ModalFooter>
-                <Button
-                  label="Close"
-                  onClick={() => openModal(false)}
-                  priority="outline"
-                  ref={modalClose}
-                />
-              </ModalFooter>
-            </Modal>
-          )}
+          <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box sx={modalStyle}>
+              <Typography id="modal-modal-title" variant="h6" component="h2">
+                Current AQI Information:
+              </Typography>
+              <Typography id="modal-modal-description">
+                {(highestAqi == 0) ? "Good AQI is 0 - 50. Air quality is considered satisfactory, and air pollution poses little or no risk." :
+                  (highestAqi == 1) ? "Moderate AQI is 51 - 100. Air quality is acceptable; however, for some pollutants there may be a moderate health concern for a very small number of people. For example, people who are unusually sensitive to ozone may experience respiratory symptoms." :
+                    (highestAqi == 2) ? "Unhealthy for Sensitive Groups AQI is 101 - 150. Although general public is not likely to be affected at this AQI range, people with lung disease, older adults and children are at a greater risk from exposure to ozone, whereas persons with heart and lung disease, older adults and children are at greater risk from the presence of particles in the air." :
+                      (highestAqi == 3) ? "Unhealthy AQI is 151 - 200. Everyone may begin to experience some adverse health effects, and members of the sensitive groups may experience more serious effects." :
+                        (highestAqi == 4) ? "Very Unhealthy AQI is 201 - 300. This would trigger a health alert signifying that everyone may experience more serious health effects." :
+                          (highestAqi == 5) ? "Hazardous AQI greater than 300. This would trigger health warnings of emergency conditions. The entire population is more likely to be affected." : "Current AQI information is not available at this time."}
+
+              </Typography>
+            </Box>
+          </Modal>
         </div>
         <div>
 
-          {data.map((item, index) => (
-            <div className="w3-quarter w3-margin-right	">
-              <div className="w3-container" style={{
-                backgroundColor: (item.Category.Name == "Good") ? 'green' : (item.Category.Name == "Moderate" ? 'yellow' : 'red'),
-                color: (item.Category.Name == "Good") ? 'white' : (item.Category.Name == "Moderate" ? 'black' : 'white'),
-              }}>
-                <div className="w3-left"><h1>{item.ParameterName}</h1></div>
-                <div className="w3-center">
-                  <h1>{item.AQI}</h1>
-                </div>
+          <Grid
+            container
+            spacing={2}
+            
+            direction="row"
+            justify="center"
+            alignItems="center"
+          >
+            {data.map((item) => (
+              <Grid item xs={1} key={item.ParameterName}>
+                <Card style={{backgroundColor: (item.Category.Name == "Good") ? 'green' : (item.Category.Name == "Moderate" ? 'yellow' : 'red')}}>
+                  <CardHeader
+                    title={item.ParameterName}
+                    style={{color: (item.Category.Name == "Good") ? 'white' : (item.Category.Name == "Moderate" ? 'black' : 'white')}}
+                  />
+                  <CardContent
+                  style={{color: (item.Category.Name == "Good") ? 'white' : (item.Category.Name == "Moderate" ? 'black' : 'white')}}>
+                    <Typography variant="h4">
+                    {item.AQI}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
 
-              </div>
-            </div>
-          ))
-          }
+        </div>
+        <div>
+          <br/>
+        <p> <a href = "https://www.airnow.gov/"> Source: Air Now <LaunchIcon fontSize="small"/></a></p>
+        <p> <a href = "https://www.airnow.gov/aqi/aqi-basics/"> More Information on AQI <LaunchIcon fontSize="small"/></a></p>
         </div>
 
 
