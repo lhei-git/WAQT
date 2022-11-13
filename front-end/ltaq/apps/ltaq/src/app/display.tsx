@@ -25,6 +25,7 @@ import Nav from './nav';
 import axios from 'axios';
 import CurrentAQI from './currentAQITable';
 import ActiveFiresTable from './activeFireTable';
+import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import fire from './Fire Icon.jpeg';
 import FireStatsTable from './fireStatsTable';
 import AverageGraph from './AvgGraph';
@@ -165,45 +166,46 @@ export default function App() {
             Print
           </button>
         </div>
-        <h2>
-          <b>
-            <i className="fa fa-location-arrow"></i> {val}
-          </b>
-        </h2>
-        <div className="w3-row-padding w3-margin-bottom">
-          <CurrentAQI lat={lat} lng={lng} />
-        </div>
-        <div className="w3-panel">
-          <div className="w3-row-padding">
-            <div className="w3-twothird">
-              <div className="map">
-                <GoogleMap
-                  options={options} //Google Map render options
-                  zoom={10} //Level of Zoom when user first loads the page
-                  center={location}
-                  mapContainerClassName="map-container" //Map CSS
-                  // onLoad={onLoad} //upon loading, call the onLoad function
-                >
-                  {/* If there is a location, then pass in the location, which is a latlngliteral, to place a marker on the location */}
-                  {location && (
-                    <>
-                      <Marker position={location} />
-                    </>
-                  )}
-                  {data.map((item, index) => (
-                    <Marker
-                      key={index}
-                      visible={true}
-                      position={{
-                        lat: Number(item.irwin_InitialLatitude),
-                        lng: Number(item.irwin_InitialLongitude),
-                      }}
-                      icon="https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
-                    />
-                  ))}
-                </GoogleMap>
-              </div>
-              <div className="pagebreak"> </div> {/*For page printing*/}
+      <Nav />
+      <h2 ><b><i className="fa fa-location-arrow"></i> {val}</b></h2>
+      
+      <div className="w3-row-padding  w3-margin-bottom ">
+        <CurrentAQI
+          lat={lat}
+          lng={lng}
+        />
+      </div>
+      <div className="w3-panel">
+        <div className="w3-row-padding">
+        <h2><LocalFireDepartmentIcon /> Active Wildfires</h2>
+          <div className="w3-twothird">
+          
+            <div className="map">
+              <GoogleMap
+                options={options} //Google Map render options
+                zoom={10} //Level of Zoom when user first loads the page
+                center={location}
+                mapContainerClassName="map-container" //Map CSS
+              // onLoad={onLoad} //upon loading, call the onLoad function
+              >
+                {/* If there is a location, then pass in the location, which is a latlngliteral, to place a marker on the location */}
+                {location && (
+                  <>
+                    <Marker position={location} />
+                  </>
+                )}
+                {data.map((item, index) => (
+                  <Marker
+                    key={index}
+                    visible={true}
+                    position={{
+                      lat: Number(item.irwin_InitialLatitude),
+                      lng: Number(item.irwin_InitialLongitude)
+                    }}
+                    icon="https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
+                  />
+                ))}
+              </GoogleMap>
             </div>
             <div className="w3-third">
               <ActiveFiresTable county={countyFormatted} state={splitVals} />
@@ -219,6 +221,26 @@ export default function App() {
         <AirQualityGraphs county={countyFormatted} state={splitVals} />
         <div className="pagebreak"> </div> {/*For page printing*/}
         <AcresPerMonth county={countyFormatted} state={splitVals} />
+      </div>
+      <div className="w3-container w3-margin-bottom">
+        <FireStatsTable
+          county={countyFormatted}
+          state={splitVals}
+          fullName={val}
+        />
+      </div>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <div className="w3-container w3-margin-bottom">
+        <AirQualityGraphs 
+          county={countyFormatted}
+          state={splitVals}
+        />
+      </div>
       </div>
     </>
   );

@@ -31,9 +31,7 @@ function ActiveFiresTable({county, state}: Props) {
   }else if(data){
     return (
       <>
-      <h3>Recent Wildfires</h3>
-      
-      <div className={styles['row']}>
+      <div className={styles['activeRow']}>
       <div className={styles['column']}>
       <tr>
             {/* Headers */}
