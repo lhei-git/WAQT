@@ -19,7 +19,7 @@ WildfireTotalResponse = {}
 WildfireAcres = {}
 WildfireCount = {}
 
-def averageMonth(dateStart, dateEnd, month, year, output, state):
+def averageMonth(dateStart, dateEnd, month, year, output):
     totalDays = 0
     amountOfFiresWithStartEndDates = 0
     for j in range(len(output['features'])):
@@ -31,7 +31,10 @@ def averageMonth(dateStart, dateEnd, month, year, output, state):
                 startDateConvert = datetime.datetime.fromtimestamp(int(start[:-3])) 
                 endDateConvert = datetime.datetime.fromtimestamp(int(end[:-3]))
                 timeDifference = dateutil.relativedelta.relativedelta (endDateConvert, startDateConvert)
+            #print(timeDifference.days)
                 totalDays = totalDays + timeDifference.days
+                totalDays = totalDays + (timeDifference.months * 30)
+                totalDays = totalDays + (timeDifference.years * 365)
                 amountOfFiresWithStartEndDates = amountOfFiresWithStartEndDates + 1
         #fire containment
         elif(str(output['features'][j]['attributes']['ContainmentDateTime']) != "None"):
@@ -42,41 +45,41 @@ def averageMonth(dateStart, dateEnd, month, year, output, state):
                 endDateConvert = datetime.datetime.fromtimestamp(int(end[:-3]))
                 timeDifference = dateutil.relativedelta.relativedelta (endDateConvert, startDateConvert)
                 totalDays = totalDays + timeDifference.days
+                totalDays = totalDays + (timeDifference.months * 30)
+                totalDays = totalDays + (timeDifference.years * 365)
                 amountOfFiresWithStartEndDates = amountOfFiresWithStartEndDates + 1
         #fire control 
         elif(output['features'][j]['attributes']['ControlDateTime']):
             start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
             end = str(output['features'][j]['attributes']['ControlDateTime'])
             if (int(end[:-3]) < dateEnd and int(start[:-3]) > dateStart):
+            #print(start)
                 startDateConvert = datetime.datetime.fromtimestamp(int(start[:-3])) 
                 endDateConvert = datetime.datetime.fromtimestamp(int(end[:-3]))
                 timeDifference = dateutil.relativedelta.relativedelta (endDateConvert, startDateConvert)
                 totalDays = totalDays + timeDifference.days
+                totalDays = totalDays + (timeDifference.months * 30)
+                totalDays = totalDays + (timeDifference.years * 365)            
                 amountOfFiresWithStartEndDates = amountOfFiresWithStartEndDates + 1  
 
-        if(amountOfFiresWithStartEndDates != 0):
-            WildfireAvgRes[month + " " + str(year)] = (totalDays/amountOfFiresWithStartEndDates)
+    if(amountOfFiresWithStartEndDates !=0 and totalDays != 0 ):
+        if(round(float(totalDays/amountOfFiresWithStartEndDates)!=0)):
+            WildfireAvgRes[month + " " + str(year)] = str(round(float(totalDays/amountOfFiresWithStartEndDates)))
+
        
 def acresMonth(dateStart, dateEnd, month, year, output):
     sum = 0
-    quarter = 1
-    while quarter <= 4:
-        for j in range(len(output['features'])):
-            print(str(output['features'][j]['attributes']['DailyAcres']))
-            if (str(output['features'][j]['attributes']['DailyAcres'])!= "None"):
-                str(output['features'][j]['attributes']['DailyAcres'])
-                start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                end = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-            if (int(end[:-3]) < dateEnd and int(start[:-3]) > dateStart):
-                sum = sum + int(output['features'][j]['attributes']['DailyAcres'])
+    for j in range(len(output['features'])):
+         print(str(output['features'][j]['attributes']['DailyAcres']))
+         if (str(output['features'][j]['attributes']['DailyAcres'])!= "None"):
+             str(output['features'][j]['attributes']['DailyAcres'])
+             start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
+             end = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
+             if (int(end[:-3]) < dateEnd and int(start[:-3]) > dateStart):
+                 sum = sum + int(output['features'][j]['attributes']['DailyAcres'])
 
-                j = j + 1
-            else:
-                j = j + 1
-        else: 
-            j = j + 1
-
-    WildfireAcres[month + " " + str(year)] = sum
+    if(sum !=0):
+        WildfireAcres[month + " " + str(year)] = sum
 
 def countMonth(dateStart, dateEnd, month, year, output):
     total = 0
@@ -94,8 +97,8 @@ def countMonth(dateStart, dateEnd, month, year, output):
                     j = j + 1
             else: 
                 j = j + 1
-
-    WildfireCount[month + " " + str(year)] = total
+    if(total !=0):
+        WildfireCount[month + " " + str(year)] = total
 
 #Time converter for converting UNIX Time
 def timeConverter(timeToConvert):
@@ -384,13 +387,22 @@ def create_app(config=None):
         month = 1
         year = 2015
         while (endYear >= year):
-            averageMonth(dateStart, dateStart + 2764800, MonthDict[month], year, output, state)
-            dateStart += 2764800
-            if(month == 12): 
-                month = 1 
-                year = year + 1
-            else:
+            if(month % 2 != 0):
+                averageMonth(dateStart, dateStart + 2678400, MonthDict[month], year, output)
+                dateStart += 2678400
                 month = month + 1
+            elif(month == 2):
+                averageMonth(dateStart, dateStart + 2419200, MonthDict[month], year, output)
+                dateStart += 2419200
+                month = month + 1
+            else:
+                averageMonth(dateStart, dateStart + 2592000, MonthDict[month], year, output)
+                dateStart += 2592000
+                if(month == 12): 
+                    month = 1 
+                    year = year + 1
+                else:
+                    month = month + 1
 
         print(WildfireAvgRes)
         return json.dumps(WildfireAvgRes)
@@ -424,13 +436,23 @@ def create_app(config=None):
         month = 1
         year = 2015
         while (endYear >= year):
-            acresMonth(dateStart, dateStart + 2764800, MonthDict[month], year, output)
-            dateStart += 2764800
-            if(month == 12): 
-                month = 1 
-                year = year + 1
-            else:
+            if(month % 2 != 0):
+                acresMonth(dateStart, dateStart + 2678400, MonthDict[month], year, output)
+                dateStart += 2678400
                 month = month + 1
+            elif(month == 2):
+                acresMonth(dateStart, dateStart + 2419200, MonthDict[month], year, output)
+                dateStart += 2419200
+                month = month + 1
+            else:
+                acresMonth(dateStart, dateStart + 2592000, MonthDict[month], year, output)
+                dateStart += 2592000
+                if(month == 12): 
+                    month = 1 
+                    year = year + 1
+                else:
+                    month = month + 1
+
     
         print(WildfireAcres)
         return json.dumps(WildfireAcres)
@@ -467,13 +489,22 @@ def create_app(config=None):
         month = 1
         year = 2015
         while (endYear >= year):
-            countMonth(dateStart, dateStart + 2764800, MonthDict[month], year, output)
-            dateStart += 2764800
-            if(month == 12): 
-                month = 1 
-                year = year + 1
-            else:
+            if(month % 2 != 0):
+                countMonth(dateStart, dateStart + 2678400, MonthDict[month], year, output)
+                dateStart += 2678400
                 month = month + 1
+            elif(month == 2):
+                countMonth(dateStart, dateStart + 2419200, MonthDict[month], year, output)
+                dateStart += 2419200
+                month = month + 1
+            else:
+                countMonth(dateStart, dateStart + 2592000, MonthDict[month], year, output)
+                dateStart += 2592000
+                if(month == 12): 
+                    month = 1 
+                    year = year + 1
+                else:
+                    month = month + 1
     
         print(WildfireCount)
         return json.dumps(WildfireCount)
@@ -508,21 +539,27 @@ def create_app(config=None):
     def top10Duration():
         location = request.args.get("location").strip("+")
         state = request.args.get("state").strip("+")
-        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND%20%20(DailyAcres >= 0.1)%20&outFields=IncidentName,DailyAcres&returnGeometry=false&outSR=4326&f=json"
+        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND%20%20(DailyAcres >= 0.1)%20&outFields=IncidentName,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
         print(url)
         response_API = requests.get(url)
         output = json.loads(response_API.text)
         top10List = []
         top10 = {}
-        
+        totalDays = 0
+        amountOfFiresWithStartEndDates = 0
+        copyDictionary = output['features'].copy()
+        for i in range(len(copyDictionary)):
+            duration= 0
+            name = ""
+            if(str(copyDictionary[i]['attributes']['FireDiscoveryDateTime'])!= "None" and str(copyDictionary[i]['attributes']['FireOutDateTime'])!= "None"):
+                start = str(copyDictionary[i]['attributes']['FireDiscoveryDateTime'])
+                end = str(copyDictionary[i]['attributes']['FireOutDateTime'])
+                duration = int(end[:-3]) - int(start[:-3])
+                name = (copyDictionary[i]['attributes']['IncidentName'])
+                top10[round(duration/86400)] = name
 
-        sortedAvg = sorted(
-        output["features"], key=lambda x: x['attributes']["FireDiscoveryDateTime"], reverse=True
-        
-        )
+        return json.dumps(OrderedDict(sorted(top10.items(), reverse=True)))
 
-        return sortedAvg[:10]
-        
         
 
     return app
