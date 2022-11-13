@@ -1,20 +1,13 @@
 import { useLoadScript } from '@react-google-maps/api';
 import './app.css';
-import {
-  useState,
-  useMemo,
-  useCallback,
-  useRef,
-  useEffect,
-  useLayoutEffect,
-} from 'react';
+import { useState, useMemo, useCallback, useRef, useEffect, useLayoutEffect } from 'react';
 import {
   GoogleMap,
   Marker,
   DirectionsRenderer,
   Circle,
   MarkerClusterer,
-  InfoWindow,
+  InfoWindow
 } from '@react-google-maps/api';
 import usePlacesAutocomplete, {
   GeocodeResult,
@@ -29,7 +22,7 @@ import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import fire from './Fire Icon.jpeg';
 import FireStatsTable from './fireStatsTable';
 import AverageGraph from './AvgGraph';
-import { AxiosResponse } from 'axios';
+import { AxiosResponse } from "axios"
 import AirQualityGraphs from './airqualitygraphs';
 import AcresPerMonth from './acresPerMonth';
 
@@ -41,8 +34,10 @@ let lat: number;
 let lng: number;
 let countyFormatted;
 let splitVal;
+
 let splitVals;
 let val;
+
 let mapUrl;
 
 //Typescript variables
@@ -91,14 +86,15 @@ export default function App() {
     }
 
     splitVals = splitVal[1];
-    if (val?.includes('County')) {
-      console.log(splitVal[0].replace(' County', ''));
-      countyFormatted = splitVal[0].replace(' County', '');
+    if (val?.includes("County")) {
+      console.log(splitVal[0].replace(" County", ""))
+      countyFormatted = splitVal[0].replace(" County", "")
     } else {
       const county = localStorage.getItem('county')?.slice(0, -7);
-      countyFormatted = county!.replace(/ /g, '+');
-      console.log(countyFormatted);
+      countyFormatted = county!.replace(/ /g, "+");
+      console.log(countyFormatted)
     }
+
 
     //Grab lat and lng from local storage
     const lattitude = localStorage.getItem('lat');
@@ -109,11 +105,11 @@ export default function App() {
     Number(lng);
     setLocation({ lat, lng });
 
-    mapUrl =
-      'http://localhost:8001/mapmarkers?county=' +
+    mapUrl = 'http://localhost:8001/mapmarkers?county=' +
       countyFormatted +
       '&state=' +
       splitVals;
+
   }, []);
 
   useEffect(() => {
@@ -142,7 +138,7 @@ export default function App() {
     const json = await getData();
     setMarkerData(json);
   }
-  useEffect(() => {
+  useEffect(() => { 
     fetchMarkerData();
   }, []);
 
@@ -166,7 +162,7 @@ export default function App() {
             Print
           </button>
         </div>
-      <Nav />
+      
       <h2 ><b><i className="fa fa-location-arrow"></i> {val}</b></h2>
       
       <div className="w3-row-padding  w3-margin-bottom ">
@@ -207,20 +203,14 @@ export default function App() {
                 ))}
               </GoogleMap>
             </div>
-            <div className="w3-third">
-              <ActiveFiresTable county={countyFormatted} state={splitVals} />
-            </div>
-            <div className="pagebreak"> </div> {/*For page printing*/}
+          </div>
+          <div className="w3-third">
+            <ActiveFiresTable
+              county={countyFormatted}
+              state={splitVals}
+            />
           </div>
         </div>
-        <div className="pagebreak"> </div> {/*For page printing*/}
-        <div className="w3-container">
-          <FireStatsTable county={countyFormatted} state={splitVals} />
-        </div>
-        <div className="pagebreak"> </div> {/*For page printing*/}
-        <AirQualityGraphs county={countyFormatted} state={splitVals} />
-        <div className="pagebreak"> </div> {/*For page printing*/}
-        <AcresPerMonth county={countyFormatted} state={splitVals} />
       </div>
       <div className="w3-container w3-margin-bottom">
         <FireStatsTable
@@ -241,7 +231,7 @@ export default function App() {
           state={splitVals}
         />
       </div>
-      </div>
+    </div>
     </>
   );
 }
