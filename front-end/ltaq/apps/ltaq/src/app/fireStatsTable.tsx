@@ -3,6 +3,7 @@ import styles from "./app.module.css";
 import axios from "axios"
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import LaunchIcon from '@mui/icons-material/Launch';
+import Grid from '@mui/material/Unstable_Grid2';
 
 //This returns a table from the wildfire API
 //returns Date, Name, Acres and Cause when available
@@ -34,7 +35,14 @@ function FireStatsTable({ county, state, fullName }: Props) {
   if (data && stateData) {
     return (
       <>
-        <h1><LocalFireDepartmentIcon fontSize="large" />Current and Historical Fire Data</h1>
+      <h1><LocalFireDepartmentIcon fontSize="large" />Current and Historical Fire Data</h1>
+        <Grid
+            container
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+          >
+        
         <div className={styles['row']}>
           <div className={styles['column']}> 
             <table>
@@ -63,6 +71,7 @@ function FireStatsTable({ county, state, fullName }: Props) {
           </div>
        
         </div>
+        </Grid>
       </>
     );
   } else {
