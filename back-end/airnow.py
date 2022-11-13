@@ -33,7 +33,7 @@ StateAbbrv = {
     "CT": "CONNECTICUT",
     "DE": "DELAWARE",
     "FL": "FLORIDA",
-    "GA ": "GEORGIA",
+    "GA": "GEORGIA",
     "HI": "HAWAII",
     "ID": "IDAHO",
     "IL": "ILLINOIS",
@@ -96,7 +96,7 @@ def extractTrendData(output, year):
                 if contains(output['Data'][i]['parameter'], "PM2.5") and contains(output['Data'][i]['quarter'], str(quarter)):
                     if(output['Data'][i]['arithmetic_mean']):
                         #print(output['Data'][i]['arithmetic_mean'])
-                        PM25Total = PM25Total + output['Data'][i]['arithmetic_mean']
+                        PM25Total = PM25Total + float(output['Data'][i]['maximum_value'])
                         PM25Count = PM25Count + 1
                         i = i + 1
                     else:
@@ -107,7 +107,7 @@ def extractTrendData(output, year):
                 if contains(output['Data'][i]['parameter'], "PM10") and contains(output['Data'][i]['quarter'], str(quarter)):
                     if(output['Data'][i]['arithmetic_mean']):
                         #print(output['Data'][i]['arithmetic_mean'])
-                        PM10Total = PM10Total + output['Data'][i]['arithmetic_mean']
+                        PM10Total = PM10Total + float(output['Data'][i]['maximum_value'])
                         PM10Count = PM10Count + 1
                         i = i + 1
                     else:
@@ -118,25 +118,22 @@ def extractTrendData(output, year):
                 if contains(output['Data'][i]['parameter'], "Ozone") and contains(output['Data'][i]['quarter'], str(quarter)):
                     if(output['Data'][i]['arithmetic_mean']):
                         #print(output['Data'][i]['arithmetic_mean'])
-                        OzoneTotal = OzoneTotal + output['Data'][i]['arithmetic_mean']
+                        OzoneTotal = OzoneTotal + float(output['Data'][i]['maximum_value'])
                         OzoneCount = OzoneCount + 1
                         i = i + 1
                     else:
                         i = i + 1
                 else:
                     i = i + 1
-            if(PM25Count != 0):
-                PM25Trends["Q"+str(quarter)+str(year)] = PM25Total / PM25Count
-            else:
-                PM25Trends["Q"+str(quarter)+str(year)] = 0
-            if(PM10Count != 0):
-                PM10Trends["Q"+str(quarter)+str(year)] = PM10Total / PM10Count
-            else:
-                PM10Trends["Q"+str(quarter)+str(year)] = 0
-            if(OzoneCount != 0):
-                OzoneTrends["Q"+str(quarter)+str(year)] = OzoneTotal / OzoneCount
-            else:
-                OzoneTrends["Q"+str(quarter)+str(year)] = 0
+            if(PM25Count != 0 and PM25Total != 0):
+                PM25Trends["Q"+str(quarter)+" "+str(year)] = PM25Total / PM25Count
+
+            if(PM10Count != 0 and PM10Total != 0):
+                PM10Trends["Q"+str(quarter)+" "+str(year)] = PM10Total / PM10Count
+
+            if(OzoneCount != 0 and OzoneTotal != 0):
+                OzoneTrends["Q"+str(quarter)+" "+str(year)] = OzoneTotal / OzoneCount
+
             
             quarter = quarter + 1
         except KeyError:
@@ -178,7 +175,7 @@ def airNowEndpoint():
         else:
             print("The file does not exist")
         #print(jsonResponse)
-        print(jsonResponse)
+        #print(jsonResponse)
         return jsonify(jsonResponse)
 
     @app.route("/trends", methods=['GET'])
@@ -189,39 +186,51 @@ def airNowEndpoint():
         #https://aqs.epa.gov/aqsweb/documents/data_api.html#quarterly
         county = request.args.get("county")
         state = request.args.get("state") 
-        with open('fips.csv', newline='') as f:
-            reader = csv.reader(f)
-            for row in reader:
-                if (contains(row[1], county) and contains(row[2], state.upper())):
-                    print(str(row[0])[-3:])
-                    countyFips = str(row[0])[-3:]
-            f.close()
-        with open('statefips.csv', newline='') as f:
-            reader = csv.reader(f)
-            for name in reader:
-                if (contains(name[0], StateAbbrv[state.upper()].capitalize())):
-                    print(str(name[3]))
-                    stateFips = str(name[3])
-            f.close
-    
-
-        today = datetime.datetime.now()
-        endYear = today.year
-        year = 2015
-        while(endYear >= year):
-            url = "https://aqs.epa.gov/data/api/quarterlyData/byCounty?email="+EMAIL+"&key="+AQS_KEY+"&param=88101,44201,81102&bdate="+str(year)+"0101&edate="+str(year)+"1231&state="+stateFips+"&county="+countyFips
-            #print(url)
-            response_API = requests.get(url)
-            output = json.loads(response_API.text)
-            extractTrendData(output, year) 
-            year = year + 1
+        try:
+            with open('fips.csv', newline='') as f:
+                reader = csv.reader(f)
+                for row in reader:
+                    if (contains(row[1], county) and contains(row[2], state.upper())):
+                        print(str(row[0])[-3:])
+                        countyFips = str(row[0])[-3:]
+                f.close()
+            with open('statefips.csv', newline='') as f:
+                reader = csv.reader(f)
+                for name in reader:
+                    if (contains(name[0], StateAbbrv[state.upper()].capitalize())):
+                        print(str(name[3]))
+                        stateFips = str(name[3])
+                f.close
         
-        AllTrends = {}
-        AllTrends["PM25"] = PM25Trends
-        AllTrends["PM10"] = PM10Trends
-        AllTrends["Ozone"] = OzoneTrends
-        return json.dumps(AllTrends)
 
+            today = datetime.datetime.now()
+            PM25Trends.clear()
+            PM10Trends.clear()
+            OzoneTrends.clear()
+            endYear = today.year
+            year = 2015
+            while(endYear >= year):
+                url = "https://aqs.epa.gov/data/api/quarterlyData/byCounty?email="+EMAIL+"&key="+AQS_KEY+"&param=88101,44201,81102&bdate="+str(year)+"0101&edate="+str(year)+"1231&state="+stateFips+"&county="+countyFips
+                print(url)
+                response_API = requests.get(url)
+                output = json.loads(response_API.text)
+                extractTrendData(output, year)  
+                year = year + 1
+            
+            AllTrends = {}
+            AllTrends["PM25"] = PM25Trends
+            AllTrends["PM10"] = PM10Trends
+            AllTrends["Ozone"] = OzoneTrends
+            return json.dumps(AllTrends)
+        except:
+            AllTrends = {}
+            PM25Trends["PM2.5"] = 0
+            PM10Trends["PM10"] = 0
+            OzoneTrends["Ozone"] = 0
+            AllTrends["PM25"] = PM25Trends
+            AllTrends["PM10"] = PM10Trends
+            AllTrends["Ozone"] = OzoneTrends
+            return json.dumps(AllTrends)
     return app
 
 
