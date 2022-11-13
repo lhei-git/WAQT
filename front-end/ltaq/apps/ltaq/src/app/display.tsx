@@ -19,6 +19,7 @@ import axios from 'axios';
 import CurrentAQI from './currentAQITable';
 import ActiveFiresTable from './activeFireTable';
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
+import PrintIcon from '@mui/icons-material/Print';
 import fire from './Fire Icon.jpeg';
 import FireStatsTable from './fireStatsTable';
 import AverageGraph from './AvgGraph';
@@ -155,11 +156,11 @@ export default function App() {
 
   return (
     <>
-      <div className="printable">
+      
         <Nav />
         <div className="printButtonContainer">
           <button className="printButton" onClick={handlePrint}>
-            Print
+            {<PrintIcon fontSize='large' />}
           </button>
         </div>
       
@@ -231,7 +232,7 @@ export default function App() {
           state={splitVals}
         />
       </div>
-    </div>
+    
     </>
   );
 }
