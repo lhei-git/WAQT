@@ -1,13 +1,20 @@
 import { useLoadScript } from '@react-google-maps/api';
 import './app.css';
-import { useState, useMemo, useCallback, useRef, useEffect, useLayoutEffect } from 'react';
+import React, {
+  useState,
+  useMemo,
+  useCallback,
+  useRef,
+  useEffect,
+  useLayoutEffect,
+} from 'react';
 import {
   GoogleMap,
   Marker,
   DirectionsRenderer,
   Circle,
   MarkerClusterer,
-  InfoWindow
+  InfoWindow,
 } from '@react-google-maps/api';
 import usePlacesAutocomplete, {
   GeocodeResult,
@@ -22,7 +29,7 @@ import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import fire from './Fire Icon.jpeg';
 import FireStatsTable from './fireStatsTable';
 import AverageGraph from './AvgGraph';
-import { AxiosResponse } from "axios"
+import { AxiosResponse } from 'axios';
 import AirQualityGraphs from './airqualitygraphs';
 import AcresPerMonth from './acresPerMonth';
 
@@ -34,10 +41,8 @@ let lat: number;
 let lng: number;
 let countyFormatted;
 let splitVal;
-
 let splitVals;
 let val;
-
 let mapUrl;
 
 //Typescript variables
@@ -73,6 +78,9 @@ export default function App() {
   const [location, setLocation] = useState<LatLngLiteral>(); //Literal object containing Lat and Long
   const [place, setPlace] = useState<string | undefined>();
   const [data, setData] = useState<any[]>([]);
+  const [infoWindowID, setInfoWindowID] = useState('');
+  const [markerData, setMarkerData] = useState<AxiosResponse | null>(null);
+
 
   //================================================================================
   //================= Grab county, lat, and lng from local storage =================
@@ -86,15 +94,14 @@ export default function App() {
     }
 
     splitVals = splitVal[1];
-    if (val?.includes("County")) {
-      console.log(splitVal[0].replace(" County", ""))
-      countyFormatted = splitVal[0].replace(" County", "")
+    if (val?.includes('County')) {
+      console.log(splitVal[0].replace(' County', ''));
+      countyFormatted = splitVal[0].replace(' County', '');
     } else {
       const county = localStorage.getItem('county')?.slice(0, -7);
-      countyFormatted = county!.replace(/ /g, "+");
-      console.log(countyFormatted)
+      countyFormatted = county!.replace(/ /g, '+');
+      console.log(countyFormatted);
     }
-
 
     //Grab lat and lng from local storage
     const lattitude = localStorage.getItem('lat');
@@ -105,11 +112,11 @@ export default function App() {
     Number(lng);
     setLocation({ lat, lng });
 
-    mapUrl = 'http://localhost:8001/mapmarkers?county=' +
+    mapUrl =
+      'http://localhost:8001/mapmarkers?county=' +
       countyFormatted +
       '&state=' +
       splitVals;
-
   }, []);
 
   useEffect(() => {
@@ -132,13 +139,12 @@ export default function App() {
     return response;
   };
 
-  const [markerData, setMarkerData] = useState<AxiosResponse | null>(null);
 
   async function fetchMarkerData() {
     const json = await getData();
     setMarkerData(json);
   }
-  useEffect(() => { 
+  useEffect(() => {
     fetchMarkerData();
   }, []);
 
@@ -162,76 +168,87 @@ export default function App() {
             Print
           </button>
         </div>
-      
-      <h2 ><b><i className="fa fa-location-arrow"></i> {val}</b></h2>
-      
-      <div className="w3-row-padding  w3-margin-bottom ">
-        <CurrentAQI
-          lat={lat}
-          lng={lng}
-        />
-      </div>
-      <div className="w3-panel">
-        <div className="w3-row-padding">
-        <h2><LocalFireDepartmentIcon /> Active Wildfires</h2>
-          <div className="w3-twothird">
-          
-            <div className="map">
-              <GoogleMap
-                options={options} //Google Map render options
-                zoom={10} //Level of Zoom when user first loads the page
-                center={location}
-                mapContainerClassName="map-container" //Map CSS
-              // onLoad={onLoad} //upon loading, call the onLoad function
-              >
-                {/* If there is a location, then pass in the location, which is a latlngliteral, to place a marker on the location */}
-                {location && (
-                  <>
-                    <Marker position={location} />
-                  </>
-                )}
-                {data.map((item, index) => (
-                  <Marker
-                    key={index}
-                    visible={true}
-                    position={{
-                      lat: Number(item.irwin_InitialLatitude),
-                      lng: Number(item.irwin_InitialLongitude)
-                    }}
-                    icon="https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
-                  />
-                ))}
-              </GoogleMap>
+
+        <h2>
+          <b>
+            <i className="fa fa-location-arrow"></i> {val}
+          </b>
+        </h2>
+
+        <div className="w3-row-padding  w3-margin-bottom ">
+          <CurrentAQI lat={lat} lng={lng} />
+        </div>
+        <div className="w3-panel">
+          <div className="w3-row-padding">
+            <h2>
+              <LocalFireDepartmentIcon /> Active Wildfires
+            </h2>
+            <div className="w3-twothird">
+              <div className="map">
+                <GoogleMap
+                  options={options} //Google Map render options
+                  zoom={10} //Level of Zoom when user first loads the page
+                  center={location}
+                  mapContainerClassName="map-container" //Map CSS
+                  // onLoad={onLoad} //upon loading, call the onLoad function
+                >
+                  {/* If there is a location, then pass in the location, which is a latlngliteral, to place a marker on the location */}
+                  {location && (
+                    <>
+                      <Marker position={location} />
+                    </>
+                  )}
+                  {data.map((item, index) => (
+                    <Marker
+                      key={index}
+                      visible={true}
+                      position={{
+                        lat: Number(item.irwin_InitialLatitude),
+                        lng: Number(item.irwin_InitialLongitude),
+                      }}
+                      icon="https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
+                      onClick={() => {
+                        setInfoWindowID(item);
+                      }}
+                    >
+                      {infoWindowID === item && (
+                        <InfoWindow>
+                          <React.Fragment>
+                            <span>Name: {item.name}</span><br/>
+                            <span>Date: {item.date}</span><br/>
+                            <span>Cause: {item.cause}</span><br/>
+                            <span>Latitude: {item.irwin_InitialLatitude}</span><br/>
+                            <span>Longitude: {item.irwin_InitialLongitude}</span>
+                          </React.Fragment>
+                        </InfoWindow>
+                      )}
+                    </Marker>
+                  ))}
+                </GoogleMap>
+              </div>
+            </div>
+            <div className="w3-third">
+              <ActiveFiresTable county={countyFormatted} state={splitVals} />
             </div>
           </div>
-          <div className="w3-third">
-            <ActiveFiresTable
-              county={countyFormatted}
-              state={splitVals}
-            />
-          </div>
+        </div>
+        <div className="w3-container w3-margin-bottom">
+          <FireStatsTable
+            county={countyFormatted}
+            state={splitVals}
+            fullName={val}
+          />
+        </div>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <div className="w3-container w3-margin-bottom">
+          <AirQualityGraphs county={countyFormatted} state={splitVals} />
         </div>
       </div>
-      <div className="w3-container w3-margin-bottom">
-        <FireStatsTable
-          county={countyFormatted}
-          state={splitVals}
-          fullName={val}
-        />
-      </div>
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <div className="w3-container w3-margin-bottom">
-        <AirQualityGraphs 
-          county={countyFormatted}
-          state={splitVals}
-        />
-      </div>
-    </div>
     </>
   );
 }
