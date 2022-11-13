@@ -214,9 +214,7 @@ def airNowEndpoint():
                 print(url)
                 response_API = requests.get(url)
                 output = json.loads(response_API.text)
-                extractTrendData(output, year) 
-            extractTrendData(output, year) 
-                extractTrendData(output, year) 
+                extractTrendData(output, year)  
                 year = year + 1
             
             AllTrends = {}
