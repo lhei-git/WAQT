@@ -41,6 +41,7 @@ function FireStatsTable({ county, state, fullName }: Props) {
             direction="row"
             justifyContent="center"
             alignItems="center"
+            paddingBottom={25}
           >
         
         <div className={styles['row']}>
@@ -48,7 +49,7 @@ function FireStatsTable({ county, state, fullName }: Props) {
             <table>
               <tr className={styles['head']}>
                 <th>Fire Statistics</th>
-                <th>{fullName}</th>
+                <th>{fullName+"*"}</th>
                 <th>{state}</th>
               </tr>
               {Object.keys(data).map((key) => {
@@ -66,7 +67,8 @@ function FireStatsTable({ county, state, fullName }: Props) {
               })}
               
             </table>
-            <p>*Based on all wildfire contained/controlled/out dates</p>
+            <p>*Includes wildfires within the location's county</p>
+            <p>**Based on all wildfire contained/controlled/out dates</p>
             <p> <a href = "https://www.nifc.gov/"> Source: National Interagency Fire Agency <LaunchIcon fontSize="small"/></a></p>
           </div>
        
