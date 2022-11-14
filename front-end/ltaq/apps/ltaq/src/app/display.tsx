@@ -32,6 +32,7 @@ import AverageGraph from './AvgGraph';
 import { AxiosResponse } from 'axios';
 import AirQualityGraphs from './airqualitygraphs';
 import AcresPerMonth from './acresPerMonth';
+import fireMarker from './fire_emoji.svg';
 
 //=================================================
 //=================== Variables ===================
@@ -80,7 +81,6 @@ export default function App() {
   const [data, setData] = useState<any[]>([]);
   const [infoWindowID, setInfoWindowID] = useState('');
   const [markerData, setMarkerData] = useState<AxiosResponse | null>(null);
-
 
   //================================================================================
   //================= Grab county, lat, and lng from local storage =================
@@ -139,7 +139,6 @@ export default function App() {
     return response;
   };
 
-
   async function fetchMarkerData() {
     const json = await getData();
     setMarkerData(json);
@@ -168,13 +167,11 @@ export default function App() {
             Print
           </button>
         </div>
-
         <h2>
           <b>
             <i className="fa fa-location-arrow"></i> {val}
           </b>
         </h2>
-
         <div className="w3-row-padding  w3-margin-bottom ">
           <CurrentAQI lat={lat} lng={lng} />
         </div>
@@ -195,7 +192,20 @@ export default function App() {
                   {/* If there is a location, then pass in the location, which is a latlngliteral, to place a marker on the location */}
                   {location && (
                     <>
-                      <Marker position={location} />
+                      <Marker
+                        position={location}
+                        onClick={() => {
+                          setInfoWindowID(val);
+                        }}
+                      >
+                      {infoWindowID === val && (
+                        <InfoWindow>
+                          <React.Fragment>
+                            <span>Search Location: {val}</span>
+                          </React.Fragment>
+                        </InfoWindow>
+                      )}
+                      </Marker>
                     </>
                   )}
                   {data.map((item, index) => (
@@ -206,7 +216,8 @@ export default function App() {
                         lat: Number(item.irwin_InitialLatitude),
                         lng: Number(item.irwin_InitialLongitude),
                       }}
-                      icon="https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
+                      // icon="https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
+                      icon={fireMarker}
                       onClick={() => {
                         setInfoWindowID(item);
                       }}
@@ -214,11 +225,17 @@ export default function App() {
                       {infoWindowID === item && (
                         <InfoWindow>
                           <React.Fragment>
-                            <span>Name: {item.name}</span><br/>
-                            <span>Date: {item.date}</span><br/>
-                            <span>Cause: {item.cause}</span><br/>
-                            <span>Latitude: {item.irwin_InitialLatitude}</span><br/>
-                            <span>Longitude: {item.irwin_InitialLongitude}</span>
+                            <span>Fire Name: {item.name}</span>
+                            <br />
+                            <span>Fire Start Date: {item.date}</span>
+                            <br />
+                            <span>Fire Cause: {item.cause}</span>
+                            <br />
+                            <span>Latitude: {item.irwin_InitialLatitude}</span>
+                            <br />
+                            <span>
+                              Longitude: {item.irwin_InitialLongitude}
+                            </span>
                           </React.Fragment>
                         </InfoWindow>
                       )}
@@ -226,12 +243,15 @@ export default function App() {
                   ))}
                 </GoogleMap>
               </div>
+              <div className="pagebreak"> </div> {/*For page printing*/}
             </div>
             <div className="w3-third">
               <ActiveFiresTable county={countyFormatted} state={splitVals} />
             </div>
+            <div className="pagebreak"> </div> {/*For page printing*/}
           </div>
         </div>
+        <div className="pagebreak"> </div> {/*For page printing*/}
         <div className="w3-container w3-margin-bottom">
           <FireStatsTable
             county={countyFormatted}
@@ -245,6 +265,7 @@ export default function App() {
         <br />
         <br />
         <br />
+        <div className="pagebreak"> </div> {/*For page printing*/}
         <div className="w3-container w3-margin-bottom">
           <AirQualityGraphs county={countyFormatted} state={splitVals} />
         </div>
