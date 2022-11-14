@@ -6,6 +6,25 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
+h2 {
+  text-align: center;
+}
+#divcontainer {
+  max-width: 100%;
+}
+#first {
+  width: 650px;
+  float: left;
+  padding-left: 200px;
+  padding-top: 50px;
+}
+#second {
+  width: 750px;
+  float: right;
+  padding-right: 200px;
+  padding-top: 50px;
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -33,12 +52,7 @@ a {
 
 .map-container {
   width: 100%;
-  height: 100vh;
-}
-
-.map {
-  width: 80%;
-  height: 100vh;
+  height: 62vh;
 }
 
 .highlight {
@@ -46,6 +60,49 @@ a {
   font-weight: bold;
 }
 
+.printButtonContainer {
+  width: 100%;
+  height: 40px;
+  position: relative;
+  /* border: 5px solid green; */
+  margin: 0 auto;
+  /* margin-left: 75%; */
+}
 
+.printButton {
+  margin: 0;
+  position: absolute;
+  /* border: 5px solid red; */
+  margin-left: 90%;
+  margin-top: 1%;
+  width: 50px;
+}
 
-body {background-color: darkgray;}
+/* @page{size:auto; margin: 5mm;} */
+
+@media print {
+  .printButton {
+    display: none;
+  }
+  .map {
+    page-break-after: always;
+  }
+  .pagebreak {
+    page-break-before: always;
+  } /* page-break-after works, as well */
+  #printable {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  html,
+  body {
+    height: 100%;
+    width: 100%;
+  }
+}
+
+body {
+  background-color: white;
+}
