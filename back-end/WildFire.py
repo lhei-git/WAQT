@@ -176,10 +176,10 @@ def averageFireDuration(output, state):
             totalDays = totalDays + (timeDifference.years * 365)            
             amountOfFiresWithStartEndDates = amountOfFiresWithStartEndDates + 1   
     if(state):
-        WildfireStateResponse["Average Fire Duration**"] = str(int(totalDays/amountOfFiresWithStartEndDates))+" Day(s)"
+        WildfireStateResponse["Average Fire Duration"] = str(int(totalDays/amountOfFiresWithStartEndDates))+" Day(s)"
         
     else:
-        WildfireResponse["Average Fire Duration**"] = str(int(totalDays/amountOfFiresWithStartEndDates))+" Day(s)"
+        WildfireResponse["Average Fire Duration"] = str(int(totalDays/amountOfFiresWithStartEndDates))+" Day(s)"
 
 def fireCause(output, state):
     humanCause = 0
@@ -263,8 +263,8 @@ def create_app(config=None):
             WildfireResponse["Current Number of Contained Fires"] = "Not Available"
             WildfireResponse["Total Acres Burned"] = "Not Available"
             WildfireResponse["Most Recent Fire"] = "Not Available"
-            WildfireResponse["Longest Wildfire Duration**"] = "Not Available"
-            WildfireResponse["Average Fire Duration*"] = "Not Available"
+            WildfireResponse["Longest Wildfire Duration"] = "Not Available"
+            WildfireResponse["Average Fire Duration"] = "Not Available"
             WildfireResponse["Total Fires Caused by Humans"] = "Not Available"
             WildfireResponse["Total Fires Caused by Nature"] = "Not Available"
 
