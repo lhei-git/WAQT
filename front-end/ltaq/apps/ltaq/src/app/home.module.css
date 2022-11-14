@@ -45,7 +45,9 @@
   font-size: 18px;
 }
 .backBody {
-    background-image: url(wildfire.jpg);
+  
+    background-image: linear-gradient(rgba(0, 0, 0, 0.2),
+    rgba(0, 0, 0, 0.2)),url(wildfire.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     margin: 0;
