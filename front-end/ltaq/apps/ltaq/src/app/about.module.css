@@ -34,8 +34,8 @@ body, h1, h2, h3, h4, h5, h6 {
     /* top: 25%; */
     /* vertical-align: middle; */
     /* height: 200px; */
-    background: rgb(204, 204, 204); /* Fallback for older browsers without RGBA-support */
-    background: rgba(204, 204, 204, 0.5);
+    background: rgb(200, 200, 200); /* Fallback for older browsers without RGBA-support */
+    background: rgba(200, 200, 200, 0.7);
   }
 
 .ol 
@@ -47,7 +47,8 @@ body, h1, h2, h3, h4, h5, h6 {
 }
 
 .backBody {
-  background-image: url(wildfire.jpg);
+  background-image: linear-gradient(rgba(0, 0, 0, 0.2),
+  rgba(0, 0, 0, 0.2)), url(wildfire.jpg);
   background-size: cover;
   background-repeat: no-repeat;
   margin: 0;
