@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './nav.module.css';
+import styles from './navDisplay.module.css';
 import * as data from './links.json';
 
 const linksString = JSON.stringify(data);

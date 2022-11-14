@@ -1,16 +1,23 @@
 .navbar {
   width: 100%;
   height: 75px;
-  background: #cb6015;
-  border-bottom: 2px solid #222;
+  /* background: #cb6015; */
+  background-color: transparent;
+  /* border-bottom: 2px solid #222; */
   display: flex;
   align-items: center;
   /* justify-content: space-between; */
+  z-index: 2;
 }
 
 .logo-container {
-    margin-left: 80px;
+    margin-left: 60px;
     color: white;
+}
+
+.logo-container a:hover {
+  text-decoration: none;
+  color: black;
 }
 
 .logo-container span {
@@ -22,7 +29,8 @@
   margin-right: 80px;
   display: flex;
   width: 300px;
-  justify-content: space-evenly;
+  margin-left: 50px;
+  justify-content: left;
   /* float: left; */
   /* position: relative; */
   /* left: 80px; */
@@ -32,12 +40,12 @@
     text-decoration: none;
     float: left;
     color: white;
-    font-size: large;
+    font-size: x-large;
 }
 
 .link a:hover {
   text-decoration: none;
-  color: blue;
+  color: black;
 }
 
 @media print {

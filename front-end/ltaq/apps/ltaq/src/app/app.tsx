@@ -4,6 +4,7 @@ import HOME from './home';
 import ABOUT from './about';
 import Nav from './nav';
 
+
 //This renders the search and greeting page of our web app
 const App = () => {
   const { isLoaded } = useLoadScript({
@@ -28,9 +29,9 @@ const App = () => {
   return (
     <>
       {/* <Location /> */}
+      <Component />
       <Nav />
       {/* <HOME /> */}
-      <Component />
       {/* <Places /> */}
     </>
   );
