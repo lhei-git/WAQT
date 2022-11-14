@@ -9,9 +9,9 @@ Chart.register(...registerables);
 //This data can be in a specific date range
 
 //TODO: Add coordinate support
-export default function AverageGraph() {
+export default function FireCountGraph() {
   const bbox = '-83.553673,42.029418,-82.871707,42.451216';
-  const url ='http://localhost:8001/wildfire/average?location=Tulare&state=california';
+  const url ='http://localhost:8001/wildfire/count?location=Tulare&state=CA';
   console.log(url);
   const [data, setData] = useState<any[]>([]);
 
@@ -26,7 +26,7 @@ export default function AverageGraph() {
           labels: Object.keys(data),
           datasets: [
             {
-              label: 'Average Fire Duration',
+              label: 'Number Of Fires (Yearly)',
               backgroundColor: ["#3e95cd"],
               data: Object.values(data),
             },
