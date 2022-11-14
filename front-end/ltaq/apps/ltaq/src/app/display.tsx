@@ -21,7 +21,7 @@ import usePlacesAutocomplete, {
   getGeocode,
   getLatLng,
 } from 'use-places-autocomplete';
-import Nav from './nav';
+import Nav from './navDisplay';
 import axios from 'axios';
 import CurrentAQI from './currentAQITable';
 import ActiveFiresTable from './activeFireTable';
@@ -160,6 +160,7 @@ export default function App() {
 
   return (
     <>
+    <div className= "backBody">
       <div className="printable">
         <Nav />
         <div className="printButtonContainer">
@@ -269,6 +270,7 @@ export default function App() {
         <div className="w3-container w3-margin-bottom">
           <AirQualityGraphs county={countyFormatted} state={splitVals} />
         </div>
+      </div>
       </div>
     </>
   );
