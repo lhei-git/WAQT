@@ -29,7 +29,6 @@ import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import PrintIcon from '@mui/icons-material/Print';
 import fire from './Fire Icon.jpeg';
 import FireStatsTable from './fireStatsTable';
-import AverageGraph from './AvgGraph';
 import { AxiosResponse } from 'axios';
 import AirQualityGraphs from './airqualitygraphs';
 import AcresPerMonth from './acresPerMonth';
