@@ -34,6 +34,7 @@ import { AxiosResponse } from 'axios';
 import AirQualityGraphs from './airqualitygraphs';
 import AcresPerMonth from './acresPerMonth';
 import fireMarker from './fire_emoji.svg';
+import WildFireGraphs from './WildfireGraphs';
 
 //=================================================
 //=================== Variables ===================
@@ -270,6 +271,9 @@ export default function App() {
         <div className="pagebreak"> </div> {/*For page printing*/}
         <div className="w3-container w3-margin-bottom">
           <AirQualityGraphs county={countyFormatted} state={splitVals} />
+        </div>
+        <div className="w3-container w3-margin-bottom">
+          <WildFireGraphs county={countyFormatted} state={splitVals} />
         </div>
       </div>
     </div>
