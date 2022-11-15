@@ -26,13 +26,14 @@ import axios from 'axios';
 import CurrentAQI from './currentAQITable';
 import ActiveFiresTable from './activeFireTable';
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
+import PrintIcon from '@mui/icons-material/Print';
 import fire from './Fire Icon.jpeg';
 import FireStatsTable from './fireStatsTable';
-import AverageGraph from './AvgGraph';
 import { AxiosResponse } from 'axios';
 import AirQualityGraphs from './airqualitygraphs';
 import AcresPerMonth from './acresPerMonth';
 import fireMarker from './fire_emoji.svg';
+import WildFireGraphs from './WildfireGraphs';
 
 //=================================================
 //=================== Variables ===================
@@ -165,7 +166,7 @@ export default function App() {
         <Nav />
         <div className="printButtonContainer">
           <button className="printButton" onClick={handlePrint}>
-            Print
+            {<PrintIcon fontSize='large' />}
           </button>
         </div>
         <h2>
@@ -270,8 +271,11 @@ export default function App() {
         <div className="w3-container w3-margin-bottom">
           <AirQualityGraphs county={countyFormatted} state={splitVals} />
         </div>
+        <div className="w3-container w3-margin-bottom">
+          <WildFireGraphs county={countyFormatted} state={splitVals} />
+        </div>
       </div>
-      </div>
+    </div>
     </>
   );
 }

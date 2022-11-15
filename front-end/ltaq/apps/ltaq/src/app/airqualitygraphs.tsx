@@ -50,7 +50,7 @@ export default function AirQualityGraphs({ county, state }: Props) {
             <div>
               <h3><b>Highest PM 2.5 Values Per Quarter</b></h3>
               <h5>Beginning Q1 2015</h5>
-              <h5>Unit of Measurement: ug/m3</h5>
+              <h5>Unit of Measurement: Micrograms/cubic meter (LC)</h5>
               <h5><a href="https://www.epa.gov/aqs">Source: Environmental Protection Agency Air Quality System <LaunchIcon fontSize="small" /></a></h5>
             </div>
             <div className={styles["graph"]}>
@@ -95,7 +95,7 @@ export default function AirQualityGraphs({ county, state }: Props) {
             <div>
               <h3><b>Highest PM 10 Values Per Quarter</b></h3>
               <h5>Beginning Q1 2015</h5>
-              <h5>Unit of Measurement: ug/m3</h5>
+              <h5>Unit of Measurement: Micrograms/cubic meter (25 C)</h5>
               <h5><a href="https://www.epa.gov/aqs">Source: Environmental Protection Agency Air Quality System <LaunchIcon fontSize="small" /></a></h5>
             </div>
             <div className={styles["graph"]}>
@@ -138,7 +138,7 @@ export default function AirQualityGraphs({ county, state }: Props) {
             <div>
               <h3><b>Highest Ozone Values Per Quarter</b></h3>
               <h5>Beginning Q1 2015</h5>
-              <h5>Unit of Measurement: ug/m3</h5>
+              <h5>Unit of Measurement: Parts per million</h5>
               <h5><a href="https://www.epa.gov/aqs">Source: Environmental Protection Agency Air Quality System <LaunchIcon fontSize="small" /></a></h5>
             </div>
             <div className={styles["graph"]}>
