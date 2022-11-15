@@ -348,7 +348,7 @@ def create_app(config=None):
         location = request.args.get("location").strip("+")
         state = request.args.get("state").strip("+")
         #url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'&outFields=FireDiscoveryDateTime,FireOutDateTime,CpxName,IsCpxChild,POOState,ControlDateTime,ContainmentDateTime,DailyAcres,DiscoveryAcres,IncidentName&outSR=4326&f=json"
-        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND%20%20(DailyAcres >= 0.1)%20&outFields=IncidentName,DailyAcres,ContainmentDateTime,ControlDateTime,FireDiscoveryDateTime,FireOutDateTime,FireCause&returnGeometry=false&outSR=4326&f=json"
+        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND%20%20(DailyAcres >= 0)%20&outFields=IncidentName,DailyAcres,ContainmentDateTime,ControlDateTime,FireDiscoveryDateTime,FireOutDateTime,FireCause&returnGeometry=false&outSR=4326&f=json"
         #print(url)
         response_API = requests.get(url)
         
@@ -363,7 +363,7 @@ def create_app(config=None):
             #total acres burned
             totalAcres(output, False)
             #most recent fire
-            getMostRecentFire(output, False)
+            #getMostRecentFire(output, False)
             #longest fire
             longestBurningFire(output, False)
             #average duration
@@ -375,7 +375,7 @@ def create_app(config=None):
             WildfireResponse["Total Fires"] = "Not Available"
             WildfireResponse["Current Number of Contained Fires"] = "Not Available"
             WildfireResponse["Total Acres Burned"] = "Not Available"
-            WildfireResponse["Most Recent Fire"] = "Not Available"
+            #WildfireResponse["Most Recent Fire"] = "Not Available"
             WildfireResponse["Longest Wildfire Duration"] = "Not Available"
             WildfireResponse["Average Fire Duration"] = "Not Available"
             WildfireResponse["Total Fires Caused by Humans"] = "Not Available"
@@ -387,7 +387,7 @@ def create_app(config=None):
     @app.route("/wildfire/stateonly", methods=['GET'])
     def WildFireState():
         state = request.args.get("location").strip("+")
-        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOState%20%3D%20'US-"+state+"'%20AND%20%20(DailyAcres >= 10)%20&outFields=IncidentName,DailyAcres,ContainmentDateTime,ControlDateTime,FireDiscoveryDateTime,FireOutDateTime,FireCause&returnGeometry=false&outSR=4326&f=json"
+        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOState%20%3D%20'US-"+state+"'%20AND%20%20(DailyAcres >= 0)%20&outFields=IncidentName,DailyAcres,ContainmentDateTime,ControlDateTime,FireDiscoveryDateTime,FireOutDateTime,FireCause&returnGeometry=false&outSR=4326&f=json"
         print(url)
         response_API = requests.get(url)
         
@@ -400,7 +400,7 @@ def create_app(config=None):
         #total acres burned
         totalAcres(output, True)
         #most recent fire
-        getMostRecentFire(output, True)
+        #getMostRecentFire(output, True)
         #longest fire
         longestBurningFire(output, True)
         #average duration
