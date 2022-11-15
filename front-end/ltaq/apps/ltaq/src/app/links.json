@@ -1,6 +1,10 @@
 {
     "links": [
         {
+            "label": "Search",
+            "href": "/home"
+        },
+        {
             "label": "About",
             "href": "/about"
         }

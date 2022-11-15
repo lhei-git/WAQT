@@ -22,42 +22,42 @@ export default function WildFireGraphs({ county, state }: Props) {
   const url5 = "http://localhost:8001/wildfire/top10Duration?location=" + county + "&state=" + state;
 
   console.log(url);
-  const [data, setData] = useState<any[]>([]);
+  const [countData, setCountData] = useState<any[]>([]);
+  const [acresData, setAcresData] = useState<any[]>([]);
+  const [top10Data, setTop10Data] = useState<any[]>([]);
+  const [averageData, setAverageData] = useState<any[]>([]);
+  const [durationData, setDurationData] = useState<any[]>([]);
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
     axios.get(url).then(response => {
-      setData(response.data);
-      setLoading(false);
-      console.log(data)
+      setCountData(response.data);
+      console.log(countData);
     });
   }, []);
   useEffect(() => {
     axios.get(url2).then(response => {
-      setData(response.data);
-      setLoading(false);
-      console.log(data)
+      setAcresData(response.data);
+      console.log(acresData)
+    });
+  }, []);
+    useEffect(() => {
+    axios.get(url4).then(response => {
+      setAverageData(response.data);
+      console.log(averageData)
     });
   }, []);
   useEffect(() => {
     axios.get(url3).then(response => {
-      setData(response.data);
-      setLoading(false);
-      console.log(data)
-    });
-  }, []);
-  useEffect(() => {
-    axios.get(url4).then(response => {
-      setData(response.data);
-      setLoading(false);
-      console.log(data)
+      setTop10Data(response.data);
+      console.log(top10Data)
     });
   }, []);
   useEffect(() => {
     axios.get(url5).then(response => {
-      setData(response.data);
+      setDurationData(response.data);
+      console.log(durationData)
       setLoading(false);
-      console.log(data)
     });
   }, []);
 
@@ -69,11 +69,11 @@ export default function WildFireGraphs({ county, state }: Props) {
 
     return (
       <>
-      {Object.keys(data["count"]).length > 1 || Object.keys(data["acres"]).length > 1 || Object.keys(data["top10"]).length > 1 || Object.keys(data["average"]).length > 1 || Object.keys(data["top10Duration"]).length > 1 ?
-      <h1><TrendingUpIcon fontSize='large' /> Historical Wildfire Measurements</h1>
+      {Object.keys(countData).length > 1 || Object.keys(acresData).length > 1 || Object.keys(averageData).length > 1 ||  Object.keys(top10Data).length > 1 || Object.keys(durationData).length > 1 ?
+      <h1><TrendingUpIcon fontSize='large' /> Historical Wildfire Trends</h1>
     : <></>}
-      
-        {Object.keys(data["count"]).length > 1 ?
+      {/* count */}
+        {Object.keys(countData).length > 1 ?
           <Grid
             container
             direction="row"
@@ -89,25 +89,36 @@ export default function WildFireGraphs({ county, state }: Props) {
 
               <Line
                 data={{
-                  labels: Object.keys(data["count"]),
+                  labels: Object.keys(countData),
                   datasets: [
                     {
-
-
-                      data: Object.values(data["count"]),
+                      data: Object.values(countData),
+                      backgroundColor: ["#3e95cd"],
+                      borderColor: ["#3e95cd"],
                     },
                   ],
                 }}
                 options={{
                   responsive: true,
-
+                  plugins: {
+                    legend: {
+                      display: false,
+                      labels: {
+                        color: 'rgb(255, 99, 132)',
+                      },
+                    },
+                    title: {
+                      display: true,
+                    },
+                  },
                 }}
               />
             </div>
 
           </Grid>
           : <></>}
-        {Object.keys(data["acres"]).length > 1 ?
+          {/* acres per month */}
+          {Object.keys(countData).length > 1 ?
           <Grid
             container
             direction="row"
@@ -115,19 +126,19 @@ export default function WildFireGraphs({ county, state }: Props) {
             alignItems="center"
           >
             <div>
-              <h3><b>Total Acres Per Month</b></h3>
+              <h3><b>Total Monthly Acres</b></h3>
               <h5>Beginning January 2015</h5>
               <h5><a href="https://data-nifc.opendata.arcgis.com">Source: National Interagency Fire Center <LaunchIcon fontSize="small" /></a></h5>
             </div>
             <div className={styles["graph"]}>
               <Line
                 data={{
-                  labels: Object.keys(data["acres"]),
+                  labels: Object.keys(acresData),
                   datasets: [
                     {
-                      label: 'Total Acres Per Month',
                       backgroundColor: ["#3e95cd"],
-                      data: Object.values(data["acres"]),
+                      borderColor: ["#3e95cd"],
+                      data: Object.values(acresData),
                     },
                   ],
                 }}
@@ -135,7 +146,7 @@ export default function WildFireGraphs({ county, state }: Props) {
                   responsive: true,
                   plugins: {
                     legend: {
-                      display: true,
+                      display: false,
                       labels: {
                         color: 'rgb(255, 99, 132)',
                       },
@@ -149,7 +160,7 @@ export default function WildFireGraphs({ county, state }: Props) {
             </div>
           </Grid>
           : <></>}
-        {Object.keys(data["top10"]).length > 1 ?
+          {Object.keys(averageData).length > 1 ?
           <Grid
             container
             direction="row"
@@ -157,20 +168,19 @@ export default function WildFireGraphs({ county, state }: Props) {
             alignItems="center"
           >
              <div>
-              <h3><b>Top 10 Fires</b></h3>
+              <h3><b>Average Monthly Fire Duration</b></h3>
               <h5>Beginning January 2015</h5>
-              <h5> Measured by total acres</h5>
               <h5><a href="https://data-nifc.opendata.arcgis.com">Source: National Interagency Fire Center <LaunchIcon fontSize="small" /></a></h5>
             </div>
             <div className={styles["graph"]}>
               <Line
                 data={{
-                  labels: Object.keys(data["top10"]),
+                  labels: Object.keys(averageData),
                   datasets: [
                     {
-                      label: 'Top 10 Fires',
                       backgroundColor: ["#3e95cd"],
-                      data: Object.values(data["top10"]),
+                      borderColor: ["#3e95cd"],
+                      data: Object.values(averageData),
                     },
                   ],
                 }}
@@ -178,7 +188,7 @@ export default function WildFireGraphs({ county, state }: Props) {
                   responsive: true,
                   plugins: {
                     legend: {
-                      display: true,
+                      display: false,
                       labels: {
                         color: 'rgb(255, 99, 132)',
                       },
@@ -192,49 +202,9 @@ export default function WildFireGraphs({ county, state }: Props) {
             </div>
           </Grid>
           : <></>}
-        {Object.keys(data["average"]).length > 1 ?
-          <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-          >
-             <div>
-              <h3><b>Average Fire Duration Per Month</b></h3>
-              <h5>Beginning January 2015</h5>
-              <h5><a href="https://data-nifc.opendata.arcgis.com">Source: National Interagency Fire Center <LaunchIcon fontSize="small" /></a></h5>
-            </div>
-            <div className={styles["graph"]}>
-              <Line
-                data={{
-                  labels: Object.keys(data["average"]),
-                  datasets: [
-                    {
-                      label: 'PM10 Highest Quartely Values',
-                      backgroundColor: ["#3e95cd"],
-                      data: Object.values(data["average"]),
-                    },
-                  ],
-                }}
-                options={{
-                  responsive: true,
-                  plugins: {
-                    legend: {
-                      display: true,
-                      labels: {
-                        color: 'rgb(255, 99, 132)',
-                      },
-                    },
-                    title: {
-                      display: true,
-                    },
-                  },
-                }}
-              />
-            </div>
-          </Grid>
-          : <></>}
-        {Object.keys(data["top10Duration"]).length > 1 ?
+        
+          {/* top 10 fires by duration */}
+          {Object.keys(durationData).length > 1 ?
           <Grid
             container
             direction="row"
@@ -242,20 +212,19 @@ export default function WildFireGraphs({ county, state }: Props) {
             alignItems="center"
           >
             <div>
-              <h3><b>Top 10 Fires</b></h3>
+              <h3><b>Top 10 Fires by Duration</b></h3>
               <h5>Beginning January 2015</h5>
-              <h5>Measured by fire duration</h5>
               <h5><a href="https://data-nifc.opendata.arcgis.com">Source: National Interagency Fire Center <LaunchIcon fontSize="small" /></a></h5>
             </div>
             <div className={styles["graph"]}>
-              <Line
+              <Bar
                 data={{
-                  labels: Object.keys(data["top10Duration"]),
+                  labels: Object.values(durationData).reverse(),
                   datasets: [
                     {
                       label: 'Top 10 Fire Duration',
                       backgroundColor: ["#3e95cd"],
-                      data: Object.values(data["top10Duration"]),
+                      data: Object.keys(durationData).reverse(),
                     },
                   ],
                 }}
@@ -263,7 +232,50 @@ export default function WildFireGraphs({ county, state }: Props) {
                   responsive: true,
                   plugins: {
                     legend: {
+                      display: false,
+                      labels: {
+                        color: 'rgb(255, 99, 132)',
+                      },
+                    },
+                    title: {
                       display: true,
+                    },
+                  },
+                }}
+              />
+            </div>
+          </Grid>
+          : <></>}
+          {/* top 10 acres */}
+        {Object.keys(top10Data).length > 1 ?
+          <Grid
+            container
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+          >
+             <div>
+              <h3><b>Top 10 Fires by Total Acres Burned</b></h3>
+              <h5>Beginning January 2015</h5>
+              <h5><a href="https://data-nifc.opendata.arcgis.com">Source: National Interagency Fire Center <LaunchIcon fontSize="small" /></a></h5>
+            </div>
+            <div className={styles["graph"]}>
+              <Bar
+                data={{
+                  labels: Object.values(top10Data).reverse(),
+                  datasets: [
+                    {
+                      label: 'Top 10 Acres',
+                      backgroundColor: ["#3e95cd"],
+                      data: Object.keys(top10Data).reverse(),
+                    },
+                  ],
+                }}
+                options={{
+                  responsive: true,
+                  plugins: {
+                    legend: {
+                      display: false,
                       labels: {
                         color: 'rgb(255, 99, 132)',
                       },
