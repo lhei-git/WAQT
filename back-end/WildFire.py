@@ -629,8 +629,8 @@ def create_app(config=None):
                 acres = int(copyDictionary[i]['attributes']['DailyAcres'])
                 name = (copyDictionary[i]['attributes']['IncidentName'])
                 top10AcresRes[acres] = name
-
-        return json.dumps(OrderedDict(sorted(top10AcresRes.items())))
+        res = dict(list(OrderedDict(sorted(top10AcresRes.items(), reverse=True)).items())[0: 10])
+        return json.dumps(res)
     
     
 
@@ -654,8 +654,8 @@ def create_app(config=None):
                 duration = int(end[:-3]) - int(start[:-3])
                 name = (copyDictionary[i]['attributes']['IncidentName'])
                 top10DurationRes[round(duration/86400)] = name
-
-        return json.dumps(OrderedDict(sorted(top10DurationRes.items())))
+        res = dict(list(OrderedDict(sorted(top10DurationRes.items(), reverse=True)).items())[0: 10])
+        return json.dumps(res)
     return app
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8001))

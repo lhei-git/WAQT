@@ -26,6 +26,7 @@
   }
   
   .links-container {
+    text-indent: 50px;
     margin-right: 80px;
     display: flex;
     width: 300px;
@@ -59,4 +60,3 @@
       display: none;
     }
   }
-  
