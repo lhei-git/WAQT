@@ -2,26 +2,40 @@
   box-sizing: border-box;
 }
 
-.row {
-  display: flex;
-  margin-left:-5px;
-  margin-right:-5px;
+.divCenter {
+  margin-left: auto;
+  margin-right: auto;
+  
 }
 
-.column {
-  flex: 50%;
-  padding: 5px;
+h2, h3 {
+  text-align: center;
+}
+
+.row {
+  display: flex;
+  height: 400px; 
+  margin-left: auto;
+  margin-right: auto;
+
+}
+
+.activeRow {
+  display: flex;
+  overflow:hidden;
+  overflow-y: scroll;
+  height: 600px; 
 }
 
 table {
   border-collapse: collapse;
   border-spacing: 0;
   width: 100%;
-  border: 1px solid #ddd;
+  font-size: larger;
 }
 
 th, td {
-  text-align: left;
+  text-align: center;
   padding: 16px;
 }
 
@@ -29,9 +43,12 @@ tr:nth-child(even) {
   background-color: #f2f2f2;
 }
 .graph {
-  position: relative; 
-  height:20vh; 
-  width:40vw;
-  margin-bottom: 150px;
+  display: flex; 
+  max-height:200px; 
+  max-width:1200px;
+  margin-bottom: 400px;
+  line-height: 1100px;  
+  width: 100%;
+  height: 100%;
 }
 

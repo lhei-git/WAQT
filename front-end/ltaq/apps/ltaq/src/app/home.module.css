@@ -14,7 +14,7 @@
 .searchArea {
   text-align: center;
   margin: auto;
-  width: 50%;
+  width: 100%;
   padding: 10px;
   /* border: 3px solid green; */
   /* margin: 0; */
@@ -31,9 +31,23 @@
   height: 35px;
   /* border: 2px solid #610000; */
 }
+.titleBackground {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #fffdfd;
+  text-align: center;
+  font-size: 50px;
+}
 
-body, h1, h2, h3, h4, h5, h6 {
-    font-family: Arial, Helvetica, sans-serif;
+.textBackground {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #ffffff;
+  text-align: center;
+  font-size: 18px;
+}
+.backBody {
+    background-image: url(heroImage.jpg);
+    background-size: cover; 
+    background-repeat: no-repeat;
   }
 
 /* .comboBox {

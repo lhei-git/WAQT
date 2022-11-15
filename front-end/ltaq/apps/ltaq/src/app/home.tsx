@@ -65,6 +65,7 @@ export default function Places() {
         {/* <PM25Graph />, */}
         {/* <Map /> */}
         <DISPLAY />
+        {/* <DISPLAY county={''} state={''} /> */}
       </div>,
       document.getElementById('root')
     );
@@ -78,10 +79,14 @@ export default function Places() {
   return (
     //Box which allows a user to search through Google Places
     <>
+      <div className={homeStyle['backBody']}>
       <div className={homeStyle['container']}>
         <div className={homeStyle['searchArea']}>
           {/* <Nav/> */}
-          <h2>Search Location</h2>
+          <h2 className={homeStyle['titleBackground']}><b>Wildfire & Air Quality Tracker</b></h2>
+          <br />
+          <p className={homeStyle['textBackground']}><b>Search for a city or county within the United States to view any available current and historical wildfire and air quality information.</b></p>
+          <br />
           {/* <div className = {homeStyle['comboBox']}> */}
           <Combobox onSelect={handleSelect}>
             {/* Search Location:  */}
@@ -90,7 +95,7 @@ export default function Places() {
               onChange={(e) => setValue(e.target.value)} //any time a user changes the value, we have to listen to that event (onChange).  set value, target being the input itself and value being the value they typed into the text box
               disabled={!ready} //disable this if it isn't ready to be used
               className={homeStyle['combobox-input']}
-              placeholder="Search location address" //place holder for text box
+              placeholder="Search for a city or county in the USA" //place holder for text box
             />
             <ComboboxPopover>
               {/* list of suggestions */}
@@ -108,7 +113,7 @@ export default function Places() {
           </Combobox>
         </div>
       </div>
-      {/* </div> */}
+      </div> 
     </>
   );
 }
