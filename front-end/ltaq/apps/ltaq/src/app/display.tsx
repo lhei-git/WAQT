@@ -38,7 +38,6 @@ import WildFireGraphs from './WildfireGraphs';
 //=================================================
 //=================== Variables ===================
 //=================================================
-
 let lat: number;
 let lng: number;
 let countyFormatted;
