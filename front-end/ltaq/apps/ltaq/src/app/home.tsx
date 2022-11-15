@@ -27,7 +27,7 @@ export default function Places() {
     clearSuggestions, //whenever they've selected one, we can remove the list of suggestions from the screen
   } = usePlacesAutocomplete({
     requestOptions: {
-      types: ['locality', 'administrative_area_level_2', 'postal_code'],
+      types: ['locality', 'administrative_area_level_2'],
       componentRestrictions: { country: 'us' },
     },
   });

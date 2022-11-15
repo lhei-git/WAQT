@@ -327,13 +327,17 @@ def create_app(config=None):
         activeDictionaryMap = {}
         county = request.args.get("county").strip("+")
         state = request.args.get("state").strip("+")
-        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Current_WildlandFire_Locations/FeatureServer/0/query?where=POOCounty%20%3D%20'"+county+"'%20AND%20POOState%20%3D%20'US-"+state+"'&outFields=InitialLongitude,InitialLatitude&returnGeometry=false&outSR=4326&f=json"
+        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Current_WildlandFire_Locations/FeatureServer/0/query?where=POOCounty%20%3D%20'"+county+"'%20AND%20POOState%20%3D%20'US-"+state+"'&outFields=InitialLongitude,InitialLatitude,POOCounty,FireDiscoveryDateTime,FireCause,IncidentName&returnGeometry=false&outSR=4326&f=json"
         print(url)
         response_API = requests.get(url)
         output = json.loads(response_API.text)
         for i in range(len(output['features'])):
+            fireStart = timeConverter(output['features'][i]['attributes']["FireDiscoveryDateTime"]).split(" ")
             activeDictionaryMap["irwin_InitialLatitude"] = output['features'][i]['attributes']["InitialLatitude"]
             activeDictionaryMap["irwin_InitialLongitude"] = output['features'][i]['attributes']["InitialLongitude"]
+            activeDictionaryMap["name"] = str(output['features'][i]['attributes']["IncidentName"]).title()
+            activeDictionaryMap["date"] = convertDate(fireStart[0])
+            activeDictionaryMap["cause"] = output['features'][i]['attributes']["FireCause"]
             currentActiveFiresMap.append(activeDictionaryMap)
             activeDictionaryMap = {} 
 
