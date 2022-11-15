@@ -16,6 +16,8 @@ WildfireRes = {}
 WildfireCount = {}
 WildfireTotalResponse = {}
 WildfireAcres = {}
+top10AcresRes = {}
+top10DurationRes = {}
 
 #Time converter for converting UNIX Time
 def timeConverter(timeToConvert):
@@ -260,7 +262,7 @@ def averageMonth(dateStart, dateEnd, month, year, output):
 def acresMonth(dateStart, dateEnd, month, year, output):
     sum = 0
     for j in range(len(output['features'])):
-         print(str(output['features'][j]['attributes']['DailyAcres']))
+         #print(str(output['features'][j]['attributes']['DailyAcres']))
          if (str(output['features'][j]['attributes']['DailyAcres'])!= "None"):
              str(output['features'][j]['attributes']['DailyAcres'])
              start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
@@ -483,6 +485,7 @@ def create_app(config=None):
         endYear = today.year
         month = 1
         year = 2015
+        WildfireAvgRes.clear()
         while (endYear >= year):
             if(month % 2 != 0):
                 averageMonth(dateStart, dateStart + 2678400, MonthDict[month], year, output)
@@ -501,7 +504,7 @@ def create_app(config=None):
                 else:
                     month = month + 1
 
-        print(WildfireAvgRes)
+        #print(WildfireAvgRes)
         return json.dumps(WildfireAvgRes)
 
     #Ahmad's Code
@@ -532,6 +535,7 @@ def create_app(config=None):
         endYear = today.year
         month = 1
         year = 2015
+        WildfireAcres.clear()
         while (endYear >= year):
             if(month % 2 != 0):
                 acresMonth(dateStart, dateStart + 2678400, MonthDict[month], year, output)
@@ -551,7 +555,7 @@ def create_app(config=None):
                     month = month + 1
 
     
-        print(WildfireAcres)
+        #print(WildfireAcres)
         return json.dumps(WildfireAcres)
 
     #Ahmad's Code
@@ -583,6 +587,7 @@ def create_app(config=None):
         endYear = today.year
         month = 1
         year = 2015
+        WildfireCount.clear()
         while (endYear >= year):
             if(month % 2 != 0):
                 countMonth(dateStart, dateStart + 2678400, MonthDict[month], year, output)
@@ -601,7 +606,7 @@ def create_app(config=None):
                 else:
                     month = month + 1
     
-        print(WildfireCount)
+        #print(WildfireCount)
         return json.dumps(WildfireCount)
     
     #Ahmad's Code
@@ -613,9 +618,9 @@ def create_app(config=None):
         print(url)
         response_API = requests.get(url)
         output = json.loads(response_API.text)
-        top10List = []
-        top10 = {}
-        sum = 0 
+        
+        top10AcresRes.clear()
+        
         copyDictionary = output['features'].copy()
         for i in range(len(copyDictionary)):
             duration= 0
@@ -623,9 +628,9 @@ def create_app(config=None):
             if(str(copyDictionary[i]['attributes']['DailyAcres'])!= "None"):
                 acres = int(copyDictionary[i]['attributes']['DailyAcres'])
                 name = (copyDictionary[i]['attributes']['IncidentName'])
-                top10[acres] = name
+                top10AcresRes[acres] = name
 
-        return json.dumps(OrderedDict(sorted(top10.items())))
+        return json.dumps(OrderedDict(sorted(top10AcresRes.items())))
     
     
 
@@ -638,10 +643,7 @@ def create_app(config=None):
         print(url)
         response_API = requests.get(url)
         output = json.loads(response_API.text)
-        top10List = []
-        top10 = {}
-        totalDays = 0
-        amountOfFiresWithStartEndDates = 0
+        top10DurationRes.clear()
         copyDictionary = output['features'].copy()
         for i in range(len(copyDictionary)):
             duration= 0
@@ -651,9 +653,9 @@ def create_app(config=None):
                 end = str(copyDictionary[i]['attributes']['FireOutDateTime'])
                 duration = int(end[:-3]) - int(start[:-3])
                 name = (copyDictionary[i]['attributes']['IncidentName'])
-                top10[round(duration/86400)] = name
+                top10DurationRes[round(duration/86400)] = name
 
-        return json.dumps(OrderedDict(sorted(top10.items())))
+        return json.dumps(OrderedDict(sorted(top10DurationRes.items())))
     return app
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8001))
