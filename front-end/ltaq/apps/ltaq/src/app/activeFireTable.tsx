@@ -5,45 +5,59 @@ import axios from "axios"
 
 //This returns a table from the wildfire API
 //returns Date, Name, Acres and Cause when available
+interface Props {
+  county: string;
+  state: string;
+}
 
-function ActiveFiresTable() {
+function ActiveFiresTable({county, state}: Props) {
   //TODO: get data from map
-  const county = 'Perry'
-  const url = 'http://localhost:8001/active?location=Trinity'
+  const url = "http://localhost:8001/active?county="+county+"&state="+state
   console.log(url)
   const [data, setData] = useState<any[]>([]);
-  const [stateData, setStateData] = useState<any[]>([]);
   const [isLoading, setLoading] = useState(true);
-
+  
   useEffect(() => {
     axios.get(url).then(response => {
-      data.push(response.data);
+      setData(response.data);
       setLoading(false);
+      console.log(data)
     });
   }, []);
 
-  
+
   if (isLoading) {
     return <div >Loading...</div>;
-  }else{
+  }else if(data){
     return (
-      
-      <div className={styles['row']}>
+      <>
+      <div className={styles['activeRow']}>
       <div className={styles['column']}>
-        <table>
-          <tr>
+      <tr>
             {/* Headers */}
             <th>Fire Name</th>
-            <th>County</th>
+            <th>Start Date</th>
+            <th>Fire Cause</th>
           </tr>
-          <tr>
-            <th>{data["0"][0].IncidentName}</th>
-            <th>{data["0"][0].POOCounty}</th>
+      {data.map((item, index) => (
+          <tr key={index}>
+            <td>{item.name}</td>
+            <td>{item.date}</td>
+            <td>{item.cause}</td>
+
           </tr>
-        </table>
+        ))
+        }
+        
       </div>
     </div>
+    </>
     );
+  }else{
+    return (
+      <h3 color="red">No active wildfires in this location </h3>
+    )
+    
   }
   
 }

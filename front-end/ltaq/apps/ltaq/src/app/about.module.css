@@ -1,0 +1,36 @@
+body, h1, h2, h3, h4, h5, h6 {
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .container {
+    position: relative;
+    height: 70px;
+    text-align: center;
+    vertical-align: middle;
+    padding-top: 40px;
+    /* border: 2px solid #610000; */
+  }
+
+  .body {
+    position: relative;
+    height: 750px;
+    /* border: 2px solid #610000; */
+
+    margin: auto;
+    width: 90%;
+    /* padding-left: 10em */
+    padding: 20px;
+    list-style-position: inside;
+    /* position: relative; */
+    /* top: 25%; */
+    /* vertical-align: middle; */
+    /* height: 200px; */
+  }
+
+.ol 
+{
+    margin: 0px;
+    padding: 0px;
+    text-indent: -2.2em;
+    margin-left: 3.4em;
+}
