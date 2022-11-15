@@ -85,7 +85,7 @@ export default function Places() {
           {/* <Nav/> */}
           <h2 className={homeStyle['titleBackground']}><b>Wildfire & Air Quality Tracker</b></h2>
           <br />
-          <p className={homeStyle['textBackground']}><b>Search for a city or county within the United States to view any available current and historical wildfire and air quality information.</b></p>
+          <p className={homeStyle['textBackground']}><b>Search for a city or county within the United States to view current and historical wildfire and air quality information.</b></p>
           <br />
           {/* <div className = {homeStyle['comboBox']}> */}
           <Combobox onSelect={handleSelect}>
