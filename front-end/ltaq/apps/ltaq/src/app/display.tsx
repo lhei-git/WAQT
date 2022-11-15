@@ -37,7 +37,6 @@ import fireMarker from './fire_emoji.svg';
 //=================================================
 //=================== Variables ===================
 //=================================================
-
 let lat: number;
 let lng: number;
 let countyFormatted;
