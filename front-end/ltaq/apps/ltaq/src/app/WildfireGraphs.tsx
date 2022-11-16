@@ -168,7 +168,7 @@ export default function WildFireGraphs({ county, state }: Props) {
             alignItems="center"
           >
              <div>
-              <h3><b>Average Monthly Fire Duration</b></h3>
+              <h3><b>Average Fire Duration (Days) In Each Month</b></h3>
               <h5>Beginning January 2015</h5>
               <h5><a href="https://data-nifc.opendata.arcgis.com">Source: National Interagency Fire Center <LaunchIcon fontSize="small" /></a></h5>
             </div>

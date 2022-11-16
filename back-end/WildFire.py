@@ -209,6 +209,15 @@ def fireCause(output, state):
         WildfireResponse["Total Fires Caused by Humans"] = humanCause
         WildfireResponse["Total Fires Caused by Nature"] = naturalCause
 
+def complex(output, state):
+    cpxCount = 0
+    for j in range(len(output['features'])):
+        if(str(output['features'][j]['attributes']['IsCpxChild']) != "None"):
+            cpxCount = cpxCount + 1
+    if(state):
+        WildfireStateResponse["Complex Wildfires"] = cpxCount
+    else:
+        WildfireResponse["Complex Wildfires"] = cpxCount
 #Ahmad's code from server.py
 #Average Month
 def averageMonth(dateStart, dateEnd, month, year, output):
@@ -348,7 +357,7 @@ def create_app(config=None):
         location = request.args.get("location").strip("+")
         state = request.args.get("state").strip("+")
         #url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'&outFields=FireDiscoveryDateTime,FireOutDateTime,CpxName,IsCpxChild,POOState,ControlDateTime,ContainmentDateTime,DailyAcres,DiscoveryAcres,IncidentName&outSR=4326&f=json"
-        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND%20%20(DailyAcres >= 0)%20&outFields=IncidentName,DailyAcres,ContainmentDateTime,ControlDateTime,FireDiscoveryDateTime,FireOutDateTime,FireCause&returnGeometry=false&outSR=4326&f=json"
+        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND%20%20(DailyAcres >= 0)%20&outFields=IncidentName,DailyAcres,ContainmentDateTime,ControlDateTime,FireDiscoveryDateTime,FireOutDateTime,FireCause,IsCpxChild&returnGeometry=false&outSR=4326&f=json"
         #print(url)
         response_API = requests.get(url)
         
@@ -370,6 +379,8 @@ def create_app(config=None):
             averageFireDuration(output, False)
             #fire cause
             fireCause(output, False)
+            #complex
+            complex(output, False)
         else:
             print("no fire history")
             WildfireResponse["Total Fires"] = "Not Available"
@@ -380,6 +391,7 @@ def create_app(config=None):
             WildfireResponse["Average Fire Duration"] = "Not Available"
             WildfireResponse["Total Fires Caused by Humans"] = "Not Available"
             WildfireResponse["Total Fires Caused by Nature"] = "Not Available"
+            WildfireResponse["Complex Wildfires"]
 
         return jsonify(WildfireResponse)
 
@@ -387,7 +399,7 @@ def create_app(config=None):
     @app.route("/wildfire/stateonly", methods=['GET'])
     def WildFireState():
         state = request.args.get("location").strip("+")
-        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOState%20%3D%20'US-"+state+"'%20AND%20%20(DailyAcres >= 0)%20&outFields=IncidentName,DailyAcres,ContainmentDateTime,ControlDateTime,FireDiscoveryDateTime,FireOutDateTime,FireCause&returnGeometry=false&outSR=4326&f=json"
+        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOState%20%3D%20'US-"+state+"'%20AND%20%20(DailyAcres >= 0)%20&outFields=IncidentName,DailyAcres,ContainmentDateTime,ControlDateTime,FireDiscoveryDateTime,FireOutDateTime,FireCause,IsCpxChild&returnGeometry=false&outSR=4326&f=json"
         print(url)
         response_API = requests.get(url)
         
@@ -407,6 +419,8 @@ def create_app(config=None):
         averageFireDuration(output, True)
         #fire cause
         fireCause(output, True)
+        #complex
+        complex(output, True)
 
         return jsonify(WildfireStateResponse)
         
