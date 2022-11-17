@@ -89,19 +89,32 @@ def totalAcres(output, state):
 def getMostRecentFire(output, state):
     #most recent fire row
     try:
-        marker = 0
-        mostRecent = output['features'][0]['attributes']['FireDiscoveryDateTime']
-        for i in range(len(output['features'])):
-            if(mostRecent < output['features'][i]['attributes']['FireDiscoveryDateTime']):
-                mostRecent = output['features'][i]['attributes']['FireDiscoveryDateTime']
-                marker = i
-                i = i + 1
-            else:
-                i = i + 1
-        mostRecentStart = timeConverter(output['features'][marker]['attributes']['FireDiscoveryDateTime']).split(" ")
         if(state):
-            WildfireStateResponse["Most Recent Fire"] = str(output['features'][marker]['attributes']['IncidentName']).title() +" (" + convertDate(mostRecentStart[0]) + " )"
+            marker = 0
+            mostRecent = output['features'][0]['attributes']['irwin_FireDiscoveryDateTime']
+            for i in range(len(output['features'])):
+                if(mostRecent < output['features'][i]['attributes']['irwin_FireDiscoveryDateTime']):
+                    mostRecent = output['features'][i]['attributes']['irwin_FireDiscoveryDateTime']
+                    marker = i
+                    i = i + 1
+                else:
+                    i = i + 1
+            mostRecentStart = timeConverter(output['features'][marker]['attributes']['irwin_FireDiscoveryDateTime']).split(" ")
+            
+            WildfireStateResponse["Most Recent Fire"] = str(output['features'][marker]['attributes']['poly_IncidentName']).title() +" (" + convertDate(mostRecentStart[0]) + " )"
+
         else:
+            marker = 0
+            mostRecent = output['features'][0]['attributes']['FireDiscoveryDateTime']
+            for i in range(len(output['features'])):
+                if(mostRecent < output['features'][i]['attributes']['FireDiscoveryDateTime']):
+                    mostRecent = output['features'][i]['attributes']['FireDiscoveryDateTime']
+                    marker = i
+                    i = i + 1
+                else:
+                    i = i + 1
+            mostRecentStart = timeConverter(output['features'][marker]['attributes']['FireDiscoveryDateTime']).split(" ")
+   
             WildfireResponse["Most Recent Fire"] = str(output['features'][marker]['attributes']['IncidentName']).title() +" (" + convertDate(mostRecentStart[0]) + " )"
     except:
         WildfireResponse["Most Recent Fire"] = "Not Available"
@@ -372,7 +385,7 @@ def create_app(config=None):
             #total acres burned
             totalAcres(output, False)
             #most recent fire
-            #getMostRecentFire(output, False)
+            getMostRecentFire(output, False)
             #longest fire
             longestBurningFire(output, False)
             #average duration
@@ -380,18 +393,18 @@ def create_app(config=None):
             #fire cause
             fireCause(output, False)
             #complex
-            complex(output, False)
+            #complex(output, False)
         else:
             print("no fire history")
             WildfireResponse["Total Fires"] = "Not Available"
             WildfireResponse["Current Number of Contained Fires"] = "Not Available"
             WildfireResponse["Total Acres Burned"] = "Not Available"
-            #WildfireResponse["Most Recent Fire"] = "Not Available"
+            WildfireResponse["Most Recent Fire"] = "Not Available"
             WildfireResponse["Longest Wildfire Duration"] = "Not Available"
             WildfireResponse["Average Fire Duration"] = "Not Available"
             WildfireResponse["Total Fires Caused by Humans"] = "Not Available"
             WildfireResponse["Total Fires Caused by Nature"] = "Not Available"
-            WildfireResponse["Complex Wildfires"]
+            #WildfireResponse["Complex Wildfires"]
 
         return jsonify(WildfireResponse)
 
@@ -405,6 +418,10 @@ def create_app(config=None):
         
         output = json.loads(response_API.text)
 
+        url2 = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Perimeters_Public/FeatureServer/0/query?where=irwin_POOState%20%3D%20'US-"+state+"'&outFields=poly_IncidentName,irwin_FireDiscoveryDateTime&returnGeometry=false&outSR=4326&f=json"
+        response_API2 = requests.get(url2)
+        mostRecentRes = json.loads(response_API2.text)
+        
         #total fires
         getTotalFiresState(state)
         #contained fires
@@ -412,7 +429,7 @@ def create_app(config=None):
         #total acres burned
         totalAcres(output, True)
         #most recent fire
-        #getMostRecentFire(output, True)
+        getMostRecentFire(mostRecentRes, True)
         #longest fire
         longestBurningFire(output, True)
         #average duration
@@ -420,7 +437,7 @@ def create_app(config=None):
         #fire cause
         fireCause(output, True)
         #complex
-        complex(output, True)
+        #complex(output, True)
 
         return jsonify(WildfireStateResponse)
         
