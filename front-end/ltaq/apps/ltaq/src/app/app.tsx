@@ -2,7 +2,7 @@ import { useLoadScript } from '@react-google-maps/api';
 import './app.css';
 import HOME from './home';
 import ABOUT from './about';
-import Nav from './nav';
+import Nav from './navHome';
 
 
 //This renders the search and greeting page of our web app
@@ -30,7 +30,7 @@ const App = () => {
     <>
       {/* <Location /> */}
       <Component />
-      <Nav />
+      {/* <Nav /> */}
       {/* <HOME /> */}
       {/* <Places /> */}
     </>
