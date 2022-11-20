@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './nav.module.css';
 import * as data from './links.json';
 import aboutStyle from './about.module.css';
-import Nav from './nav';
+import Nav from './navAbout';
 
 const About = () => {
   return (
@@ -85,6 +85,7 @@ const About = () => {
         </p>
       </body>
       </div>
+      <Nav />
     </>
   );
 };

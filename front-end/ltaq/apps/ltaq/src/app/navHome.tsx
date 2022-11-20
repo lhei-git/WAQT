@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './nav.module.css';
-import * as data from './links.json';
+import * as data from './homeLinks.json';
 
 const linksString = JSON.stringify(data);
 const links = JSON.parse(linksString).links;

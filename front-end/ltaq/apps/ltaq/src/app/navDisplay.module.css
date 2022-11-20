@@ -1,62 +1,66 @@
 .navbar {
-    width: 100%;
-    height: 75px;
-    background: #cb6015;
-    /* background-color: transparent; */
-    border-bottom: 2px solid #222;
-    display: flex;
-    align-items: center;
-    /* justify-content: space-between; */
-    z-index: 2;
+  width: 100%;
+  height: 75px;
+  background: #cb6015;
+  /* background-color: transparent; */
+  border-bottom: 2px solid #222;
+  display: flex;
+  align-items: center;
+  /* justify-content: space-between; */
+  z-index: 2;
+  position: sticky;
+  top: 0;
+}
+
+.logo-container {
+  margin-right: 30px;
+  color: white;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.logo-container a:hover {
+  text-decoration: none;
+  color: black;
+}
+
+.logo-container span {
+  font-weight: 500;
+  /* cursor: pointer; */
+}
+
+.links-container {
+  text-indent: 50px;
+  margin-right: 80px;
+  display: flex;
+  width: 300px;
+  justify-content: left;
+  /* float: left; */
+  /* position: relative; */
+  /* left: 80px; */
+}
+
+.link a {
+  text-decoration: none;
+  float: left;
+  color: white;
+  font-size: x-large;
+}
+
+.link a:hover {
+  text-decoration: none;
+  color: black;
+}
+
+@media print {
+  .navbar {
+    display: none;
   }
-  
   .logo-container {
-      margin-left: 60px;
-      color: white;
+    display: none;
   }
-  
-  .logo-container a:hover {
-    text-decoration: none;
-    color: black;
+  .logo {
+    display: none;
   }
-  
-  .logo-container span {
-    font-weight: 500;
-    /* cursor: pointer; */
-  }
-  
-  .links-container {
-    text-indent: 50px;
-    margin-right: 80px;
-    display: flex;
-    width: 300px;
-    margin-left: 50px;
-    justify-content: left;
-    /* float: left; */
-    /* position: relative; */
-    /* left: 80px; */
-  }
-  
-  .link a {
-      text-decoration: none;
-      float: left;
-      color: white;
-      font-size: x-large;
-  }
-  
-  .link a:hover {
-    text-decoration: none;
-    color: black;
-  }
-  
-  @media print {
-    .navbar {
-      display: none;
-    }
-    .logo-container {
-      display: none;
-    }
-    .logo {
-      display: none;
-    }
-  }
+}
