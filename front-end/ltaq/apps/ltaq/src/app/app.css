@@ -69,6 +69,24 @@ a {
   /* margin-left: 75%; */
 }
 
+.backBody {
+  position: relative;
+  /* height: 900px; */
+  background-image: linear-gradient(rgba(0, 0, 0, 0.2),
+  rgba(0, 0, 0, 0.2)),url(wildfire.jpg);
+  background-size: cover;
+  background-repeat: repeat;
+  margin: 0;
+  padding: 0;
+  /* z-index: -1; */
+  /* position:absolute; */
+  width:100%; 
+  height:100%;
+  /* background-size: auto; */
+  background-position: center;
+/* border: 2px solid #610000; */
+}
+
 .printButton {
   margin: 0;
   position: absolute;
@@ -76,6 +94,76 @@ a {
   margin-left: 90%;
   margin-top: 1%;
   width: 50px;
+}
+
+.currentAQI {
+  position: relative;
+  height: fit-content;
+  /* border: 2px solid #610000; */
+  /* background-color: transparent; */
+  margin: auto;
+  width: 90%;
+  padding: 20px;
+  z-index: 10;
+  /* list-style-position: inside; */
+  background: rgb(200, 200, 200); /* Fallback for older browsers without RGBA-support */
+  background: rgba(200, 200, 200, 0.7);
+}
+
+.currentActiveWildfires {
+  position: relative;
+  height: 750px;
+  /* border: 2px solid #610000; */
+  /* background-color: transparent; */
+  margin: auto;
+  width: 90%;
+  padding: 20px;
+  z-index: 10;
+  /* list-style-position: inside; */
+  background: rgb(200, 200, 200); /* Fallback for older browsers without RGBA-support */
+  background: rgba(200, 200, 200, 0.7);
+}
+
+.currentFireStatsTable {
+  position: relative;
+  height: fit-content;
+  /* border: 2px solid #610000; */
+  /* background-color: transparent; */
+  margin: auto;
+  width: 90%;
+  padding: 20px;
+  z-index: 10;
+  /* list-style-position: inside; */
+  background: rgb(200, 200, 200); /* Fallback for older browsers without RGBA-support */
+  background: rgba(200, 200, 200, 0.7);
+}
+
+.airQualityGraphs {
+  position: relative;
+  height: fit-content;
+  /* border: 2px solid #610000; */
+  /* background-color: transparent; */
+  margin: auto;
+  width: 90%;
+  padding: 20px;
+  z-index: 10;
+  /* list-style-position: inside; */
+  background: rgb(200, 200, 200); /* Fallback for older browsers without RGBA-support */
+  background: rgba(200, 200, 200, 0.7);
+}
+
+.wildfireGraphs {
+  position: relative;
+  height: fit-content;
+  /* border: 2px solid #610000; */
+  /* background-color: transparent; */
+  margin: auto;
+  width: 90%;
+  padding: 20px;
+  z-index: 10;
+  /* list-style-position: inside; */
+  background: rgb(200, 200, 200); /* Fallback for older browsers without RGBA-support */
+  background: rgba(200, 200, 200, 0.7);
 }
 
 /* @page{size:auto; margin: 5mm;} */
