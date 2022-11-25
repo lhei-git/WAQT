@@ -67,8 +67,6 @@ function FireStatsTable({ county, state, fullName }: Props) {
               })}
               
             </table>
-            <p>*Includes wildfires within the location's county</p>
-            <p>**Based on all wildfire contained/controlled/out dates</p>
             <p> <a href = "https://www.nifc.gov/"> Source: National Interagency Fire Agency <LaunchIcon fontSize="small"/></a></p>
           </div>
        

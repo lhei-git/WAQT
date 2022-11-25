@@ -2,22 +2,31 @@ body, h1, h2, h3, h4, h5, h6 {
     font-family: Arial, Helvetica, sans-serif;
   }
 
-  .container {
+  .title {
+    color: white;
     position: relative;
     height: 70px;
     text-align: center;
     vertical-align: middle;
-    padding-top: 40px;
+    padding-top: 80px;
+    padding-bottom: 80px;
+    /* opacity: 50%; */
     /* border: 2px solid #610000; */
+    font-family: Arial, Helvetica, sans-serif;
+    color: #fffdfd;
+    text-align: center;
+    font-size: 50px;
+    font-weight: bold;
   }
+
 
   .body {
     position: relative;
     height: 750px;
     /* border: 2px solid #610000; */
-
+    background-color: transparent;
     margin: auto;
-    width: 90%;
+    width: 70%;
     /* padding-left: 10em */
     padding: 20px;
     list-style-position: inside;
@@ -25,6 +34,8 @@ body, h1, h2, h3, h4, h5, h6 {
     /* top: 25%; */
     /* vertical-align: middle; */
     /* height: 200px; */
+    background: rgb(200, 200, 200); /* Fallback for older browsers without RGBA-support */
+    background: rgba(200, 200, 200, 0.7);
   }
 
 .ol 
@@ -33,4 +44,21 @@ body, h1, h2, h3, h4, h5, h6 {
     padding: 0px;
     text-indent: -2.2em;
     margin-left: 3.4em;
+}
+
+.backBody {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.2),
+  rgba(0, 0, 0, 0.2)), url(wildfire.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin: 0;
+  padding: 0;
+  z-index: -1;
+  position:absolute;
+  width:100%; 
+  height:100%;
+  /* background-size: auto; */
+  height: 100%;
+  margin-bottom:10px;
+  background-position: center;
 }
