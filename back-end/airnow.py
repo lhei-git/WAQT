@@ -88,51 +88,36 @@ def extractTrendData(output, year):
         PM25Total = 0.0
         PM10Total = 0.0
         OzoneTotal = 0.0
-        PM25Count = 0
-        PM10Count = 0
-        OzoneCount = 0
         try:
             for i in range(len(output['Data'])):
                 if contains(output['Data'][i]['parameter'], "PM2.5") and contains(output['Data'][i]['quarter'], str(quarter)):
                     if(output['Data'][i]['arithmetic_mean']):
                         #print(output['Data'][i]['arithmetic_mean'])
-                        PM25Total = PM25Total + float(output['Data'][i]['maximum_value'])
-                        PM25Count = PM25Count + 1
-                        i = i + 1
-                    else:
-                        i = i + 1
-                else:
-                    i = i + 1
+                        if(PM25Total < float(output['Data'][i]['maximum_value'])):
+                            PM25Total = float(output['Data'][i]['maximum_value'])
+
             for i in range(len(output['Data'])):
                 if contains(output['Data'][i]['parameter'], "PM10") and contains(output['Data'][i]['quarter'], str(quarter)):
                     if(output['Data'][i]['arithmetic_mean']):
                         #print(output['Data'][i]['arithmetic_mean'])
-                        PM10Total = PM10Total + float(output['Data'][i]['maximum_value'])
-                        PM10Count = PM10Count + 1
-                        i = i + 1
-                    else:
-                        i = i + 1
-                else:
-                    i = i + 1
+                        if(PM25Total < float(output['Data'][i]['maximum_value'])):
+                            PM10Total = float(output['Data'][i]['maximum_value'])
+
             for i in range(len(output['Data'])):
                 if contains(output['Data'][i]['parameter'], "Ozone") and contains(output['Data'][i]['quarter'], str(quarter)):
                     if(output['Data'][i]['arithmetic_mean']):
                         #print(output['Data'][i]['arithmetic_mean'])
-                        OzoneTotal = OzoneTotal + float(output['Data'][i]['maximum_value'])
-                        OzoneCount = OzoneCount + 1
-                        i = i + 1
-                    else:
-                        i = i + 1
-                else:
-                    i = i + 1
-            if(PM25Count != 0 and PM25Total != 0):
-                PM25Trends["Q"+str(quarter)+" "+str(year)] = PM25Total / PM25Count
+                        if(OzoneTotal < float(output['Data'][i]['maximum_value'])):
+                            OzoneTotal = float(output['Data'][i]['maximum_value'])
 
-            if(PM10Count != 0 and PM10Total != 0):
-                PM10Trends["Q"+str(quarter)+" "+str(year)] = PM10Total / PM10Count
+            if(PM25Total != 0):
+                PM25Trends["Q"+str(quarter)+" "+str(year)] = PM25Total 
 
-            if(OzoneCount != 0 and OzoneTotal != 0):
-                OzoneTrends["Q"+str(quarter)+" "+str(year)] = OzoneTotal / OzoneCount
+            if(PM10Total != 0):
+                PM10Trends["Q"+str(quarter)+" "+str(year)] = PM10Total 
+
+            if(OzoneTotal != 0):
+                OzoneTrends["Q"+str(quarter)+" "+str(year)] = OzoneTotal 
 
             
             quarter = quarter + 1

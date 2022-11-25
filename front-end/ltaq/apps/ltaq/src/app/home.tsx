@@ -27,7 +27,7 @@ export default function Places() {
     clearSuggestions, //whenever they've selected one, we can remove the list of suggestions from the screen
   } = usePlacesAutocomplete({
     requestOptions: {
-      types: ['locality', 'administrative_area_level_2', 'postal_code'],
+      types: ['locality', 'administrative_area_level_2'],
       componentRestrictions: { country: 'us' },
     },
   });
@@ -79,13 +79,13 @@ export default function Places() {
   return (
     //Box which allows a user to search through Google Places
     <>
-      <div className={homeStyle['backBody']}>
+      
       <div className={homeStyle['container']}>
         <div className={homeStyle['searchArea']}>
           {/* <Nav/> */}
           <h2 className={homeStyle['titleBackground']}><b>Wildfire & Air Quality Tracker</b></h2>
           <br />
-          <p className={homeStyle['textBackground']}><b>Search for a city or county within the United States to view any available current and historical wildfire and air quality information.</b></p>
+          <p className={homeStyle['textBackground']}><b>Search for a city or county within the United States to view current and historical wildfire and air quality information.</b></p>
           <br />
           {/* <div className = {homeStyle['comboBox']}> */}
           <Combobox onSelect={handleSelect}>
@@ -113,7 +113,7 @@ export default function Places() {
           </Combobox>
         </div>
       </div>
-      </div> 
+       
     </>
   );
 }

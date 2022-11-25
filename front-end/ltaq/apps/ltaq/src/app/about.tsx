@@ -2,11 +2,13 @@ import React from 'react';
 import styles from './nav.module.css';
 import * as data from './links.json';
 import aboutStyle from './about.module.css';
+import Nav from './nav';
 
 const About = () => {
   return (
     <>
-      <h1 className={aboutStyle['container']}>About</h1>
+    <div className={aboutStyle['backBody']}>
+      <h2 className={aboutStyle['title']}>About</h2>
       <body className={aboutStyle['body']}>
         <br />
         <p>
@@ -82,6 +84,7 @@ const About = () => {
             </div>
         </p>
       </body>
+      </div>
     </>
   );
 };
