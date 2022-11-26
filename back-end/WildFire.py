@@ -568,18 +568,18 @@ def create_app(config=None):
         output = json.loads(response_API.text)
         dateStart = 1420088400 
         MonthDict = { 
-        1 : "January",
-        2 : "February",
-        3 : "March",
+        1 : "Jan",
+        2 : "Feb",
+        3 : "Mar",
         4 : "April",
         5 : "May",
         6 : "June",
         7 : "July",
-        8 : "August",
-        9 : "September",
-        10 : "October",
-        11 : "November",
-        12 : "December"
+        8 : "Aug",
+        9 : "Sept",
+        10 : "Oct",
+        11 : "Nov",
+        12 : "Dec"
         }
         today = datetime.datetime.now()
         endYear = today.year
@@ -618,18 +618,18 @@ def create_app(config=None):
         output = json.loads(response_API.text)
         dateStart = 1420088400
         MonthDict = { 
-        1 : "January",
-        2 : "February",
-        3 : "March",
+        1 : "Jan",
+        2 : "Feb",
+        3 : "Mar",
         4 : "April",
         5 : "May",
         6 : "June",
         7 : "July",
-        8 : "August",
-        9 : "September",
-        10 : "October",
-        11 : "November",
-        12 : "December"
+        8 : "Aug",
+        9 : "Sept",
+        10 : "Oct",
+        11 : "Nov",
+        12 : "Dec"
         }
         today = datetime.datetime.now()
         endYear = today.year
@@ -670,18 +670,18 @@ def create_app(config=None):
         #WildfireTotalResponse["Total Fires"] = output["count"]
         dateStart = 1420088400
         MonthDict = { 
-        1 : "January",
-        2 : "February",
-        3 : "March",
+        1 : "Jan",
+        2 : "Feb",
+        3 : "Mar",
         4 : "April",
         5 : "May",
         6 : "June",
         7 : "July",
-        8 : "August",
-        9 : "September",
-        10 : "October",
-        11 : "November",
-        12 : "December"
+        8 : "Aug",
+        9 : "Sept",
+        10 : "Oct",
+        11 : "Nov",
+        12 : "Dec"
         }
         today = datetime.datetime.now()
         endYear = today.year
@@ -714,7 +714,7 @@ def create_app(config=None):
     def top10Acres():
         location = request.args.get("location").strip("+")
         state = request.args.get("state").strip("+")
-        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND%20%20(DailyAcres >= 0.1)%20&outFields=IncidentName,DailyAcres&returnGeometry=false&outSR=4326&f=json"
+        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND%20%20(DailyAcres >= 10)%20AND(FireDiscoveryDateTime >= DATE '2015-01-01 00:00:00')&outFields=IncidentName,FireDiscoveryDateTime,DailyAcres&returnGeometry=false&outSR=4326&f=json"
         print(url)
         response_API = requests.get(url)
         output = json.loads(response_API.text)
@@ -726,10 +726,11 @@ def create_app(config=None):
             duration= 0
             name = ""
             if(str(copyDictionary[i]['attributes']['DailyAcres'])!= "None"):
+                startYear = timeConverter(copyDictionary[i]['attributes']['FireDiscoveryDateTime']).split("-")
                 acres = int(copyDictionary[i]['attributes']['DailyAcres'])
-                name = (copyDictionary[i]['attributes']['IncidentName'])
+                name = str(copyDictionary[i]['attributes']['IncidentName']).capitalize() + " " + startYear[0]
                 top10AcresRes[acres] = name
-        res = dict(list(OrderedDict(sorted(top10AcresRes.items(), reverse=True)).items())[0: 10])
+        res = dict(list(OrderedDict(sorted(top10AcresRes.items(), reverse=True)).items()))
         return json.dumps(res)
     
     
@@ -739,7 +740,7 @@ def create_app(config=None):
     def top10Duration():
         location = request.args.get("location").strip("+")
         state = request.args.get("state").strip("+")
-        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND%20%20(DailyAcres >= 0.1)%20&outFields=IncidentName,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
+        url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND%20%20(DailyAcres >= 10)%20AND(FireDiscoveryDateTime >= DATE '2015-01-01 00:00:00')&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
         print(url)
         response_API = requests.get(url)
         output = json.loads(response_API.text)
@@ -748,13 +749,28 @@ def create_app(config=None):
         for i in range(len(copyDictionary)):
             duration= 0
             name = ""
-            if(str(copyDictionary[i]['attributes']['FireDiscoveryDateTime'])!= "None" and str(copyDictionary[i]['attributes']['FireOutDateTime'])!= "None"):
+            if(str(copyDictionary[i]['attributes']['FireDiscoveryDateTime'])!= "None" ):
                 start = str(copyDictionary[i]['attributes']['FireDiscoveryDateTime'])
-                end = str(copyDictionary[i]['attributes']['FireOutDateTime'])
-                duration = int(end[:-3]) - int(start[:-3])
-                name = (copyDictionary[i]['attributes']['IncidentName'])
-                top10DurationRes[round(duration/86400)] = name
-        res = dict(list(OrderedDict(sorted(top10DurationRes.items(), reverse=True)).items())[0: 10])
+                if(str(copyDictionary[i]['attributes']['FireOutDateTime'])!= "None"):
+                    end = str(copyDictionary[i]['attributes']['FireOutDateTime'])
+                    duration = int(end[:-3]) - int(start[:-3])
+                    startYear = timeConverter(copyDictionary[i]['attributes']['FireDiscoveryDateTime']).split("-")
+                    name = (str(copyDictionary[i]['attributes']['IncidentName']).capitalize() + " " + startYear[0])
+                    top10DurationRes[round(duration/86400)] = name
+                elif(str(copyDictionary[i]['attributes']['ContainmentDateTime'])!= "None"):
+                    end = str(copyDictionary[i]['attributes']['ContainmentDateTime'])
+                    duration = int(end[:-3]) - int(start[:-3])
+                    startYear = timeConverter(copyDictionary[i]['attributes']['FireDiscoveryDateTime']).split("-")
+                    name = (str(copyDictionary[i]['attributes']['IncidentName']).capitalize() + " " + startYear[0])
+                    top10DurationRes[round(duration/86400)] = name
+                elif(str(copyDictionary[i]['attributes']['ControlDateTime'])!= "None"):
+                    end = str(copyDictionary[i]['attributes']['ControlDateTime'])
+                    duration = int(end[:-3]) - int(start[:-3])
+                    startYear = timeConverter(copyDictionary[i]['attributes']['FireDiscoveryDateTime']).split("-")
+                    name = (str(copyDictionary[i]['attributes']['IncidentName']).capitalize() + " " + startYear[0])
+                    top10DurationRes[round(duration/86400)] = name 
+
+        res = dict(list(OrderedDict(sorted(top10DurationRes.items(), reverse=True)).items()))
         return json.dumps(res)
     return app
 if __name__ == "__main__":
