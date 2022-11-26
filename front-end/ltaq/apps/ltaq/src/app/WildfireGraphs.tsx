@@ -251,7 +251,7 @@ export default function WildFireGraphs({ county, state }: Props) {
         {Object.keys(countData).length > 1 || Object.keys(acresData).length > 1 || Object.keys(averageData).length > 1 || Object.keys(top10Data).length > 1 || Object.keys(durationData).length > 1 ?
           <>
             <h1><TrendingUpIcon fontSize='large' /> Historical Wildfire Trends</h1>
-            <div>
+            <div className={styles["divCenter"]}>
               <Button
                 aria-haspopup="true"
                 aria-expanded={open ? 'true' : undefined}
