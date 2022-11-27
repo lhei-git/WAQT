@@ -6,26 +6,25 @@
   margin-left: auto;
   margin-right: auto;
   text-align: center;
-  
 }
 
-h2, h3 {
+h2,
+h3 {
   text-align: center;
 }
 
 .row {
   display: flex;
-  height: 400px; 
+  height: 400px;
   margin-left: auto;
   margin-right: auto;
-
 }
 
 .activeRow {
   display: flex;
-  overflow:hidden;
+  overflow: hidden;
   overflow-y: scroll;
-  height: 600px; 
+  height: 600px;
 }
 
 table {
@@ -35,7 +34,8 @@ table {
   font-size: larger;
 }
 
-th, td {
+th,
+td {
   text-align: center;
   padding: 16px;
 }
@@ -44,12 +44,34 @@ tr:nth-child(even) {
   background-color: #f2f2f2;
 }
 .graph {
-  display: flex; 
-  max-height:200px; 
-  max-width:1200px;
+  display: flex;
+  max-height: 200px;
+  max-width: 1200px;
   margin-bottom: 400px;
-  line-height: 1100px;  
+  line-height: 1100px;
   width: 100%;
   height: 100%;
 }
 
+@media print {
+  .printButton {
+    display: none;
+  }
+  .map {
+    page-break-after: always;
+  }
+  .pagebreak {
+    page-break-before: always;
+  } /* page-break-after works, as well */
+  #printable {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  html,
+  body {
+    height: 100%;
+    width: 100%;
+  }
+}
