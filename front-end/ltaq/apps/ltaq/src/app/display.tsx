@@ -37,8 +37,7 @@ import { AxiosResponse } from 'axios';
 import AirQualityGraphs from './airqualitygraphs';
 import fireMarker from './fire_emoji.svg';
 import WildFireGraphs from './WildfireGraphs';
-import Footer from './footer'
-
+import Footer from './footer';
 
 //=================================================
 //=================== Variables ===================
@@ -186,6 +185,7 @@ export default function App() {
               <br />
               <CurrentAQI lat={lat} lng={lng} />
             </div>
+            <div className="pagebreak"> </div> {/*For page printing*/}
             <br />
           </div>
           <div className="w3-row-padding  w3-margin-bottom ">
@@ -268,7 +268,7 @@ export default function App() {
           </div>
           <br />
           <div className="w3-row-padding  w3-margin-bottom ">
-            <div className="pagebreak"> </div> {/*For page printing*/}
+            {/* <div className="pagebreak"> </div> For page printing */}
             <div className="activeFiresTable">
               <h2>
                 <LocalFireDepartmentIcon /> Current Wildfires
@@ -315,6 +315,7 @@ export default function App() {
             </div>
           </div>
           <br />
+          <div className="pagebreak"> </div> {/*For page printing*/}
           <div className="w3-container">
             <div className="wildfireGraphs">
               <h2>
@@ -328,7 +329,7 @@ export default function App() {
         </div>
       </>
       <br />
-      <Footer/>
+      <Footer />
     </div>
   );
 }
