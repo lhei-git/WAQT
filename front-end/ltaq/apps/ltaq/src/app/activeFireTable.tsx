@@ -28,7 +28,7 @@ function ActiveFiresTable({county, state}: Props) {
 
   if (isLoading) {
     return <div >Loading...</div>;
-  }else if(data){
+  }else if(data.length != 0){
     return (
       <>
       <div className={styles['activeRow']}>
@@ -39,7 +39,7 @@ function ActiveFiresTable({county, state}: Props) {
             <th>Start Date</th>
             <th>Fire Cause</th>
           </tr>
-      {data.map((item, index) => (
+      {data.splice(0,5).map((item, index) => (
           <tr key={index}>
             <td>{item.name}</td>
             <td>{item.date}</td>
@@ -55,7 +55,7 @@ function ActiveFiresTable({county, state}: Props) {
     );
   }else{
     return (
-      <h3 color="red">No active wildfires in this location </h3>
+      <h3 color="red">No current active wildfires </h3>
     )
     
   }
