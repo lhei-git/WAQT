@@ -1,0 +1,47 @@
+[
+    {
+        "AQI": 9,
+        "Category": {
+            "Name": "Good",
+            "Number": 1
+        },
+        "DateObserved": "2022-11-26 ",
+        "HourObserved": 7,
+        "Latitude": 34.0663,
+        "LocalTimeZone": "PST",
+        "Longitude": -118.2266,
+        "ParameterName": "O3",
+        "ReportingArea": "Central LA CO",
+        "StateCode": "CA"
+    },
+    {
+        "AQI": 89,
+        "Category": {
+            "Name": "Moderate",
+            "Number": 2
+        },
+        "DateObserved": "2022-11-26 ",
+        "HourObserved": 7,
+        "Latitude": 34.0663,
+        "LocalTimeZone": "PST",
+        "Longitude": -118.2266,
+        "ParameterName": "PM2.5",
+        "ReportingArea": "Central LA CO",
+        "StateCode": "CA"
+    },
+    {
+        "AQI": 29,
+        "Category": {
+            "Name": "Good",
+            "Number": 1
+        },
+        "DateObserved": "2022-11-26 ",
+        "HourObserved": 7,
+        "Latitude": 34.0663,
+        "LocalTimeZone": "PST",
+        "Longitude": -118.2266,
+        "ParameterName": "PM10",
+        "ReportingArea": "Central LA CO",
+        "StateCode": "CA"
+    }
+]

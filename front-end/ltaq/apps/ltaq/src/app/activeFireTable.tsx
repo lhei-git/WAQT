@@ -12,7 +12,7 @@ interface Props {
 
 function ActiveFiresTable({county, state}: Props) {
   //TODO: get data from map
-  const url = "http://localhost:8001/active?county="+county+"&state="+state
+  const url = "http://localhost:8001/mapmarkers?county="+county+"&state="+state
   console.log(url)
   const [data, setData] = useState<any[]>([]);
   const [isLoading, setLoading] = useState(true);
