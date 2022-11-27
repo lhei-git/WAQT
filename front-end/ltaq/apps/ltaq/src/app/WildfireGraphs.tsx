@@ -327,9 +327,7 @@ export default function WildFireGraphs({ county, state }: Props) {
               />
             </div>
           </Grid>
-        ) : (
-          <></>
-        )}
+        : <></>}
         <div className="pagebreak"> </div> {/*For page printing*/}
         {/* acres per month */}
         {Object.keys(countData).length > 1 ? (

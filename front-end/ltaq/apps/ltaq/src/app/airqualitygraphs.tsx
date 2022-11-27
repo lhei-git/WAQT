@@ -200,7 +200,7 @@ export default function AirQualityGraphs({ county, state }: Props) {
       <>
         {Object.keys(data['PM25']).length > 1 ||
         Object.keys(data['PM10']).length > 1 ||
-        Object.keys(data['Ozone']).length > 1 ? (
+        Object.keys(data['Ozone']).length > 1 ? 
           <>
             <div className={styles['divCenter']}>
               <Button
