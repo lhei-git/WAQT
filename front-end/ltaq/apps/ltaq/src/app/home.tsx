@@ -14,7 +14,6 @@ import '@reach/combobox/styles.css';
 import ReactDOM from 'react-dom';
 import DISPLAY from './display';
 import Nav from './navHome';
-import styles from './nav.module.css';
 import homeStyle from './home.module.css';
 
 //Pass in the setLocation prop
