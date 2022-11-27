@@ -31,7 +31,6 @@ import fire from './Fire Icon.jpeg';
 import FireStatsTable from './fireStatsTable';
 import { AxiosResponse } from 'axios';
 import AirQualityGraphs from './airqualitygraphs';
-import AcresPerMonth from './acresPerMonth';
 import fireMarker from './fire_emoji.svg';
 import WildFireGraphs from './WildfireGraphs';
 
