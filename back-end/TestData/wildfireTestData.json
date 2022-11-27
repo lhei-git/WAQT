@@ -1,0 +1,147 @@
+{
+    "objectIdFieldName": "OBJECTID",
+    "uniqueIdField": {
+        "name": "OBJECTID",
+        "isSystemMaintained": true
+    },
+    "globalIdFieldName": "GlobalID",
+    "geometryType": "esriGeometryPoint",
+    "spatialReference": {
+        "wkid": 4326,
+        "latestWkid": 4326
+    },
+    "fields": [
+        {
+            "name": "IncidentName",
+            "type": "esriFieldTypeString",
+            "alias": "Incident Name",
+            "sqlType": "sqlTypeOther",
+            "length": 50,
+            "domain": null,
+            "defaultValue": null
+        },
+        {
+            "name": "DailyAcres",
+            "type": "esriFieldTypeDouble",
+            "alias": "Incident Size",
+            "sqlType": "sqlTypeOther",
+            "domain": null
+        },
+        {
+            "name": "ContainmentDateTime",
+            "type": "esriFieldTypeDate",
+            "alias": "Containment Date Time",
+            "sqlType": "sqlTypeOther",
+            "length": 8,
+            "domain": null,
+            "defaultValue": "-2209161600000"
+        },
+        {
+            "name": "ControlDateTime",
+            "type": "esriFieldTypeDate",
+            "alias": "Control Date Time",
+            "sqlType": "sqlTypeOther",
+            "length": 8,
+            "domain": null,
+            "defaultValue": "-2209161600000"
+        },
+        {
+            "name": "FireDiscoveryDateTime",
+            "type": "esriFieldTypeDate",
+            "alias": "Fire Discovery Date Time",
+            "sqlType": "sqlTypeOther",
+            "length": 8,
+            "domain": null,
+            "defaultValue": "-2209161600000"
+        },
+        {
+            "name": "FireOutDateTime",
+            "type": "esriFieldTypeDate",
+            "alias": "Fire Out Date Time",
+            "sqlType": "sqlTypeOther",
+            "length": 8,
+            "domain": null,
+            "defaultValue": "-2209161600000"
+        },
+        {
+            "name": "FireCause",
+            "type": "esriFieldTypeString",
+            "alias": "Fire Cause",
+            "sqlType": "sqlTypeOther",
+            "length": 15,
+            "domain": null,
+            "defaultValue": null
+        },
+        {
+            "name": "IsCpxChild",
+            "type": "esriFieldTypeInteger",
+            "alias": "Is Part of Complex",
+            "sqlType": "sqlTypeOther",
+            "domain": null,
+            "defaultValue": null
+        }
+    ],
+    "features": [
+        {
+            "attributes": {
+                "IncidentName": "SOUP COMPLEX",
+                "DailyAcres": 2722,
+                "ContainmentDateTime": null,
+                "ControlDateTime": null,
+                "FireDiscoveryDateTime": 1474154366000,
+                "FireOutDateTime": null,
+                "FireCause": "Undetermined",
+                "IsCpxChild": null
+            }
+        },
+        {
+            "attributes": {
+                "IncidentName": "Sunset Rock RX",
+                "DailyAcres": 79,
+                "ContainmentDateTime": 1441846800000,
+                "ControlDateTime": 1441846800000,
+                "FireDiscoveryDateTime": 1433460386000,
+                "FireOutDateTime": 1441846800000,
+                "FireCause": "Human",
+                "IsCpxChild": null
+            }
+        },
+        {
+            "attributes": {
+                "IncidentName": "3/31 LAVA RX",
+                "DailyAcres": 2,
+                "ContainmentDateTime": null,
+                "ControlDateTime": null,
+                "FireDiscoveryDateTime": 1459435200000,
+                "FireOutDateTime": 1462566600000,
+                "FireCause": "Undetermined",
+                "IsCpxChild": null
+            }
+        },
+        {
+            "attributes": {
+                "IncidentName": "1/11 SIMS Unit H-3",
+                "DailyAcres": 30,
+                "ContainmentDateTime": null,
+                "ControlDateTime": null,
+                "FireDiscoveryDateTime": 1515684961000,
+                "FireOutDateTime": null,
+                "FireCause": "Unknown",
+                "IsCpxChild": null
+            }
+        },
+        {
+            "attributes": {
+                "IncidentName": "4/3  Green Mtn Rx",
+                "DailyAcres": 1225,
+                "ContainmentDateTime": null,
+                "ControlDateTime": null,
+                "FireDiscoveryDateTime": 1517510710000,
+                "FireOutDateTime": 1525186800000,
+                "FireCause": "Unknown",
+                "IsCpxChild": null
+            }
+        }
+    ]
+}
+        
