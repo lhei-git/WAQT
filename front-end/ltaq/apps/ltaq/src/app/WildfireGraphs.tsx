@@ -70,8 +70,6 @@ export default function WildFireGraphs({ county, state }: Props) {
     setFilteredCountData(countData)
     setFilteredAcresData(acresData)
     setFilteredAverageData(averageData)
-    setFilteredTop10Data(top10Data)
-    setFilteredDurationData(durationData)
     setAnchorEl(null);
   }
 
@@ -81,8 +79,6 @@ export default function WildFireGraphs({ county, state }: Props) {
     const filteredcountDataTemp: any[] = [];
     const filteredacresDataTemp: any[] = [];
     const filteredaverageDataTemp: any[] = [];
-    const filteredtop10DataTemp: any[] = [];
-    const filtereddurationDataTemp: any[] = [];
     //populate temp arrays with the data for the specified year
     for (const key in countData) {
       if (key.includes(selectedYear.toString())) {
@@ -99,21 +95,9 @@ export default function WildFireGraphs({ county, state }: Props) {
         filteredaverageDataTemp[key] = averageData[key]
       }
     }
-    for (const key in top10Data) {
-      if (top10Data[key].includes(selectedYear.toString())) {
-        filteredtop10DataTemp[key] = top10Data[key]
-      }
-    }
-    for (const key in durationData) {
-      if (durationData[key].includes(selectedYear.toString())) {
-        filtereddurationDataTemp[key] = durationData[key]
-      }
-    }
     setFilteredCountData(filteredcountDataTemp)
     setFilteredAcresData(filteredacresDataTemp)
     setFilteredAverageData(filteredaverageDataTemp)
-    setFilteredTop10Data(filteredtop10DataTemp)
-    setFilteredDurationData(filtereddurationDataTemp)
     setAnchorEl(null);
 
   }
@@ -230,16 +214,6 @@ export default function WildFireGraphs({ county, state }: Props) {
       for (const key in averageData) {
         if (key.includes((currentYear - 1).toString())) {
           filteredaverageData[key] = averageData[key]
-        }
-      }
-      for (const value in top10Data) {
-        if (top10Data[value].includes((currentYear - 1).toString())) {
-          filteredtop10Data[value] = top10Data[value]
-        }
-      }
-      for (const value in durationData) {
-        if (durationData[value].includes((currentYear - 1).toString())) {
-          filtereddurationData[value] = durationData[value]
         }
       }
       FIRSTRUN = false
@@ -428,12 +402,12 @@ export default function WildFireGraphs({ county, state }: Props) {
             <div className={styles["graph"]}>
               <Bar
                 data={{
-                  labels: Object.values(filtereddurationData).reverse(),
+                  labels: Object.values(durationData).reverse(),
                   datasets: [
                     {
                       label: 'Top 10 Fire Duration',
                       backgroundColor: ["#3e95cd"],
-                      data: Object.keys(filtereddurationData).reverse(),
+                      data: Object.keys(durationData).reverse(),
                     },
                   ],
                 }}
@@ -471,12 +445,12 @@ export default function WildFireGraphs({ county, state }: Props) {
             <div className={styles["graph"]}>
               <Bar
                 data={{
-                  labels: Object.values(filteredtop10Data).reverse(),
+                  labels: Object.values(top10Data).reverse(),
                   datasets: [
                     {
                       label: 'Top 10 Acres',
                       backgroundColor: ["#3e95cd"],
-                      data: Object.keys(filteredtop10Data).reverse(),
+                      data: Object.keys(top10Data).reverse(),
                     },
                   ],
                 }}
