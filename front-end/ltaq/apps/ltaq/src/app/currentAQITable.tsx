@@ -11,6 +11,7 @@ import WbSunnyIcon from '@mui/icons-material/WbSunny';
 import LaunchIcon from '@mui/icons-material/Launch';
 import HelpIcon from '@mui/icons-material/Help';
 import CloseIcon from '@mui/icons-material/Close';
+import { spacing } from '@mui/system';
 import {
   Grid,
   Card,
@@ -120,18 +121,15 @@ function CurrentAQI({ lat, lng }: Props) {
 
           <Grid
             container
-            spacing={2}
-            
             direction="row"
-            justify="center"
+            justifyContent="center"
             alignItems="center"
           >
             {data.map((item) => (
               <Grid 
               key={item.ParameterName}
-              xs={3}
               >
-                <Card style={{backgroundColor: (item.Category.Name == "Good") ? 'green' : (item.Category.Name == "Moderate" ? 'yellow' : 'red'), textAlign: "center"}}>
+                <Card style={{backgroundColor: (item.Category.Name == "Good") ? 'green' : (item.Category.Name == "Moderate" ? 'yellow' : 'red'), textAlign: "center", minWidth: 200, marginLeft:20, marginBottom:10}}>
                   <CardHeader
                     title={item.ParameterName}
                     style={{color: (item.Category.Name == "Good") ? 'white' : (item.Category.Name == "Moderate" ? 'black' : 'white')}}

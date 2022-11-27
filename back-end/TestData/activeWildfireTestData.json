@@ -1,0 +1,97 @@
+{
+    "objectIdFieldName": "OBJECTID",
+    "uniqueIdField": {
+        "name": "OBJECTID",
+        "isSystemMaintained": true
+    },
+    "globalIdFieldName": "GlobalID",
+    "geometryType": "esriGeometryPoint",
+    "spatialReference": {
+        "wkid": 4326,
+        "latestWkid": 4326
+    },
+    "fields": [
+        {
+            "name": "InitialLongitude",
+            "type": "esriFieldTypeDouble",
+            "alias": "Initial Longitude",
+            "sqlType": "sqlTypeOther",
+            "domain": null
+        },
+        {
+            "name": "InitialLatitude",
+            "type": "esriFieldTypeDouble",
+            "alias": "Initial Latitude",
+            "sqlType": "sqlTypeOther",
+            "domain": null
+        },
+        {
+            "name": "POOCounty",
+            "type": "esriFieldTypeString",
+            "alias": "POO County",
+            "sqlType": "sqlTypeOther",
+            "length": 100,
+            "domain": null,
+            "defaultValue": null
+        },
+        {
+            "name": "FireDiscoveryDateTime",
+            "type": "esriFieldTypeDate",
+            "alias": "Fire Discovery Date Time",
+            "sqlType": "sqlTypeOther",
+            "length": 8,
+            "domain": null,
+            "defaultValue": "-2209161600000"
+        },
+        {
+            "name": "FireCause",
+            "type": "esriFieldTypeString",
+            "alias": "Fire Cause",
+            "sqlType": "sqlTypeOther",
+            "length": 15,
+            "domain": null,
+            "defaultValue": null
+        },
+        {
+            "name": "IncidentName",
+            "type": "esriFieldTypeString",
+            "alias": "Incident Name",
+            "sqlType": "sqlTypeOther",
+            "length": 50,
+            "domain": null,
+            "defaultValue": null
+        }
+    ],
+    "features": [
+        {
+            "attributes": {
+                "InitialLongitude": -117.85488,
+                "InitialLatitude": 34.07795,
+                "POOCounty": "Los Angeles",
+                "FireDiscoveryDateTime": 1669242754000,
+                "FireCause": "Undetermined",
+                "IncidentName": "WANDA"
+            }
+        },
+        {
+            "attributes": {
+                "InitialLongitude": -118.8767,
+                "InitialLatitude": 34.80208,
+                "POOCounty": "Los Angeles",
+                "FireDiscoveryDateTime": 1669244573000,
+                "FireCause": "Undetermined",
+                "IncidentName": "LAC-399617"
+            }
+        },
+        {
+            "attributes": {
+                "InitialLongitude": -118.11228,
+                "InitialLatitude": 34.71877,
+                "POOCounty": "Los Angeles",
+                "FireDiscoveryDateTime": 1669249261000,
+                "FireCause": "Undetermined",
+                "IncidentName": "LAC-399716"
+            }
+        }
+    ]
+}
