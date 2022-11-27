@@ -89,10 +89,10 @@ const About = () => {
           <br />
           </div>
           <div>
-          <h2>
+          <p>
           Ozone refers to ground-level ozone. PM10 includes particles less than or equal to 10 micrometers in diameter. 
           PM2.5 includes particles less than or equal to 2.5 micrometers and is also called fine particle pollution.
-          </h2>
+          </p>
           <br />
           </div>
 
@@ -105,7 +105,10 @@ const About = () => {
           Measures from the US AQI are developed and interpreted as described below from the US EPA:
           </p> 
           <br />
-          <table>
+          <div className='aboutTable'>
+          <div className='aboutTh'>
+          <div className='aboutTr'>
+          <div className='aboutTd'>
           <tr>
           <th>Air Quality Index (AQI) Values</th>
           <th>Levels of Health Concern</th>
@@ -138,7 +141,10 @@ const About = () => {
           <td>301 to 500</td>
           <td>Hazardous</td>
           </tr>
-          </table>
+          </div>
+          </div>
+          </div>
+          </div>
           <br />
           <li><strong>"Good" AQI is 0 - 50.</strong> Air quality is considered satisfactory, and air pollution poses little or no risk.</li>
           <li><strong>"Moderate" AQI is 51 - 100.</strong> Air quality is acceptable; however, for some pollutants there may be a moderate health concern for a very small
@@ -184,14 +190,13 @@ const About = () => {
           the specific information available, and for the specified US county and its state. 
           </p>
           <br />
-          <img src="./app/FireTable.jpg"></img>
+          <img src="FireTable.jpg"></img>
           <br />
           </div>
           <br/>
           <p>Further information about WAQT is available in our GitHub page. 
           </p>
           <br />
-
         </p>
         </body>
       </div>
