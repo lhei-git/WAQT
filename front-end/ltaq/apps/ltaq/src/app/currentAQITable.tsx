@@ -11,7 +11,6 @@ import WbSunnyIcon from '@mui/icons-material/WbSunny';
 import LaunchIcon from '@mui/icons-material/Launch';
 import HelpIcon from '@mui/icons-material/Help';
 import CloseIcon from '@mui/icons-material/Close';
-import { spacing } from '@mui/system';
 import {
   Grid,
   Card,
@@ -21,11 +20,14 @@ import {
   CardActions
 } from "@material-ui/core/";
 
+//props that will take the lat and lon
 interface Props {
   lat: number;
   lng: number;
 }
 
+//styling for the modal
+//https://mui.com/material-ui/react-modal/
 const modalStyle = {
   position: 'absolute' as 'absolute',
   top: '50%',
@@ -69,7 +71,7 @@ function CurrentAQI({ lat, lng }: Props) {
     )
   } else {
     data.map((item, index) => (
-
+      // set hightest AQI for modal
       (item.Category.Name == "Good" && highestAqi <= 0) ? highestAqi = 0 :
         (item.Category.Name == "Moderate" && highestAqi <= 1) ? highestAqi = 1 :
           (item.Category.Name == "Unhealthy for Sensitive Groups" && highestAqi <= 2) ? highestAqi = 2 :
@@ -80,6 +82,7 @@ function CurrentAQI({ lat, lng }: Props) {
     ))
     return (
       <>
+        {/* current aqi text */}
         <div className={styles["centerText"]}>
           <h1><WbSunnyIcon /> Current AQI: {
             (highestAqi == 0) ? "Good" :
@@ -89,9 +92,11 @@ function CurrentAQI({ lat, lng }: Props) {
                     (highestAqi == 4) ? "Very Unhealthy" :
                       (highestAqi == 5) ? "Hazardous" : "Not Available"
           }
+            {/* modal button */}
             <Button onClick={handleOpen}>{<HelpIcon />}</Button>
 
           </h1>
+          {/* modal content */}
           <Modal
             open={open}
             onClose={handleClose}
@@ -118,7 +123,7 @@ function CurrentAQI({ lat, lng }: Props) {
           </Modal>
         </div>
         <div>
-
+          {/* boxes that house the current AQI values */}
           <Grid
             container
             direction="row"
@@ -131,7 +136,7 @@ function CurrentAQI({ lat, lng }: Props) {
               >
                 <Card style={{backgroundColor: (item.Category.Name == "Good") ? 'green' : (item.Category.Name == "Moderate" ? 'yellow' : 'red'), textAlign: "center", minWidth: 200, marginLeft:20, marginBottom:10}}>
                   <CardHeader
-                    title={item.ParameterName}
+                    title={item.ParameterName == "O3" ? "Ozone" : item.ParameterName}
                     style={{color: (item.Category.Name == "Good") ? 'white' : (item.Category.Name == "Moderate" ? 'black' : 'white')}}
                   />
                   <CardContent
