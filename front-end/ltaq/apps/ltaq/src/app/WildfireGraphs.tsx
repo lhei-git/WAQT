@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Bar, Line } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
 import axios from 'axios';
-import styles from "./app.module.css";
+import styles from './app.module.css';
 Chart.register(...registerables);
 import Grid from '@mui/material/Unstable_Grid2';
 import LaunchIcon from '@mui/icons-material/Launch';
@@ -22,23 +22,41 @@ interface Props {
 }
 
 //first run flag for initial data
-let FIRSTRUN = true
+let FIRSTRUN = true;
 
 //Wildfire graphs function
 export default function WildFireGraphs({ county, state }: Props) {
   //flask endpoint urls
-  const url = "http://localhost:8001/wildfire/count?location=" + county + "&state=" + state;
-  const url2 = "http://localhost:8001/wildfire/acres?location=" + county + "&state=" + state;
-  const url3 = "http://localhost:8001/wildfire/top10?location=" + county + "&state=" + state;
-  const url4 = "http://localhost:8001/wildfire/average?location=" + county + "&state=" + state;
-  const url5 = "http://localhost:8001/wildfire/top10Duration?location=" + county + "&state=" + state;
-
-
+  const url =
+    'http://localhost:8001/wildfire/count?location=' +
+    county +
+    '&state=' +
+    state;
+  const url2 =
+    'http://localhost:8001/wildfire/acres?location=' +
+    county +
+    '&state=' +
+    state;
+  const url3 =
+    'http://localhost:8001/wildfire/top10?location=' +
+    county +
+    '&state=' +
+    state;
+  const url4 =
+    'http://localhost:8001/wildfire/average?location=' +
+    county +
+    '&state=' +
+    state;
+  const url5 =
+    'http://localhost:8001/wildfire/top10Duration?location=' +
+    county +
+    '&state=' +
+    state;
 
   console.log(url);
   //arrays that are used in hooks
   const [countData, setCountData] = useState<any[]>([]);
-  const [filteredcountData, setFilteredCountData] = useState<any[]>([])
+  const [filteredcountData, setFilteredCountData] = useState<any[]>([]);
   const [countisLoading, setCountLoading] = useState(true);
   const [acresData, setAcresData] = useState<any[]>([]);
   const [filteredacresData, setFilteredAcresData] = useState<any[]>([]);
@@ -67,85 +85,83 @@ export default function WildFireGraphs({ county, state }: Props) {
   //when the user wants to see all data
   function allData() {
     setAnchorEl(null);
-    setFilteredCountData(countData)
-    setFilteredAcresData(acresData)
-    setFilteredAverageData(averageData)
+    setFilteredCountData(countData);
+    setFilteredAcresData(acresData);
+    setFilteredAverageData(averageData);
     setAnchorEl(null);
   }
 
   //data for a user specified year
   function filterTrendsYear(selectedYear: number) {
-    console.log(selectedYear)
+    console.log(selectedYear);
     const filteredcountDataTemp: any[] = [];
     const filteredacresDataTemp: any[] = [];
     const filteredaverageDataTemp: any[] = [];
     //populate temp arrays with the data for the specified year
     for (const key in countData) {
       if (key.includes(selectedYear.toString())) {
-        filteredcountDataTemp[key] = countData[key]
+        filteredcountDataTemp[key] = countData[key];
       }
     }
     for (const key in acresData) {
       if (key.includes(selectedYear.toString())) {
-        filteredacresDataTemp[key] = acresData[key]
+        filteredacresDataTemp[key] = acresData[key];
       }
     }
     for (const key in averageData) {
       if (key.includes(selectedYear.toString())) {
-        filteredaverageDataTemp[key] = averageData[key]
+        filteredaverageDataTemp[key] = averageData[key];
       }
     }
-    setFilteredCountData(filteredcountDataTemp)
-    setFilteredAcresData(filteredacresDataTemp)
-    setFilteredAverageData(filteredaverageDataTemp)
+    setFilteredCountData(filteredcountDataTemp);
+    setFilteredAcresData(filteredacresDataTemp);
+    setFilteredAverageData(filteredaverageDataTemp);
     setAnchorEl(null);
-
   }
-
 
   //year range for drop down menu
   const currentYear: number = new Date().getFullYear();
-  let year = currentYear
+  let year = currentYear;
   const listOfYears: number[] = [];
 
   for (let index = 0; year >= 2015; index++) {
-    listOfYears[index] = year
-    year--
+    listOfYears[index] = year;
+    year--;
   }
 
   //flask endpoint hooks
   useEffect(() => {
-    axios.get(url).then(response => {
+    axios.get(url).then((response) => {
       setCountData(response.data);
       console.log(countData);
       setCountLoading(false);
     });
   }, []);
   useEffect(() => {
-    axios.get(url2).then(response => {
+    axios.get(url2).then((response) => {
       setAcresData(response.data);
-      console.log(acresData)
+      console.log(acresData);
       setAcresLoading(false);
     });
   }, []);
   useEffect(() => {
-    axios.get(url4).then(response => {
+    axios.get(url4).then((response) => {
       setAverageData(response.data);
-      console.log(averageData)
+      console.log(averageData);
       setAverageLoading(false);
     });
   }, []);
   useEffect(() => {
-    axios.get(url3).then(response => {
+    axios.get(url3).then((response) => {
       setTop10Data(response.data);
-      console.log(top10Data)
-      setTop10Loading(false)
+      console.log(top10Data);
+      setTop10Loading(false);
     });
   }, []);
   useEffect(() => {
-    axios.get(url5).then(response => {
+    axios.get(url5).then((response) => {
       setDurationData(response.data);
-      console.log(durationData)
+      console.log(durationData);
       setDurationLoading(false);
     });
   }, []);
@@ -171,7 +187,9 @@ export default function WildFireGraphs({ county, state }: Props) {
       marginTop: theme.spacing(1),
       minWidth: 180,
       color:
-        theme.palette.mode === 'light' ? 'rgb(55, 65, 81)' : theme.palette.grey[300],
+        theme.palette.mode === 'light'
+          ? 'rgb(55, 65, 81)'
+          : theme.palette.grey[300],
       boxShadow:
         'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
       '& .MuiMenu-list': {
@@ -186,7 +204,7 @@ export default function WildFireGraphs({ county, state }: Props) {
         '&:active': {
           backgroundColor: alpha(
             theme.palette.primary.main,
-            theme.palette.action.selectedOpacity,
+            theme.palette.action.selectedOpacity
           ),
         },
       },
@@ -194,37 +212,45 @@ export default function WildFireGraphs({ county, state }: Props) {
   }));
 
   //if something is loading then display loading...
-  if (countisLoading || acresisLoading || averageisLoading || top10isLoading || durationisLoading) {
-    return (
-      <p>Loading...</p>
-    )
+  if (
+    countisLoading ||
+    acresisLoading ||
+    averageisLoading ||
+    top10isLoading ||
+    durationisLoading
+  ) {
+    return <p>Loading...</p>;
   } else {
     if (FIRSTRUN) {
       //set the data for the default year (the previous year)
       for (const key in countData) {
         if (key.includes((currentYear - 1).toString())) {
-          filteredcountData[key] = countData[key]
+          filteredcountData[key] = countData[key];
         }
       }
       for (const key in acresData) {
         if (key.includes((currentYear - 1).toString())) {
-          filteredacresData[key] = acresData[key]
+          filteredacresData[key] = acresData[key];
         }
       }
       for (const key in averageData) {
         if (key.includes((currentYear - 1).toString())) {
-          filteredaverageData[key] = averageData[key]
+          filteredaverageData[key] = averageData[key];
         }
       }
-      FIRSTRUN = false
+      FIRSTRUN = false;
     }
 
     //render all charts
     return (
       <>
-        {Object.keys(countData).length > 1 || Object.keys(acresData).length > 1 || Object.keys(averageData).length > 1 || Object.keys(top10Data).length > 1 || Object.keys(durationData).length > 1 ?
+        {Object.keys(countData).length > 1 ||
+        Object.keys(acresData).length > 1 ||
+        Object.keys(averageData).length > 1 ||
+        Object.keys(top10Data).length > 1 ||
+        Object.keys(durationData).length > 1 ? (
           <>
-            <div className={styles["divCenter"]}>
+            <div className={styles['divCenter']}>
               <Button
                 aria-haspopup="true"
                 aria-expanded={open ? 'true' : undefined}
@@ -244,21 +270,24 @@ export default function WildFireGraphs({ county, state }: Props) {
                 onClose={handleClose}
               >
                 <MenuItem onClick={() => allData()} disableRipple>
-                  2015 - {currentYear} 
+                  2015 - {currentYear}
                 </MenuItem>
                 {listOfYears.map((item) => (
-                  <MenuItem onClick={() => filterTrendsYear(item)} disableRipple>
+                  <MenuItem
+                    onClick={() => filterTrendsYear(item)}
+                    disableRipple
+                  >
                     {item}
                   </MenuItem>
-                ))
-
-                }
+                ))}
               </StyledMenu>
             </div>
           </>
-          : <></>}
+        ) : (
+          <></>
+        )}
         {/* count */}
-        {Object.keys(countData).length > 1 ?
+        {Object.keys(countData).length > 1 ? (
           <Grid
             container
             direction="row"
@@ -266,19 +295,25 @@ export default function WildFireGraphs({ county, state }: Props) {
             alignItems="center"
           >
             <div>
-              <h3><b>Number Of Fires Per Month</b></h3>
-              <h5><a href="https://data-nifc.opendata.arcgis.com">Source: National Interagency Fire Center <LaunchIcon fontSize="small" /></a></h5>
+              <h3>
+                <b>Number Of Fires Per Month</b>
+              </h3>
+              <h5>
+                <a href="https://data-nifc.opendata.arcgis.com">
+                  Source: National Interagency Fire Center{' '}
+                  <LaunchIcon fontSize="small" />
+                </a>
+              </h5>
             </div>
-            <div className={styles["graph"]}>
-
+            <div className={styles['graph']}>
               <Line
                 data={{
                   labels: Object.keys(filteredcountData),
                   datasets: [
                     {
                       data: Object.values(filteredcountData),
-                      backgroundColor: ["#3e95cd"],
-                      borderColor: ["#3e95cd"],
+                      backgroundColor: ['#3e95cd'],
+                      borderColor: ['#3e95cd'],
                     },
                   ],
                 }}
@@ -298,11 +333,13 @@ export default function WildFireGraphs({ county, state }: Props) {
                 }}
               />
             </div>
-
           </Grid>
-          : <></>}
+        ) : (
+          <></>
+        )}
+        <div className="pagebreak"> </div> {/*For page printing*/}
         {/* acres per month */}
-        {Object.keys(countData).length > 1 ?
+        {Object.keys(countData).length > 1 ? (
           <Grid
             container
             direction="row"
@@ -310,17 +347,24 @@ export default function WildFireGraphs({ county, state }: Props) {
             alignItems="center"
           >
             <div>
-              <h3><b>Total Monthly Acres</b></h3>
-              <h5><a href="https://data-nifc.opendata.arcgis.com">Source: National Interagency Fire Center <LaunchIcon fontSize="small" /></a></h5>
+              <h3>
+                <b>Total Monthly Acres</b>
+              </h3>
+              <h5>
+                <a href="https://data-nifc.opendata.arcgis.com">
+                  Source: National Interagency Fire Center{' '}
+                  <LaunchIcon fontSize="small" />
+                </a>
+              </h5>
             </div>
-            <div className={styles["graph"]}>
+            <div className={styles['graph']}>
               <Line
                 data={{
                   labels: Object.keys(filteredacresData),
                   datasets: [
                     {
-                      backgroundColor: ["#3e95cd"],
-                      borderColor: ["#3e95cd"],
+                      backgroundColor: ['#3e95cd'],
+                      borderColor: ['#3e95cd'],
                       data: Object.values(filteredacresData),
                     },
                   ],
@@ -342,8 +386,11 @@ export default function WildFireGraphs({ county, state }: Props) {
               />
             </div>
           </Grid>
-          : <></>}
-        {Object.keys(averageData).length > 1 ?
+        ) : (
+          <></>
+        )}
+        <div className="pagebreak"> </div> {/*For page printing*/}
+        {Object.keys(averageData).length > 1 ? (
           <Grid
             container
             direction="row"
@@ -351,17 +398,24 @@ export default function WildFireGraphs({ county, state }: Props) {
             alignItems="center"
           >
             <div>
-              <h3><b>Average Fire Duration (Days) In Each Month</b></h3>
-              <h5><a href="https://data-nifc.opendata.arcgis.com">Source: National Interagency Fire Center <LaunchIcon fontSize="small" /></a></h5>
+              <h3>
+                <b>Average Fire Duration (Days) In Each Month</b>
+              </h3>
+              <h5>
+                <a href="https://data-nifc.opendata.arcgis.com">
+                  Source: National Interagency Fire Center{' '}
+                  <LaunchIcon fontSize="small" />
+                </a>
+              </h5>
             </div>
-            <div className={styles["graph"]}>
+            <div className={styles['graph']}>
               <Line
                 data={{
                   labels: Object.keys(filteredaverageData),
                   datasets: [
                     {
-                      backgroundColor: ["#3e95cd"],
-                      borderColor: ["#3e95cd"],
+                      backgroundColor: ['#3e95cd'],
+                      borderColor: ['#3e95cd'],
                       data: Object.values(filteredaverageData),
                     },
                   ],
@@ -383,10 +437,12 @@ export default function WildFireGraphs({ county, state }: Props) {
               />
             </div>
           </Grid>
-          : <></>}
-
+        ) : (
+          <></>
+        )}
+        <div className="pagebreak"> </div> {/*For page printing*/}
         {/* top 10 fires by duration */}
-        {Object.keys(durationData).length > 1 ?
+        {Object.keys(durationData).length > 1 ? (
           <Grid
             container
             direction="row"
@@ -394,18 +450,25 @@ export default function WildFireGraphs({ county, state }: Props) {
             alignItems="center"
           >
             <div>
-              <h3><b>Top 10 Fires by Duration</b></h3>
+              <h3>
+                <b>Top 10 Fires by Duration</b>
+              </h3>
               <h5>Beginning January 2015</h5>
-              <h5><a href="https://data-nifc.opendata.arcgis.com">Source: National Interagency Fire Center <LaunchIcon fontSize="small" /></a></h5>
+              <h5>
+                <a href="https://data-nifc.opendata.arcgis.com">
+                  Source: National Interagency Fire Center{' '}
+                  <LaunchIcon fontSize="small" />
+                </a>
+              </h5>
             </div>
-            <div className={styles["graph"]}>
+            <div className={styles['graph']}>
               <Bar
                 data={{
                   labels: Object.values(durationData).reverse(),
                   datasets: [
                     {
                       label: 'Top 10 Fire Duration',
-                      backgroundColor: ["#3e95cd"],
+                      backgroundColor: ['#3e95cd'],
                       data: Object.keys(durationData).reverse(),
                     },
                   ],
@@ -427,9 +490,12 @@ export default function WildFireGraphs({ county, state }: Props) {
               />
             </div>
           </Grid>
-          : <></>}
+        ) : (
+          <></>
+        )}
+        <div className="pagebreak"> </div> {/*For page printing*/}
         {/* top 10 acres */}
-        {Object.keys(top10Data).length > 1 ?
+        {Object.keys(top10Data).length > 1 ? (
           <Grid
             container
             direction="row"
@@ -437,18 +503,25 @@ export default function WildFireGraphs({ county, state }: Props) {
             alignItems="center"
           >
             <div>
-              <h3><b>Top 10 Fires by Total Acres Burned</b></h3>
+              <h3>
+                <b>Top 10 Fires by Total Acres Burned</b>
+              </h3>
               <h5>Beginning January 2015</h5>
-              <h5><a href="https://data-nifc.opendata.arcgis.com">Source: National Interagency Fire Center <LaunchIcon fontSize="small" /></a></h5>
+              <h5>
+                <a href="https://data-nifc.opendata.arcgis.com">
+                  Source: National Interagency Fire Center{' '}
+                  <LaunchIcon fontSize="small" />
+                </a>
+              </h5>
             </div>
-            <div className={styles["graph"]}>
+            <div className={styles['graph']}>
               <Bar
                 data={{
                   labels: Object.values(top10Data).reverse(),
                   datasets: [
                     {
                       label: 'Top 10 Acres',
-                      backgroundColor: ["#3e95cd"],
+                      backgroundColor: ['#3e95cd'],
                       data: Object.keys(top10Data).reverse(),
                     },
                   ],
@@ -470,9 +543,10 @@ export default function WildFireGraphs({ county, state }: Props) {
               />
             </div>
           </Grid>
-          : <></>}
+        ) : (
+          <></>
+        )}
       </>
     );
   }
-
 }
