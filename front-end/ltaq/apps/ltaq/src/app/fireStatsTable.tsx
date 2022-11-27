@@ -35,7 +35,6 @@ function FireStatsTable({ county, state, fullName }: Props) {
   if (data && stateData) {
     return (
       <>
-      <h1><LocalFireDepartmentIcon fontSize="large" />Current and Historical Fire Data</h1>
         <Grid
             container
             direction="row"
