@@ -12,11 +12,67 @@ interface Props {
   state: string;
   fullName: string;
 }
+//state names
+const StateAbbrv = {
+    "AL": "Alabama",
+    "AK": "Alaska",
+    "AZ": "Arizona",
+    "AR": "Arkansas",
+    "CA": "California",
+    "CO": "Colorado",
+    "CT": "Connecticut",
+    "DE": "Delaware",
+    "FL": "Florida",
+    "GA": "Georgia",
+    "HI": "Hawaii",
+    "ID": "Idaho",
+    "IL": "Illinois",
+    "IN": "Indiana",
+    "IA": "Iowa",
+    "KS": "Kansas",
+    "KY": "Kentucky",
+    "LA": "Louisiana",
+    "ME": "Maine",
+    "MD": "Maryland",
+    "MA": "Massachusetts",
+    "MI": "Michigan",
+    "MN": "Minnesota",
+    "MS": "Mississippi",
+    "MO": "Missouri",
+    "MT": "Montana",
+    "NE": "Nebraska",
+    "NV": "Nevada",
+    "NH": "New Hampshire",
+    "NJ": "New JERSEY",
+    "NM": "NEW Mexico",
+    "NY": "New York",
+    "NC": "North Carolina",
+    "ND": "North Dakota",
+    "OH": "Ohio",
+    "OK": "Oklahoma",
+    "OR": "Oregon",
+    "PA": "Pennsylvania",
+    "RI": "Rhode Island",
+    "SC": "South Carolina",
+    "SD": "South Dakota",
+    "TN": "Tennessee",
+    "TX": "Texas",
+    "UT": "Utah",
+    "VT": "Vermont",
+    "VA": "Virginia",
+    "WA": "Washington",
+    "WV": "West Virginia",
+    "WI": "Wisconsin",
+    "WY": "Wyoming",
+}
+
+//this function creates the current and historical data table
 function FireStatsTable({ county, state, fullName }: Props) {
-  //TODO: get data from map
+  //urls for location and it's state endpoints
   const url = 'http://localhost:8001/wildfire/county?location=' + county + '&state=' + state
   const url2 = 'http://localhost:8001/wildfire/stateonly?location=' + state
   console.log(url)
+  let formattedName = fullName.split(",")
   const [data, setData] = useState<any[]>([]);
   const [stateData, setStateData] = useState<any[]>([]);
   const [isLoading, setLoading] = useState(true);
@@ -29,10 +85,14 @@ function FireStatsTable({ county, state, fullName }: Props) {
   useEffect(() => {
     axios.get(url2)
       .then((response) => setStateData(response.data));
+      setLoading(false)
   }, []);
   console.log(data)
   console.log(stateData)
-  if (data && stateData) {
+  if (isLoading) {
+    return <div >Loading...</div>;
+  }
+  else if (data && stateData) {
     return (
       <>
       <h1><LocalFireDepartmentIcon fontSize="large" />Current and Historical Fire Data</h1>
@@ -49,8 +109,8 @@ function FireStatsTable({ county, state, fullName }: Props) {
             <table>
               <tr className={styles['head']}>
                 <th>Fire Statistics</th>
-                <th>{fullName}</th>
-                <th>{state}</th>
+                <th>{formattedName[0]}</th>
+                <th>{StateAbbrv[state]}</th>
               </tr>
               {Object.keys(data).map((key) => {
                 return (
