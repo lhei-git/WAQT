@@ -1,0 +1,24 @@
+[    
+	{
+        "irwin_InitialLatitude": 34.71877,
+        "irwin_InitialLongitude": -118.11228,
+        "name": "Lac-399716",
+        "date": "Nov 23, 2022",
+        "cause": "Undetermined"
+    },
+    {
+        "irwin_InitialLatitude": 34.80208,
+        "irwin_InitialLongitude": -118.8767,
+        "name": "Lac-399617",
+        "date": "Nov 23, 2022",
+        "cause": "Undetermined"
+    },
+    {
+        "irwin_InitialLatitude": 34.07795,
+        "irwin_InitialLongitude": -117.85488,
+        "name": "Wanda",
+        "date": "Nov 23, 2022",
+        "cause": "Undetermined"
+    }
+
+]
