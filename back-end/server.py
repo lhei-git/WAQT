@@ -22,69 +22,75 @@ WildfireCount = {}
 def averageMonth(dateStart, dateEnd, month, year, output):
     totalDays = 0
     amountOfFiresWithStartEndDates = 0
-    for j in range(len(output['features'])):
+    try:
+        for j in range(len(output['features'])):
         #fire out 
-        if(str(output['features'][j]['attributes']['FireOutDateTime']) != "None"):
-            start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-            end = str(output['features'][j]['attributes']['FireOutDateTime'])
-            if (int(end[:-3]) < dateEnd and int(start[:-3]) > dateStart):
-                startDateConvert = datetime.datetime.fromtimestamp(int(start[:-3])) 
-                endDateConvert = datetime.datetime.fromtimestamp(int(end[:-3]))
-                timeDifference = dateutil.relativedelta.relativedelta (endDateConvert, startDateConvert)
+            if(str(output['features'][j]['attributes']['FireOutDateTime']) != "None"):
+                start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
+                end = str(output['features'][j]['attributes']['FireOutDateTime'])
+                if (int(end[:-3]) < dateEnd and int(start[:-3]) > dateStart):
+                    startDateConvert = datetime.datetime.fromtimestamp(int(start[:-3])) 
+                    endDateConvert = datetime.datetime.fromtimestamp(int(end[:-3]))
+                    timeDifference = dateutil.relativedelta.relativedelta (endDateConvert, startDateConvert)
             #print(timeDifference.days)
-                totalDays = totalDays + timeDifference.days
-                totalDays = totalDays + (timeDifference.months * 30)
-                totalDays = totalDays + (timeDifference.years * 365)
-                amountOfFiresWithStartEndDates = amountOfFiresWithStartEndDates + 1
+                    totalDays = totalDays + timeDifference.days
+                    totalDays = totalDays + (timeDifference.months * 30)
+                    totalDays = totalDays + (timeDifference.years * 365)
+                    amountOfFiresWithStartEndDates = amountOfFiresWithStartEndDates + 1
         #fire containment
-        elif(str(output['features'][j]['attributes']['ContainmentDateTime']) != "None"):
-            start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-            end = str(output['features'][j]['attributes']['ContainmentDateTime'])
-            if (int(end[:-3]) < dateEnd and int(start[:-3]) > dateStart):
-                startDateConvert = datetime.datetime.fromtimestamp(int(start[:-3])) 
-                endDateConvert = datetime.datetime.fromtimestamp(int(end[:-3]))
-                timeDifference = dateutil.relativedelta.relativedelta (endDateConvert, startDateConvert)
-                totalDays = totalDays + timeDifference.days
-                totalDays = totalDays + (timeDifference.months * 30)
-                totalDays = totalDays + (timeDifference.years * 365)
-                amountOfFiresWithStartEndDates = amountOfFiresWithStartEndDates + 1
+            elif(str(output['features'][j]['attributes']['ContainmentDateTime']) != "None"):
+                start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
+                end = str(output['features'][j]['attributes']['ContainmentDateTime'])
+                if (int(end[:-3]) < dateEnd and int(start[:-3]) > dateStart):
+                    startDateConvert = datetime.datetime.fromtimestamp(int(start[:-3])) 
+                    endDateConvert = datetime.datetime.fromtimestamp(int(end[:-3]))
+                    timeDifference = dateutil.relativedelta.relativedelta (endDateConvert, startDateConvert)
+                    totalDays = totalDays + timeDifference.days
+                    totalDays = totalDays + (timeDifference.months * 30)
+                    totalDays = totalDays + (timeDifference.years * 365)
+                    amountOfFiresWithStartEndDates = amountOfFiresWithStartEndDates + 1
         #fire control 
-        elif(output['features'][j]['attributes']['ControlDateTime']):
-            start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-            end = str(output['features'][j]['attributes']['ControlDateTime'])
-            if (int(end[:-3]) < dateEnd and int(start[:-3]) > dateStart):
+            elif(output['features'][j]['attributes']['ControlDateTime']):
+                start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
+                end = str(output['features'][j]['attributes']['ControlDateTime'])
+                if (int(end[:-3]) < dateEnd and int(start[:-3]) > dateStart):
             #print(start)
-                startDateConvert = datetime.datetime.fromtimestamp(int(start[:-3])) 
-                endDateConvert = datetime.datetime.fromtimestamp(int(end[:-3]))
-                timeDifference = dateutil.relativedelta.relativedelta (endDateConvert, startDateConvert)
-                totalDays = totalDays + timeDifference.days
-                totalDays = totalDays + (timeDifference.months * 30)
-                totalDays = totalDays + (timeDifference.years * 365)            
-                amountOfFiresWithStartEndDates = amountOfFiresWithStartEndDates + 1  
+                    startDateConvert = datetime.datetime.fromtimestamp(int(start[:-3])) 
+                    endDateConvert = datetime.datetime.fromtimestamp(int(end[:-3]))
+                    timeDifference = dateutil.relativedelta.relativedelta (endDateConvert, startDateConvert)
+                    totalDays = totalDays + timeDifference.days
+                    totalDays = totalDays + (timeDifference.months * 30)
+                    totalDays = totalDays + (timeDifference.years * 365)            
+                    amountOfFiresWithStartEndDates = amountOfFiresWithStartEndDates + 1  
 
-    if(amountOfFiresWithStartEndDates !=0 and totalDays != 0 ):
-        if(round(float(totalDays/amountOfFiresWithStartEndDates)!=0)):
-            WildfireAvgRes[month + " " + str(year)] = str(round(float(totalDays/amountOfFiresWithStartEndDates)))
-
+        if(amountOfFiresWithStartEndDates !=0 and totalDays != 0 ):
+            if(round(float(totalDays/amountOfFiresWithStartEndDates)!=0)):
+                WildfireAvgRes[month + " " + str(year)] = str(round(float(totalDays/amountOfFiresWithStartEndDates)))
+    except KeyError:
+        WildfireAvgRes["Average"] = 0
        
 def acresMonth(dateStart, dateEnd, month, year, output):
-    sum = 0
-    for j in range(len(output['features'])):
-         print(str(output['features'][j]['attributes']['DailyAcres']))
-         if (str(output['features'][j]['attributes']['DailyAcres'])!= "None"):
-             str(output['features'][j]['attributes']['DailyAcres'])
-             start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-             end = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-             if (int(end[:-3]) < dateEnd and int(start[:-3]) > dateStart):
-                 sum = sum + int(output['features'][j]['attributes']['DailyAcres'])
+        sum = 0
+        try:
+            for j in range(len(output['features'])):
+                print(str(output['features'][j]['attributes']['DailyAcres']))
+                if (str(output['features'][j]['attributes']['DailyAcres'])!= "None"):
+                    str(output['features'][j]['attributes']['DailyAcres'])
+                    start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
+                    end = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
+                    if (int(end[:-3]) < dateEnd and int(start[:-3]) > dateStart):
+                        sum = sum + int(output['features'][j]['attributes']['DailyAcres'])
 
-    if(sum !=0):
-        WildfireAcres[month + " " + str(year)] = sum
+            if(sum !=0):
+                WildfireAcres[month + " " + str(year)] = sum
+        except KeyError:
+            WildfireAcres["Acres"] = 0
 
 def countMonth(dateStart, dateEnd, month, year, output):
     total = 0
-    for j in range(len(output['features'])):
-            #print(str(output['features'][j]['attributes']['FireDiscoveryDateTime']))
+    try: 
+        for j in range(len(output['features'])):
+        #print(str(output['features'][j]['attributes']['FireDiscoveryDateTime']))
             if (str(output['features'][j]['attributes']['FireDiscoveryDateTime'])!= "None"):
                 str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
                 start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
@@ -97,8 +103,10 @@ def countMonth(dateStart, dateEnd, month, year, output):
                     j = j + 1
             else: 
                 j = j + 1
-    if(total !=0):
-        WildfireCount[month + " " + str(year)] = total
+        if(total !=0):
+            WildfireCount[month + " " + str(year)] = total
+    except KeyError:
+        WildfireCount["Count"] = 0
 
 #Time converter for converting UNIX Time
 def timeConverter(timeToConvert):

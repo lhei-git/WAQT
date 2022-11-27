@@ -18,7 +18,7 @@ from operator import contains
 API_KEY = ""
 
 #AQS
-EMAIL = ""
+EMAIL = "" 
 AQS_KEY = ""
 CURRENT_DATE = date.today()
 
@@ -90,22 +90,22 @@ def extractTrendData(output, year):
         OzoneTotal = 0.0
         try:
             for i in range(len(output['Data'])):
-                if contains(output['Data'][i]['parameter'], "PM2.5") and contains(output['Data'][i]['quarter'], str(quarter)):
-                    if(output['Data'][i]['arithmetic_mean']):
+                if contains(output['Data'][i]['parameter'], "PM2.5") and contains(output['Data'][i]['quarter'], str(quarter)) and int(output['Data'][i]['year']) == year:
+                    if(output['Data'][i]['maximum_value']):
                         #print(output['Data'][i]['arithmetic_mean'])
                         if(PM25Total < float(output['Data'][i]['maximum_value'])):
                             PM25Total = float(output['Data'][i]['maximum_value'])
 
             for i in range(len(output['Data'])):
-                if contains(output['Data'][i]['parameter'], "PM10") and contains(output['Data'][i]['quarter'], str(quarter)):
-                    if(output['Data'][i]['arithmetic_mean']):
+                if contains(output['Data'][i]['parameter'], "PM10") and contains(output['Data'][i]['quarter'], str(quarter)) and int(output['Data'][i]['year']) == year:
+                    if(output['Data'][i]['maximum_value']):
                         #print(output['Data'][i]['arithmetic_mean'])
                         if(PM25Total < float(output['Data'][i]['maximum_value'])):
                             PM10Total = float(output['Data'][i]['maximum_value'])
 
             for i in range(len(output['Data'])):
-                if contains(output['Data'][i]['parameter'], "Ozone") and contains(output['Data'][i]['quarter'], str(quarter)):
-                    if(output['Data'][i]['arithmetic_mean']):
+                if contains(output['Data'][i]['parameter'], "Ozone") and contains(output['Data'][i]['quarter'], str(quarter)) and int(output['Data'][i]['year']) == year:
+                    if(output['Data'][i]['maximum_value']):
                         #print(output['Data'][i]['arithmetic_mean'])
                         if(OzoneTotal < float(output['Data'][i]['maximum_value'])):
                             OzoneTotal = float(output['Data'][i]['maximum_value'])
@@ -122,6 +122,7 @@ def extractTrendData(output, year):
             
             quarter = quarter + 1
         except KeyError:
+            print("key error")
             PM25Trends["PM2.5"] = 0
             PM10Trends["PM10"] = 0
             OzoneTrends["Ozone"] = 0
@@ -163,6 +164,16 @@ def airNowEndpoint():
         #print(jsonResponse)
         return jsonify(jsonResponse)
 
+    #Endpoint for unit testing
+    @app.route("/aqi/test", methods=['GET'])
+    def getCurrentAQITest():
+        jsonTestData = open('./TestData/currentAQITestData.json')
+        data = json.load(jsonTestData)
+        jsonTestData.close()
+        return jsonify(data)
+
+
+
     @app.route("/trends", methods=['GET'])
     def getTrends():
         global PM25Trends 
@@ -200,6 +211,42 @@ def airNowEndpoint():
                 response_API = requests.get(url)
                 output = json.loads(response_API.text)
                 extractTrendData(output, year)  
+                year = year + 1
+            
+            AllTrends = {}
+            AllTrends["PM25"] = PM25Trends
+            AllTrends["PM10"] = PM10Trends
+            AllTrends["Ozone"] = OzoneTrends
+            return json.dumps(AllTrends)
+        except Exception as e:
+            print(e)
+            AllTrends = {}
+            PM25Trends["PM2.5"] = 0
+            PM10Trends["PM10"] = 0
+            OzoneTrends["Ozone"] = 0
+            AllTrends["PM25"] = PM25Trends
+            AllTrends["PM10"] = PM10Trends
+            AllTrends["Ozone"] = OzoneTrends
+            return json.dumps(AllTrends)
+
+    #Test version of the getTrends method
+    @app.route("/trends/test", methods=['GET'])
+    def getTrendsTest():
+        global PM25Trends 
+        global PM10Trends 
+        global OzoneTrends 
+        try:
+            today = datetime.datetime.now()
+            PM25Trends.clear()
+            PM10Trends.clear()
+            OzoneTrends.clear()
+            endYear = today.year
+            year = 2015
+            while(endYear >= year):
+                jsonTestData = open('./TestData/aqiTrendTestData.json')
+                output = json.load(jsonTestData)
+                extractTrendData(output, year)  
+                jsonTestData.close()
                 year = year + 1
             
             AllTrends = {}
