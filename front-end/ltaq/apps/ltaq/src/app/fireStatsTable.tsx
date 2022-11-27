@@ -41,7 +41,7 @@ function FireStatsTable({ county, state, fullName }: Props) {
             direction="row"
             justifyContent="center"
             alignItems="center"
-            paddingBottom={25}
+            paddingBottom={50}
           >
         
         <div className={styles['row']}>
@@ -49,7 +49,7 @@ function FireStatsTable({ county, state, fullName }: Props) {
             <table>
               <tr className={styles['head']}>
                 <th>Fire Statistics</th>
-                <th>{fullName+"*"}</th>
+                <th>{fullName}</th>
                 <th>{state}</th>
               </tr>
               {Object.keys(data).map((key) => {
