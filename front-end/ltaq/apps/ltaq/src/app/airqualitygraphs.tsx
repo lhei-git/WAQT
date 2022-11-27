@@ -251,7 +251,7 @@ export default function AirQualityGraphs({ county, state }: Props) {
               </Typography>
             </Box>
           </Modal> 
-      </div>
+      </>
     : <></>}
       
         {Object.keys(data["PM25"]).length > 1 ?
