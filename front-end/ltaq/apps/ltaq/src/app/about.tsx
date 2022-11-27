@@ -129,8 +129,8 @@ const About = () => {
           <tr>
           <td>151 to 200</td>
           <td>Unhealthy</td>
-          </tr>
-          <tr>
+         </tr>
+         <tr>
           <td>201 to 300</td>
           <td>Very Unhealthy</td>
           </tr>
@@ -184,14 +184,14 @@ const About = () => {
           the specific information available, and for the specified US county and its state. 
           </p>
           <br />
-          <img src="FireTable.jpg"></img>
+          <img src="./app/FireTable.jpg"></img>
           <br />
           </div>
-
+          <br/>
           <p>Further information about WAQT is available in our GitHub page. 
           </p>
           <br />
-          <br />
+
         </p>
         </body>
       </div>
