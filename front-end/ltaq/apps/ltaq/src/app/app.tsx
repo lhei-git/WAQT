@@ -3,6 +3,7 @@ import './app.css';
 import HOME from './home';
 import ABOUT from './about';
 import Nav from './navHome';
+import Footer from './footer'
 
 
 //This renders the search and greeting page of our web app
@@ -33,6 +34,7 @@ const App = () => {
       {/* <Nav /> */}
       {/* <HOME /> */}
       {/* <Places /> */}
+      <Footer/>
     </>
   );
 };
