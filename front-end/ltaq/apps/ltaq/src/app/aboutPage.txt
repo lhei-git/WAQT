@@ -1,0 +1,131 @@
+import React from 'react';
+import styles from './nav.module.css';
+import * as data from './links.json';
+import aboutStyle from './about.module.css';
+//import Nav from './navAbout';
+
+const About = () => {
+  return (
+    <>
+    <div className={aboutStyle['backBody']}>
+      <h2 className={aboutStyle['title']}>About</h2>
+      <body className={aboutStyle['body']}>
+        <br />
+        <p>
+          <div>
+            One of the major silent killers and reducers of quality of life in
+            the world today is air pollution. The European Environmental Agency
+            considers air pollution “the biggest environmental health risk in
+            Europe.” Studies indicate that in general, “air pollution is one of 
+            the most important reasons for serious human health effects including
+            cardiovascular and respiratory illnesses” Long-term exposure of
+            simply being downwind of a highway can significantly reduce life
+            years3. Moreover, likely due to climate change, growing wildfires
+            are exacerbating air pollution around the world.
+          </div>
+          <br />
+          <div>
+          While many applications exist to report current levels of air pollutants, 
+          these applications do not provide historical trends of pollution and air 
+          quality for specific places or regions. For example, while it is possible 
+          to view real-time data of air quality measures for a particular place, 
+          via applications such as AirNow and IQAir, current web applications do 
+          not enable visualization of air quality trends in the previous 5 or 7 years.
+          </div>
+          <br />
+          Although wildfires have become a serious concern, particularly in the United States 
+          (US), where wildfire burned 4 million acres in 2020 in California. However, few current 
+          applications exist to visualize current active wildfires and historic information about 
+          wildfires in the US.
+          <br />
+          <div>
+          The Wildfire & Air Quality Tracker (WAQT) app was developed to provide citizens, scientists, 
+          policy makers and the public alike the ability to easily search for air quality and wildfire 
+          information for a particular county of interest (currently in the US only). WAQT provides a 
+          location’s current air quality measures for Ozone, PM2.5 and PM10—some of the most common air 
+          pollutants—based on the US Air Quality Index (AQI). This information is retrieved from the [XYZ] 
+          application programming interface (API) of the US Environmental Protection Agency (EPA).  
+          </div>
+          <br />
+          <div>
+          WAQT also retrieves the current active wildfires in the searched location from the [XYZ] API, 
+          of the National Interagency Fire Center, and various calculations of historical wildfire data 
+          for the searched location, and the entire state, from the Wildland Fire Locations Full History 
+          API of the National Interagency Fire Center. 
+          </div>
+          <br />
+          <div> 
+          The WAQT app also produces various graphs of the historical trends of the three major pollutants 
+          identified from the year 2015 until the most recent data available. This long-term air quality 
+          data is pulled from the US EPA Air Quality System (AQS). The application also visualizes historical 
+          trends of wildfires, including total wildfires and acres burned from wildfires—when the data is available. 
+          Further details about wildfire data calculations are provided below.
+          </div>
+          <br /> 
+          <div>
+          WAQT was conceptualized by Nic DePaula, who guided the development process. WAQT was developed by 
+          Ryan Kaszubski, Ahmad Aoun and Kevin Kluka during the Fall of 2022 for their senior capstone project. 
+          </div>
+
+          <p>The Major Pollutants</p>
+          <br/>
+          <div>
+          EPA sets national air quality standards for 6 common pollutants, 3 of which are measured 
+          by WAQT given their prominence in issues of air quality:
+          </div>
+          <br />
+          <ul>
+          <li><a href="https://www.epa.gov/ground-level-ozone-pollution">Ozone (O3)</a></li>
+          <li><a href="https://www.epa.gov/pm-pollution">Particulate Matter 2.5 (PM 2.5)</a></li>
+          <li><a href="https://www.epa.gov/pm-pollution">Particulate Matter 10 (PM10)</a></li>
+        </ul>
+
+
+
+          <ol
+          type="1"
+          className={aboutStyle['ol']}>
+            <li>
+              Select a specific location of interest to obtain various air
+              quality and wildfire metrics.
+            </li>
+            <li>
+              Select different year and data visualization parameters, such as
+              specific chemicals to be assessed.
+            </li>
+            <li>
+              Visualize location of air quality stations and previous wildfires
+              for the selected region.
+            </li>
+            <li>
+              Compare at least two regions for air quality and wildfire metrics.
+            </li>
+            <li>
+              Obtain various statistical measures such as quantity of days with
+              unhealthy air over time; average air quality measures; months with
+              the highest number of wildfires; etc.
+            </li>
+            <li>
+              Retrieve data from various sources, such as AQI data from the EPA,
+              temperature data from NOAA and wildfires data from WFIGS.
+            </li>
+            </ol>
+            <br />
+            <div>
+              This project will focus on web application development, web
+              hosting, database development, data analysis and data
+              visualization. Students may select language and technologies of
+              choice. AWS resources may be provided for development and hosting.
+              While this will be a new stand-alone application, students may
+              build on a previously developed application to analyze air
+              temperature data, RAFT.
+            </div>
+        </p>
+      </body>
+      </div>
+      <Nav />
+    </>
+  );
+};
+
+export default About;
