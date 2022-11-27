@@ -258,6 +258,7 @@ export default function WildFireGraphs({ county, state }: Props) {
           </>
           : <></>}
         {/* count */}
+        <h3><b>Total Fires per Month</b></h3>
         {Object.keys(countData).length > 1 ?
           <Grid
             container
@@ -266,7 +267,7 @@ export default function WildFireGraphs({ county, state }: Props) {
             alignItems="center"
           >
             <div>
-              <h3><b>Number Of Fires Per Month</b></h3>
+              
               <h5><a href="https://data-nifc.opendata.arcgis.com">Source: National Interagency Fire Center <LaunchIcon fontSize="small" /></a></h5>
             </div>
             <div className={styles["graph"]}>
