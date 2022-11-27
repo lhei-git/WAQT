@@ -3,7 +3,7 @@ import styles from './nav.module.css';
 import * as data from './links.json';
 import aboutStyle from './about.module.css';
 import TwitterIcon from '@mui/icons-material/Twitter';
-//import Nav from './navAbout';
+import Nav from './navAbout';
 
 const About = () => {
   return (
@@ -195,6 +195,7 @@ const About = () => {
         </p>
         </body>
       </div>
+      <Nav />
     </>
   );
 };

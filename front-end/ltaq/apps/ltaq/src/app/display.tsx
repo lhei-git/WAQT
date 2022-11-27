@@ -159,122 +159,135 @@ export default function App() {
   };
 
   return (
-    <>
-    <div className= "backBody">
-      <div className="printable">
-        <Nav />
-        <div className="printButtonContainer">
-          <button className="printButton" onClick={handlePrint}>
-            {<PrintIcon fontSize='large' />}
-          </button>
-        </div>
-        <h2>
-          <b>
-            <i className="fa fa-location-arrow"></i> {val}
-          </b>
-        </h2>
-        <div className="w3-row-padding  w3-margin-bottom ">
-          <CurrentAQI lat={lat} lng={lng} />
-        </div>
-        <div className="w3-panel">
-          <div className="w3-row-padding">
-            <h2>
-              <LocalFireDepartmentIcon /> Active Wildfires
-            </h2>
-            <div className="w3-twothird">
-              <div className="map">
-                <GoogleMap
-                  options={options} //Google Map render options
-                  zoom={10} //Level of Zoom when user first loads the page
-                  center={location}
-                  mapContainerClassName="map-container" //Map CSS
-                  // onLoad={onLoad} //upon loading, call the onLoad function
-                >
-                  {/* If there is a location, then pass in the location, which is a latlngliteral, to place a marker on the location */}
-                  {location && (
-                    <>
-                      <Marker
-                        position={location}
-                        onClick={() => {
-                          setInfoWindowID(val);
-                        }}
-                      >
-                      {infoWindowID === val && (
-                        <InfoWindow>
-                          <React.Fragment>
-                            <span>Search Location: {val}</span>
-                          </React.Fragment>
-                        </InfoWindow>
-                      )}
-                      </Marker>
-                    </>
-                  )}
-                  {data.map((item, index) => (
-                    <Marker
-                      key={index}
-                      visible={true}
-                      position={{
-                        lat: Number(item.irwin_InitialLatitude),
-                        lng: Number(item.irwin_InitialLongitude),
-                      }}
-                      // icon="https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
-                      icon={fireMarker}
-                      onClick={() => {
-                        setInfoWindowID(item);
-                      }}
-                    >
-                      {infoWindowID === item && (
-                        <InfoWindow>
-                          <React.Fragment>
-                            <span>Fire Name: {item.name}</span>
-                            <br />
-                            <span>Fire Start Date: {item.date}</span>
-                            <br />
-                            <span>Fire Cause: {item.cause}</span>
-                            <br />
-                            <span>Latitude: {item.irwin_InitialLatitude}</span>
-                            <br />
-                            <span>
-                              Longitude: {item.irwin_InitialLongitude}
-                            </span>
-                          </React.Fragment>
-                        </InfoWindow>
-                      )}
-                    </Marker>
-                  ))}
-                </GoogleMap>
-              </div>
-              <div className="pagebreak"> </div> {/*For page printing*/}
+    <div className="backBody">
+      <>
+        <div className="printable">
+          <Nav />
+          <div className="printButtonContainer">
+            <button className="printButton" onClick={handlePrint}>
+              {<PrintIcon fontSize="large" />}
+            </button>
+          </div>
+          <h2>
+            <b>
+              <i className="fa fa-location-arrow"></i> {val}
+            </b>
+          </h2>
+          <div className="w3-row-padding  w3-margin-bottom ">
+            <div className="currentAQI">
+              <CurrentAQI lat={lat} lng={lng} />
             </div>
-            <div className="w3-third">
-              <ActiveFiresTable county={countyFormatted} state={splitVals} />
+            <br />
+          </div>
+          <div className="w3-panel">
+            <div className="w3-row-padding">
+              <div className="currentActiveWildfires">
+                <h2>
+                  <LocalFireDepartmentIcon /> Current Active Wildfires
+                </h2>
+                <div className="w3-twothird">
+                  <div className="map">
+                    <GoogleMap
+                      options={options} //Google Map render options
+                      zoom={10} //Level of Zoom when user first loads the page
+                      center={location}
+                      mapContainerClassName="map-container" //Map CSS
+                      // onLoad={onLoad} //upon loading, call the onLoad function
+                    >
+                      {/* If there is a location, then pass in the location, which is a latlngliteral, to place a marker on the location */}
+                      {location && (
+                        <>
+                          <Marker
+                            position={location}
+                            onClick={() => {
+                              setInfoWindowID(val);
+                            }}
+                          >
+                            {infoWindowID === val && (
+                              <InfoWindow>
+                                <React.Fragment>
+                                  <span>Search Location: {val}</span>
+                                </React.Fragment>
+                              </InfoWindow>
+                            )}
+                          </Marker>
+                        </>
+                      )}
+                      {data.map((item, index) => (
+                        <Marker
+                          key={index}
+                          visible={true}
+                          position={{
+                            lat: Number(item.irwin_InitialLatitude),
+                            lng: Number(item.irwin_InitialLongitude),
+                          }}
+                          // icon="https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
+                          icon={fireMarker}
+                          onClick={() => {
+                            setInfoWindowID(item);
+                          }}
+                        >
+                          {infoWindowID === item && (
+                            <InfoWindow>
+                              <React.Fragment>
+                                <span>Fire Name: {item.name}</span>
+                                <br />
+                                <span>Fire Start Date: {item.date}</span>
+                                <br />
+                                <span>Fire Cause: {item.cause}</span>
+                                <br />
+                                <span>
+                                  Latitude: {item.irwin_InitialLatitude}
+                                </span>
+                                <br />
+                                <span>
+                                  Longitude: {item.irwin_InitialLongitude}
+                                </span>
+                              </React.Fragment>
+                            </InfoWindow>
+                          )}
+                        </Marker>
+                      ))}
+                    </GoogleMap>
+                  </div>
+                  <div className="pagebreak"> </div> {/*For page printing*/}
+                </div>
+                <div className="w3-third">
+                  <ActiveFiresTable
+                    county={countyFormatted}
+                    state={splitVals}
+                  />
+                </div>
+                <div className="pagebreak"> </div> {/*For page printing*/}
+              </div>
             </div>
             <div className="pagebreak"> </div> {/*For page printing*/}
+            <div className="w3-container w3-margin-bottom"></div>
+            <br />
+            <div className="currentFireStatsTable">
+              <FireStatsTable
+                county={countyFormatted}
+                state={splitVals}
+                fullName={val}
+              />
+            </div>
+            <br />
+          </div>
+          <div className="pagebreak"> </div> {/*For page printing*/}
+          <div className="w3-container w3-margin-bottom">
+            <div className="airQualityGraphs">
+              <AirQualityGraphs county={countyFormatted} state={splitVals} />
+            </div>
+          </div>
+          <br />
+          <div className="w3-container">
+            <div className="wildfireGraphs">
+              <WildFireGraphs county={countyFormatted} state={splitVals} />
+            </div>
           </div>
         </div>
-        <div className="pagebreak"> </div> {/*For page printing*/}
-        <div className="w3-container w3-margin-bottom">
-          <FireStatsTable
-            county={countyFormatted}
-            state={splitVals}
-            fullName={val}
-          />
-        </div>
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <div className="pagebreak"> </div> {/*For page printing*/}
-        <div className="w3-container w3-margin-bottom">
-          <AirQualityGraphs county={countyFormatted} state={splitVals} />
-        </div>
-        <div className="w3-container w3-margin-bottom">
-          <WildFireGraphs county={countyFormatted} state={splitVals} />
-        </div>
-      </div>
+      </>
+      <br />
     </div>
-    </>
   );
 }

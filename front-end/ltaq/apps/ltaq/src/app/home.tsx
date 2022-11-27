@@ -13,7 +13,7 @@ import {
 import '@reach/combobox/styles.css';
 import ReactDOM from 'react-dom';
 import DISPLAY from './display';
-import Nav from './nav';
+import Nav from './navHome';
 import styles from './nav.module.css';
 import homeStyle from './home.module.css';
 
@@ -85,7 +85,7 @@ export default function Places() {
           {/* <Nav/> */}
           <h2 className={homeStyle['titleBackground']}><b>Wildfire & Air Quality Tracker</b></h2>
           <br />
-          <p className={homeStyle['textBackground']}><b>Search for a city or county within the United States to view current and historical wildfire and air quality information.</b></p>
+          <p className={homeStyle['textBackground']}><b>Enter a city or county within the United States to view current and historic air quality trends,<br/> and current and historic wildfires in your particular area.</b></p>
           <br />
           {/* <div className = {homeStyle['comboBox']}> */}
           <Combobox onSelect={handleSelect}>
@@ -113,7 +113,7 @@ export default function Places() {
           </Combobox>
         </div>
       </div>
-       
+      <Nav />
     </>
   );
 }
