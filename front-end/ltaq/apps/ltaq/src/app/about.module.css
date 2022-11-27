@@ -52,7 +52,7 @@ a:visited {
 }
 
 
-h1{
+.aboutH1{
   text-align: left;
   font-size: 20px;
   font-weight: bold;
@@ -63,54 +63,54 @@ h2{
   text-align: left;
   text-align-last: left;
 }
-table {
+.aboutTable {
   table-layout: fixed;
   width: 70%;
 }
-th{
+.aboutTh{
   background-color: rgba(216, 209, 209, 0.2);
   border: 1px solid;
   border-collapse: collapse;
 }
-tr{
+.aboutTr{
   line-height: 5px;
 }
-td{
+.aboutTd{
   background-color: #fffdfd;
   border: 1px solid;
   border-collapse: collapse;
   height: 0px;
   width: 0px;
 }
-tr:nth-child(1) th
+  .aboutTr:nth-child(1) Th
   {
     background-color: #ced1cd;
   }
-  tr:nth-child(2) td
+  .aboutTr:nth-child(2) Td
   {
     background-color: #ced1cd;
   }
-  tr:nth-child(3) td
+  .aboutTr:nth-child(3) Td
   {
     background:  #C5E0B4;
   }
-  tr:nth-child(4) td
+  .aboutTr:nth-child(4) Td
   {
     background-color: #FDFF99;
   }
-tr:nth-child(5) td
+  .aboutTr:nth-child(5) td
   {
     background-color: #F4B183 ;
   }
-tr:nth-child(6) td
+  .aboutTr:nth-child(6) td
   {
    background-color: #FB2A29;
   }
-tr:nth-child(7) td
+  .aboutTr:nth-child(7) td
   {
     background-color: #9E5FCE;
   }
-tr:nth-child(8) td
+  .aboutTr:nth-child(8) td
   {
     background-color: #D61E03 ;
   }
