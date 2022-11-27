@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Bar, Line } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
 import axios from 'axios';
@@ -12,6 +12,13 @@ import Button from '@mui/material/Button';
 import Menu, { MenuProps } from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import HelpIcon from '@mui/icons-material/Help';
+import CloseIcon from '@mui/icons-material/Close';
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import aqiImage1 from "./aqiGraphs1.jpg";
+import aqiImage2 from "./aqiGraphs2.jpg";
 //returns a graph which displays Data
 //This data can be in a specific date range
 interface Props {
@@ -21,6 +28,19 @@ interface Props {
 //first run flag for data filtering
 let FIRSTRUN = true;
 
+//styling for the modal
+//https://mui.com/material-ui/react-modal/
+const modalStyle = {
+  position: 'absolute' as 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 800,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 export default function AirQualityGraphs({ county, state }: Props) {
   //url information
   const url =
@@ -142,6 +162,15 @@ export default function AirQualityGraphs({ county, state }: Props) {
     setDataFilterOzone(filterDataTempOzone);
     setAnchorEl(null);
   }
+ 
+  const [openModal, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleModalClose = () => setOpen(false);
+
+  const [openModal2, setOpen2] = useState(false);
+  const handleOpen2 = () => setOpen2(true);
+  const handleModalClose2 = () => setOpen2(false);
+  
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -205,39 +234,51 @@ export default function AirQualityGraphs({ county, state }: Props) {
                 ))}
               </StyledMenu>
             </div>
-          </>
-        ) : (
-          <></>
-        )}
-        {Object.keys(data['PM25']).length > 1 ? (
+           {/* modal content */}
+      <Modal
+            open={openModal}
+            onClose={handleModalClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box sx={modalStyle}>
+              <Typography id="modal-modal-title" variant="h6" component="h2">
+                AQI Information:
+              </Typography>
+              <Typography id="modal-modal-description">
+                <img src={aqiImage1} />
+              </Typography>
+              <Typography align="center">
+                    <Button onClick={handleModalClose}>{<CloseIcon fontSize="medium"/>}</Button>
+              </Typography>
+            </Box>
+          </Modal> 
+      </>
+    : <></>}
+      
+        {Object.keys(data["PM25"]).length > 1 ?
+        <>
+        <div>
+              <h3><b>Highest PM 2.5 Values Per Quarter</b><Button onClick={handleOpen}>{<HelpIcon />}</Button></h3>
+              <h4>Unit: Micrograms/cubic meter</h4>
+            </div>
           <Grid
             container
             direction="row"
             justifyContent="center"
             alignItems="center"
           >
-            <div>
-              <h3>
-                <b>Highest PM 2.5 Values Per Quarter</b>
-              </h3>
-              <h5>Beginning Q1 2015</h5>
-              <h5>Unit of Measurement: Micrograms/cubic meter (LC)</h5>
-              <h5>
-                <a href="https://www.epa.gov/aqs">
-                  Source: Environmental Protection Agency Air Quality System{' '}
-                  <LaunchIcon fontSize="small" />
-                </a>
-              </h5>
-            </div>
-            <div className={styles['graph']}>
+            
+            <div className={styles["graph"]}>
+
               <Line
                 data={{
                   labels: Object.keys(dataFilter25),
                   datasets: [
                     {
                       data: Object.values(dataFilter25),
-                      backgroundColor: ['#3e95cd'],
-                      borderColor: ['#3e95cd'],
+                      backgroundColor: ["#5e87f5"],
+                      borderColor: ["#5e87f5"],
                     },
                   ],
                 }}
@@ -247,7 +288,7 @@ export default function AirQualityGraphs({ county, state }: Props) {
                     legend: {
                       display: false,
                       labels: {
-                        color: 'rgb(255, 99, 132)',
+                        color: "#5e87f5",
                       },
                     },
                     title: {
@@ -258,38 +299,30 @@ export default function AirQualityGraphs({ county, state }: Props) {
               />
             </div>
           </Grid>
-        ) : (
-          <></>
-        )}
-        <div className="pagebreak"> </div> {/*For page printing*/}
-        {Object.keys(data['PM10']).length > 1 ? (
+          <h5>Source: <a href="https://www.epa.gov/aqs">EPA AQS <LaunchIcon fontSize="small" /></a></h5>
+          </>
+          : <></>}
+                  <div className="pagebreak"> </div> {/*For page printing*/}
+        {Object.keys(data["PM10"]).length > 1 ?
+        <>
+        <div>
+              <h3><b>Highest PM 10 Values Per Quarter</b><Button onClick={handleOpen}>{<HelpIcon />}</Button></h3>
+              <h4>Unit: Micrograms/cubic meter</h4>
+            </div>
           <Grid
             container
             direction="row"
             justifyContent="center"
             alignItems="center"
           >
-            <div>
-              <h3>
-                <b>Highest PM 10 Values Per Quarter</b>
-              </h3>
-              <h5>Beginning Q1 2015</h5>
-              <h5>Unit of Measurement: Micrograms/cubic meter (25 C)</h5>
-              <h5>
-                <a href="https://www.epa.gov/aqs">
-                  Source: Environmental Protection Agency Air Quality System{' '}
-                  <LaunchIcon fontSize="small" />
-                </a>
-              </h5>
-            </div>
-            <div className={styles['graph']}>
+            <div className={styles["graph"]}>
               <Line
                 data={{
                   labels: Object.keys(dataFilter10),
                   datasets: [
                     {
-                      backgroundColor: ['#3e95cd'],
-                      borderColor: ['#3e95cd'],
+                      backgroundColor: ["#3d4b91"],
+                      borderColor: ["#3d4b91"],
                       data: Object.values(dataFilter10),
                     },
                   ],
@@ -300,7 +333,7 @@ export default function AirQualityGraphs({ county, state }: Props) {
                     legend: {
                       display: false,
                       labels: {
-                        color: 'rgb(255, 99, 132)',
+                        color: "#3d4b91",
                       },
                     },
                     title: {
@@ -311,38 +344,30 @@ export default function AirQualityGraphs({ county, state }: Props) {
               />
             </div>
           </Grid>
-        ) : (
-          <></>
-        )}
-        <div className="pagebreak"> </div> {/*For page printing*/}
-        {Object.keys(data['Ozone']).length > 1 ? (
+          <h5>Source: <a href="https://www.epa.gov/aqs">EPA AQS <LaunchIcon fontSize="small" /></a></h5>
+          </>
+          : <></>}
+                  <div className="pagebreak"> </div> {/*For page printing*/}
+        {Object.keys(data["Ozone"]).length > 1 ?
+        <>
+        <div>
+              <h3><b>Highest Ozone Values Per Quarter</b><Button onClick={handleOpen2}>{<HelpIcon />}</Button></h3>
+              <h4>Unit: Parts per million</h4>
+            </div>
           <Grid
             container
             direction="row"
             justifyContent="center"
             alignItems="center"
           >
-            <div>
-              <h3>
-                <b>Highest Ozone Values Per Quarter</b>
-              </h3>
-              <h5>Beginning Q1 2015</h5>
-              <h5>Unit of Measurement: Parts per million</h5>
-              <h5>
-                <a href="https://www.epa.gov/aqs">
-                  Source: Environmental Protection Agency Air Quality System{' '}
-                  <LaunchIcon fontSize="small" />
-                </a>
-              </h5>
-            </div>
-            <div className={styles['graph']}>
+            <div className={styles["graph"]}>
               <Line
                 data={{
                   labels: Object.keys(dataFilterOzone),
                   datasets: [
                     {
-                      backgroundColor: ['#3e95cd'],
-                      borderColor: ['#3e95cd'],
+                      backgroundColor: ["#2d2c5e"],
+                      borderColor: ["#2d2c5e"],
                       data: Object.values(dataFilterOzone),
                     },
                   ],
@@ -353,7 +378,7 @@ export default function AirQualityGraphs({ county, state }: Props) {
                     legend: {
                       display: false,
                       labels: {
-                        color: 'rgb(255, 99, 132)',
+                        color: "#2d2c5e",
                       },
                     },
                     title: {
@@ -364,9 +389,29 @@ export default function AirQualityGraphs({ county, state }: Props) {
               />
             </div>
           </Grid>
-        ) : (
-          <></>
-        )}
+          <h5>Source: <a href="https://www.epa.gov/aqs">EPA AQS <LaunchIcon fontSize="small" /></a></h5>
+          </>
+          : <></>}
+        <div>
+          <Modal
+            open={openModal2}
+            onClose={handleModalClose2}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box sx={modalStyle}>
+              <Typography id="modal-modal-title" variant="h6" component="h2">
+                AQI Information:
+              </Typography>
+              <Typography id="modal-modal-description">
+                <img src={aqiImage2} />
+              </Typography>
+              <Typography align="center">
+                    <Button onClick={handleModalClose2}>{<CloseIcon fontSize="medium"/>}</Button>
+              </Typography>
+            </Box>
+          </Modal> 
+      </div>
       </>
     );
   }
