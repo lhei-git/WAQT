@@ -19,12 +19,12 @@ interface Props {
 }
 
 function ActiveFiresTable({county, state}: Props) {
-  //TODO: get data from map
+  //This grabs all data from the active fire endpoint
   const url = "http://localhost:8001/mapmarkers?county="+county+"&state="+state
   console.log(url)
   const [data, setData] = useState<any[]>([]);
   const [isLoading, setLoading] = useState(true);
-  
+  //hook to populate the array 
   useEffect(() => {
     axios.get(url).then(response => {
       setData(response.data);
@@ -33,7 +33,7 @@ function ActiveFiresTable({county, state}: Props) {
     });
   }, []);
 
-
+  //if loading, display loading...
   if (isLoading) {
     return <div >Loading...</div>;
   }else if(data.length != 0){
@@ -46,6 +46,7 @@ function ActiveFiresTable({county, state}: Props) {
             alignItems="center"
             
           >
+      {/* table to render active wildfire data */}
       <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
@@ -56,6 +57,7 @@ function ActiveFiresTable({county, state}: Props) {
           </TableRow>
         </TableHead>
         <TableBody>
+          {/* only show most recent 5 wildfires */}
           {data.splice(0,5).map((item, index) => (
             <TableRow
               key={index}
