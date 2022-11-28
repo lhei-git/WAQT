@@ -162,7 +162,7 @@ export default function AirQualityGraphs({ county, state }: Props) {
     setDataFilterOzone(filterDataTempOzone);
     setAnchorEl(null);
   }
- 
+  //modal hooks
   const [openModal, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleModalClose = () => setOpen(false);
@@ -255,7 +255,7 @@ export default function AirQualityGraphs({ county, state }: Props) {
           </Modal> 
       </>
     : <></>}
-      
+        {/* render all graphs here */}
         {Object.keys(data["PM25"]).length > 1 ?
         <>
         <div>
@@ -302,7 +302,7 @@ export default function AirQualityGraphs({ county, state }: Props) {
           <h5>Source: <a href="https://www.epa.gov/aqs">EPA AQS <LaunchIcon fontSize="small" /></a></h5>
           </>
           : <></>}
-                  <div className="pagebreak"> </div> {/*For page printing*/}
+        <div className="pagebreak"> </div> {/*For page printing*/}
         {Object.keys(data["PM10"]).length > 1 ?
         <>
         <div>
@@ -347,7 +347,7 @@ export default function AirQualityGraphs({ county, state }: Props) {
           <h5>Source: <a href="https://www.epa.gov/aqs">EPA AQS <LaunchIcon fontSize="small" /></a></h5>
           </>
           : <></>}
-                  <div className="pagebreak"> </div> {/*For page printing*/}
+        <div className="pagebreak"> </div> {/*For page printing*/}
         {Object.keys(data["Ozone"]).length > 1 ?
         <>
         <div>
