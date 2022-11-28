@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
-import styles from "./app.module.css";
 import axios from "axios"
-import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import LaunchIcon from '@mui/icons-material/Launch';
 import Grid from '@mui/material/Unstable_Grid2';
 import Table from '@mui/material/Table';
@@ -109,6 +107,7 @@ function FireStatsTable({ county, state, fullName }: Props) {
             alignItems="center"
             
           >
+      {/* table component to render fire stats table */}
       <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
@@ -119,6 +118,7 @@ function FireStatsTable({ county, state, fullName }: Props) {
           </TableRow>
         </TableHead>
         <TableBody>
+          {/* map all data onto the table */}
           {Object.keys(data).map((key) => (
             <TableRow
               key={key}
