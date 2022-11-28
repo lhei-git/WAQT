@@ -15,11 +15,11 @@ from operator import contains
 # API is in secrets
 # Do not push API_KEY to GitHub
 #Air Now
-API_KEY = ""
+API_KEY = "KEY_HERE"
 
 #AQS
-EMAIL = "" 
-AQS_KEY = ""
+EMAIL = "EMAIL_HERE" 
+AQS_KEY = "KEY_HERE"
 CURRENT_DATE = date.today()
 
 #states
