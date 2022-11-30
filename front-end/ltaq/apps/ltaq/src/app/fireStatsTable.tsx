@@ -1,9 +1,14 @@
 import { useEffect, useState } from "react";
-import styles from "./app.module.css";
 import axios from "axios"
-import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import LaunchIcon from '@mui/icons-material/Launch';
 import Grid from '@mui/material/Unstable_Grid2';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 
 //This returns a table from the wildfire API
 //returns Date, Name, Acres and Cause when available
@@ -100,36 +105,38 @@ function FireStatsTable({ county, state, fullName }: Props) {
             direction="row"
             justifyContent="center"
             alignItems="center"
-            paddingBottom={50}
+            
           >
-        
-        <div className={styles['row']}>
-          <div className={styles['column']}> 
-            <table>
-              <tr className={styles['head']}>
-                <th>Fire Statistics</th>
-                <th>{formattedName[0]}</th>
-                <th>{StateAbbrv[state]}</th>
-              </tr>
-              {Object.keys(data).map((key) => {
-                return (
-                  <tr > {key}
-                    <td>
-                      {data[key]}
-                    </td>
-                    <td>
-                    {stateData[key]}
-                    </td>
-                    <hr />
-                  </tr>
-                );
-              })}
-              
-            </table>
-            <p> <a href = "https://www.nifc.gov/"> Source: National Interagency Fire Agency <LaunchIcon fontSize="small"/></a></p>
-          </div>
+      {/* table component to render fire stats table */}
+      <TableContainer component={Paper}>
+      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell align="center"  sx={{fontSize: "2rem"}}>Fire Statistics</TableCell>
+            <TableCell align="center" sx={{fontSize: "2rem"}}>{formattedName[0]}</TableCell>
+            <TableCell align="center" sx={{fontSize: "2rem"}}>{StateAbbrv[state]}</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {/* map all data onto the table */}
+          {Object.keys(data).map((key) => (
+            <TableRow
+              key={key}
+            >
+              <TableCell align="center" sx={{fontSize: "1.8rem"}}>{key}</TableCell>
+              <TableCell align="center" sx={{fontSize: "1.8rem"}}>{data[key]}</TableCell>
+              <TableCell align="center" sx={{fontSize: "1.8rem"}}>{stateData[key]}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+
+
+    <p> <a href = "https://www.nifc.gov/"> Source: National Interagency Fire Agency <LaunchIcon fontSize="small"/></a></p>
+          
        
-        </div>
+        
         </Grid>
       </>
     );
