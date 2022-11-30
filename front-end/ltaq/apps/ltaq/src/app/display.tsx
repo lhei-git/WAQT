@@ -27,13 +27,17 @@ import CurrentAQI from './currentAQITable';
 import ActiveFiresTable from './activeFireTable';
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import PrintIcon from '@mui/icons-material/Print';
+import AirIcon from '@mui/icons-material/Air';
+import TerrainIcon from '@mui/icons-material/Terrain';
+import LaunchIcon from '@mui/icons-material/Launch';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import fire from './Fire Icon.jpeg';
 import FireStatsTable from './fireStatsTable';
 import { AxiosResponse } from 'axios';
 import AirQualityGraphs from './airqualitygraphs';
-import AcresPerMonth from './acresPerMonth';
 import fireMarker from './fire_emoji.svg';
 import WildFireGraphs from './WildfireGraphs';
+import Footer from './footer';
 
 //=================================================
 //=================== Variables ===================
@@ -159,30 +163,39 @@ export default function App() {
   };
 
   return (
-    <>
-    <div className= "backBody">
-      <div className="printable">
-        <Nav />
-        <div className="printButtonContainer">
-          <button className="printButton" onClick={handlePrint}>
-            {<PrintIcon fontSize='large' />}
-          </button>
-        </div>
-        <h2>
-          <b>
-            <i className="fa fa-location-arrow"></i> {val}
-          </b>
-        </h2>
-        <div className="w3-row-padding  w3-margin-bottom ">
-          <CurrentAQI lat={lat} lng={lng} />
-        </div>
-        <div className="w3-panel">
-          <div className="w3-row-padding">
-            <h2>
-              <LocalFireDepartmentIcon /> Active Wildfires
-            </h2>
-            <div className="w3-twothird">
+    <div className="backBody">
+      <>
+        <div className="printable">
+          <Nav />
+          <div className="printButtonContainer">
+            <button className="printButton" onClick={handlePrint}>
+              {<PrintIcon fontSize="large" />}
+            </button>
+          </div>
+          <h1>
+            <b>
+              <i className="fa fa-location-arrow"></i> {val}
+            </b>
+          </h1>
+          <div className="w3-row-padding  w3-margin-bottom ">
+            <div className="currentAQI">
+              <h2>
+                <AirIcon /> Current Air Quality
+              </h2>
+              <br />
+              <CurrentAQI lat={lat} lng={lng} />
+            </div>
+            <div className="pagebreak"> </div> {/*For page printing*/}
+            <br />
+          </div>
+          <div className="w3-row-padding  w3-margin-bottom ">
+            <div className="currentActiveWildfires">
+              <h2>
+                <TerrainIcon /> Geography
+              </h2>
+              <br />
               <div className="map">
+                <h2>Current active fires</h2>
                 <GoogleMap
                   options={options} //Google Map render options
                   zoom={10} //Level of Zoom when user first loads the page
@@ -199,13 +212,13 @@ export default function App() {
                           setInfoWindowID(val);
                         }}
                       >
-                      {infoWindowID === val && (
-                        <InfoWindow>
-                          <React.Fragment>
-                            <span>Search Location: {val}</span>
-                          </React.Fragment>
-                        </InfoWindow>
-                      )}
+                        {infoWindowID === val && (
+                          <InfoWindow>
+                            <React.Fragment>
+                              <span>Search Location: {val}</span>
+                            </React.Fragment>
+                          </InfoWindow>
+                        )}
                       </Marker>
                     </>
                   )}
@@ -243,38 +256,80 @@ export default function App() {
                     </Marker>
                   ))}
                 </GoogleMap>
+                <p>
+                  {' '}
+                  <a href="https://data-nifc.opendata.arcgis.com/datasets/nifc::wfigs-current-wildland-fire-perimeters/">
+                    {' '}
+                    Active fires from: WFIGS <LaunchIcon fontSize="small" />
+                  </a>
+                </p>
               </div>
-              <div className="pagebreak"> </div> {/*For page printing*/}
             </div>
-            <div className="w3-third">
+          </div>
+          <br />
+          <div className="w3-row-padding  w3-margin-bottom ">
+            {/* <div className="pagebreak"> </div> For page printing */}
+            <div className="activeFiresTable">
+              <h2>
+                <LocalFireDepartmentIcon /> Current Wildfires
+              </h2>
+              <br />
+              <h2>Active wildfires</h2>
               <ActiveFiresTable county={countyFormatted} state={splitVals} />
+              <p>
+                {' '}
+                <a href="https://data-nifc.opendata.arcgis.com/datasets/nifc::wfigs-current-wildland-fire-perimeters/api">
+                  {' '}
+                  Data source: WFIGS – Active fires API
+                  <LaunchIcon fontSize="medium" />
+                </a>
+              </p>
             </div>
-            <div className="pagebreak"> </div> {/*For page printing*/}
+          </div>
+          <div className="pagebreak"> </div> {/*For page printing*/}
+          <div className="pagebreak"> </div> {/*For page printing*/}
+          <br />
+          <div className="w3-row-padding  w3-margin-bottom ">
+            <div className="currentFireStatsTable">
+              <h2>
+                <TrendingUpIcon /> Statistics
+              </h2>
+              <br />
+              <h2> Current and historical fire statistics</h2>
+              <FireStatsTable
+                county={countyFormatted}
+                state={splitVals}
+                fullName={val}
+              />
+            </div>
+          </div>
+          <br />
+          <div className="pagebreak"> </div> {/*For page printing*/}
+          <div className="w3-container w3-margin-bottom">
+            <div className="airQualityGraphs">
+              <h2>
+                <AirIcon fontSize="large" /> Air Quality Historical Trends
+              </h2>
+              <br />
+              <AirQualityGraphs county={countyFormatted} state={splitVals} />
+            </div>
+          </div>
+          <br />
+          <div className="pagebreak"> </div> {/*For page printing*/}
+          <div className="w3-container">
+            <div className="wildfireGraphs">
+              <h2>
+                <LocalFireDepartmentIcon fontSize="large" /> Wildfire Historical
+                Trends
+              </h2>
+              <br />
+              <WildFireGraphs county={countyFormatted} state={splitVals} />
+            </div>
           </div>
         </div>
-        <div className="pagebreak"> </div> {/*For page printing*/}
-        <div className="w3-container w3-margin-bottom">
-          <FireStatsTable
-            county={countyFormatted}
-            state={splitVals}
-            fullName={val}
-          />
-        </div>
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <div className="pagebreak"> </div> {/*For page printing*/}
-        <div className="w3-container w3-margin-bottom">
-          <AirQualityGraphs county={countyFormatted} state={splitVals} />
-        </div>
-        <div className="w3-container w3-margin-bottom">
-          <WildFireGraphs county={countyFormatted} state={splitVals} />
-        </div>
-      </div>
+      </>
+      <br />
+      <Footer />
     </div>
-    </>
   );
 }

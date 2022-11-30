@@ -7,6 +7,7 @@ import pm25Value from "./pm25.jpg";
 import pm10Value from "./pm10.jpg"; 
 import FireTable from "./fireTable.jpg"; 
 //import Nav from './navAbout';
+import TwitterIcon from '@mui/icons-material/Twitter';
 
 const About = () => {
   return (
@@ -221,9 +222,9 @@ const About = () => {
         </div>
           </p>
         </body>
+
         </div>
-    
-  
+
     </>
   );
 };
