@@ -5,13 +5,14 @@ import aboutStyle from './about.module.css';
 import ozoneValue from "./ozone.jpg"; 
 import pm25Value from "./pm25.jpg"; 
 import pm10Value from "./pm10.jpg"; 
-import FireTable from "./fireTable.jpg"; 
-//import Nav from './navAbout';
+//import FireTable from "./fireTable.jpg"; 
+import Nav from './navAbout';
 import TwitterIcon from '@mui/icons-material/Twitter';
 
 const About = () => {
   return (
     <>
+    <Nav />
     <div className={aboutStyle['backBody']}>
       <h2 className={aboutStyle['title']}></h2>
       <body className={aboutStyle['body']}>
@@ -212,7 +213,7 @@ const About = () => {
           <br />   
           </div>
           <div className={aboutStyle['fire-table']}>
-          <img src={FireTable}></img>
+          {/* <img src={FireTable}></img> */}
           <br />
       
           <br/>
