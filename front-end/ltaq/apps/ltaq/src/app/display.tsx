@@ -167,15 +167,14 @@ export default function App() {
       <>
         <div className="printable">
           <Nav />
-          <div className="printButtonContainer">
-            <button className="printButton" onClick={handlePrint}>
-              {<PrintIcon fontSize="large" />}
-            </button>
-          </div>
+
           <h1>
             <b>
               <i className="fa fa-location-arrow"></i> {val}
             </b>
+            <button className="printButton" onClick={handlePrint}>
+              {<PrintIcon fontSize="large" />}
+            </button>
           </h1>
           <div className="w3-row-padding  w3-margin-bottom ">
             <div className="currentAQI">
