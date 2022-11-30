@@ -143,14 +143,15 @@ width: 60%;
 background-image: linear-gradient(rgba(0, 0, 0, 0.2),
 rgba(0, 0, 0, 0.2)), url(AboutPic.jpg);
 background-size: 100% 100%;
-background-repeat: repeat;
+background-repeat: no-repeat;
 margin: 0;
 padding: 0;
 z-index: -1;
+object-fit: cover;
 position:absolute;
 width: auto; 
-height: auto;
+height: auto; 
 margin-bottom:10px;
 background-position: center;
 }
-/* background-size: auto; */
+
