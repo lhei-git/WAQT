@@ -114,7 +114,7 @@ function CurrentAQI({ lat, lng }: Props) {
                       (highestAqi == 3) ? "Unhealthy AQI is 151 - 200. Everyone may begin to experience some adverse health effects, and members of the sensitive groups may experience more serious effects." :
                         (highestAqi == 4) ? "Very Unhealthy AQI is 201 - 300. This would trigger a health alert signifying that everyone may experience more serious health effects." :
                           (highestAqi == 5) ? "Hazardous AQI greater than 300. This would trigger health warnings of emergency conditions. The entire population is more likely to be affected." : "Current AQI information is not available at this time."}
-
+              {<p><a href="/about#AQI" target={"_blank"} >  More Info <LaunchIcon fontSize="small"/> </a></p>}
               </Typography>
               <Typography align="center">
                     <Button onClick={handleClose}>{<CloseIcon fontSize="medium"/>}</Button>
@@ -153,8 +153,8 @@ function CurrentAQI({ lat, lng }: Props) {
         </div>
         <div className={styles["centerText"]}>
           <br/>
-        <p> <a href = "https://www.airnow.gov/"> Source: Air Now <LaunchIcon fontSize="small"/></a></p>
-        <p> <a href = "https://www.airnow.gov/aqi/aqi-basics/"> More Information on AQI <LaunchIcon fontSize="small"/></a></p>
+        <p> <a href = "https://www.airnow.gov/" target="_blank"> Source: Air Now <LaunchIcon fontSize="small"/></a></p>
+        <p> <a href = "/about#AirQualityMeasurements" target="_blank"> More Information on AQI <LaunchIcon fontSize="small"/></a></p>
         </div>
 
 

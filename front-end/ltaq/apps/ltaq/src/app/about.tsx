@@ -109,7 +109,7 @@ const About = () => {
           </div>
 
           <div>
-          <h1>US Air Quality Index </h1>
+          <h1 id="AQI">US Air Quality Index </h1>
           <br />
 
           <p> 
@@ -173,7 +173,7 @@ const About = () => {
           </div>
 
           <div>
-          <h1> Air Quality Measures</h1>
+          <h1 id="AirQualityMeasurements"> Air Quality Measures</h1>
           <br />
 
           <p>
