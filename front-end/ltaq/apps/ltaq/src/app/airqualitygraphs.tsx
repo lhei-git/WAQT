@@ -35,7 +35,7 @@ const modalStyle = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 800,
+  width: 400,
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
@@ -246,7 +246,15 @@ export default function AirQualityGraphs({ county, state }: Props) {
                 AQI Information:
               </Typography>
               <Typography id="modal-modal-description">
-                <img src={aqiImage1} />
+                {<ul>
+                  <li>{"Good (<= 12.0 ug/m3)"}</li>
+                  <li>{"Moderate (12.1-35.4 ug/m3"}</li>
+                  <li>{"Unhealthy for Sensitive Groups (35.5-55.4 ug/m3)"}</li>
+                  <li>{"Unhealthy (55.5-150.4 ug/m3)"}</li>
+                  <li>{"Very Unhealthy (150.5-250.4ug/m3)"}</li>
+                  <li>{"Hazardous (>=250.5 ug/m3)"}</li>
+                  </ul>}
+
               </Typography>
               <Typography align="center">
                     <Button onClick={handleModalClose}>{<CloseIcon fontSize="medium"/>}</Button>
@@ -404,7 +412,14 @@ export default function AirQualityGraphs({ county, state }: Props) {
                 AQI Information:
               </Typography>
               <Typography id="modal-modal-description">
-                <img src={aqiImage2} />
+              {<ul>
+                  <li>{"Good (<=.054 ppm)"}</li>
+                  <li>{"Moderate (.055-.070 ppm)"}</li>
+                  <li>{"Unhealthy for Sensitive Groups (.071-.085 ppm)"}</li>
+                  <li>{"Unhealthy (.086-.105 ppm)"}</li>
+                  <li>{"Very Unhealthy (.106-.200 ppm)"}</li>
+                  <li>{"Hazardous (>=.405 ppm)"}</li>
+                  </ul>}
               </Typography>
               <Typography align="center">
                     <Button onClick={handleModalClose2}>{<CloseIcon fontSize="medium"/>}</Button>
