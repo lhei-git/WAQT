@@ -3,7 +3,7 @@ body, h1, h2, h3, h4, h5, h6 {
 }
 
 .title {
-  color: rgb(255, 255, 255);
+  color: white;
   position: relative;
   height: 70px;
   text-align: center;
@@ -13,12 +13,11 @@ body, h1, h2, h3, h4, h5, h6 {
   /* opacity: 50%; */
   /* border: 2px solid #610000; */
   font-family: Arial, Helvetica, sans-serif;
-  color: #ffffff;
+  color: #fffdfd;
   text-align: center;
   font-size: 50px;
   font-weight: bold;
 }
-
 .body {
   position: relative;
   height: auto;
@@ -45,14 +44,13 @@ body, h1, h2, h3, h4, h5, h6 {
   margin-left: 3.4em;
 }
 
-/* link */
+/* visited link */
 a:visited {
-  color: rgb(37, 80, 222);
-  background-color: transparent;
+  color: rgb(0, 4, 255);
 }
 
 
-h1{
+/* h1{
   text-align: left;
   font-size: 20px;
   font-weight: bold;
@@ -62,8 +60,10 @@ h1{
   font-size: 16px;
   text-align: center;
   text-align-last: left;
+
 }
 .about-table {
+
   table-layout: fixed;
   width: 65%;
   border: 1px solid black;
@@ -75,8 +75,14 @@ h1{
   border: 1px solid black;
   border-collapse: collapse;
 }
+
 .about-table td{
   border: 1px solid black;
+tr{
+  background-color: rgba(216, 209, 209, 0.2);
+  border: 1px solid;
+  border-collapse: collapse;
+  line-height: 5px;
 }
 .about-table tr{
   line-height: 5px;
@@ -92,9 +98,11 @@ h1{
     background-color: #ced1cd;
   }
   .about-table tr:nth-child(3) td
+
   {
-    background:  #C5E0B4;
+    background-color: #C5E0B4;
   }
+
   .about-table tr:nth-child(4) td  
   {
     background-color: #FDFF99;
@@ -104,14 +112,17 @@ h1{
     background-color: #F4B183 ;
   }
   .about-table tr:nth-child(6) td
+
   {
-   background-color: #FB2A29;
+    background-color: #FB2A29;
   }
+
   .about-table tr:nth-child(7) td
   {
     background-color: #9E5FCE;
   }
   .about-table tr:nth-child(8) td
+
   {
     background-color: #D61E03 ;
   }
