@@ -5,9 +5,16 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
-
-h2 {
+h1 {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   text-align: center;
+  color: white;
+}
+h2 {
+  text-align: left;
 }
 #divcontainer {
   max-width: 100%;
@@ -66,16 +73,109 @@ a {
   position: relative;
   /* border: 5px solid green; */
   margin: 0 auto;
-  /* margin-left: 75%; */
 }
+
+/* .backBody {
+  position: relative;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.2),
+  rgba(0, 0, 0, 0.2)),url(wildfire.jpg);
+  background-size: cover;
+  background-repeat: repeat;
+  width:100%; 
+  height:100%;
+  background-position: center;
+} */
+
+.backBody {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.2),
+  rgba(0, 0, 0, 0.2)), url(AboutPic.jpg);
+  background-size: 100% 100%;
+  background-repeat: repeat;
+  margin: 0;
+  padding: 0;
+  z-index: -1;
+  position:absolute;
+  width: auto; 
+  height: auto;
+  /* background-size: auto; */
+  margin-bottom:10px;
+  background-position: center;
+  }
 
 .printButton {
   margin: 0;
-  position: absolute;
+  position: relative;
   /* border: 5px solid red; */
   margin-left: 90%;
   margin-top: 1%;
   width: 50px;
+}
+
+.currentAQI {
+    /* border: 5px solid red; */
+  position: relative;
+  height: fit-content;
+  margin: auto;
+  width: 95%;
+  padding: 20px;
+  /* z-index: 10; */
+  background: rgb(200, 200, 200); /* Fallback for older browsers without RGBA-support */
+  background: rgba(200, 200, 200, 0.7);
+}
+
+.currentActiveWildfires {
+  /* border: 5px solid red; */
+  position: relative;
+  height: 80vh;
+  margin: auto;
+  width: 95%;
+  padding: 20px;
+  /* z-index: 10; */
+  background: rgb(200, 200, 200); /* Fallback for older browsers without RGBA-support */
+  background: rgba(200, 200, 200, 0.7);
+}
+
+.activeFiresTable {
+  /* border: 5px solid red; */
+  position: relative;
+  height: 75vh;
+  margin: auto;
+  width: 95%;
+  padding: 20px;
+  /* z-index: 10; */
+  background: rgb(200, 200, 200); /* Fallback for older browsers without RGBA-support */
+  background: rgba(200, 200, 200, 0.7);
+}
+
+.currentFireStatsTable {
+  position: relative;
+  height: fit-content;
+  /* border: 2px solid #610000; */
+  margin: auto;
+  width: 95%;
+  padding: 20px;
+  background: rgb(200, 200, 200); /* Fallback for older browsers without RGBA-support */
+  background: rgba(200, 200, 200, 0.7);
+}
+
+.airQualityGraphs {
+  position: relative;
+  height: fit-content;
+  margin: auto;
+  width: 95%;
+  padding: 20px;
+  background: rgb(200, 200, 200); /* Fallback for older browsers without RGBA-support */
+  background: rgba(200, 200, 200, 0.7);
+}
+
+.wildfireGraphs {
+  position: relative;
+  height: fit-content;
+  margin: auto;
+  width: 95%;
+  padding: 20px;
+  background: rgb(200, 200, 200); /* Fallback for older browsers without RGBA-support */
+  background: rgba(200, 200, 200, 0.7);
 }
 
 /* @page{size:auto; margin: 5mm;} */
@@ -103,6 +203,6 @@ a {
   }
 }
 
-body {
+/* body {
   background-color: white;
-}
+} */

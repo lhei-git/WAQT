@@ -10,7 +10,6 @@ type Link = {
   href: string;
 };
 
-
 const Links: React.FC<{ links: Link[] }> = ({ links }) => {
   return (
     <>
@@ -34,7 +33,9 @@ const Nav: React.FC<{}> = () => {
         <span className={styles['logo']}>
           {' '}
           <a href=" /home">
-            <h2>Wildfire & Air Quality Tracker</h2>
+            <h1>
+              <b>WAQT</b>
+            </h1>
           </a>
         </span>
       </div>
