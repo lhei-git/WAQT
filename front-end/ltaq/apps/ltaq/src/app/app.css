@@ -11,6 +11,7 @@ h1 {
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   text-align: center;
+  color: white;
 }
 h2 {
   text-align: left;
@@ -74,7 +75,7 @@ a {
   margin: 0 auto;
 }
 
-.backBody {
+/* .backBody {
   position: relative;
   background-image: linear-gradient(rgba(0, 0, 0, 0.2),
   rgba(0, 0, 0, 0.2)),url(wildfire.jpg);
@@ -83,8 +84,23 @@ a {
   width:100%; 
   height:100%;
   background-position: center;
-/* border: 10px solid #610000; */
-}
+} */
+
+.backBody {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.2),
+  rgba(0, 0, 0, 0.2)), url(AboutPic.jpg);
+  background-size: 100% 100%;
+  background-repeat: repeat;
+  margin: 0;
+  padding: 0;
+  z-index: -1;
+  position:absolute;
+  width: auto; 
+  height: auto;
+  /* background-size: auto; */
+  margin-bottom:10px;
+  background-position: center;
+  }
 
 .printButton {
   margin: 0;
@@ -100,7 +116,7 @@ a {
   position: relative;
   height: fit-content;
   margin: auto;
-  width: 90%;
+  width: 95%;
   padding: 20px;
   /* z-index: 10; */
   background: rgb(200, 200, 200); /* Fallback for older browsers without RGBA-support */
@@ -112,7 +128,7 @@ a {
   position: relative;
   height: 80vh;
   margin: auto;
-  width: 90%;
+  width: 95%;
   padding: 20px;
   /* z-index: 10; */
   background: rgb(200, 200, 200); /* Fallback for older browsers without RGBA-support */
@@ -124,7 +140,7 @@ a {
   position: relative;
   height: 75vh;
   margin: auto;
-  width: 90%;
+  width: 95%;
   padding: 20px;
   /* z-index: 10; */
   background: rgb(200, 200, 200); /* Fallback for older browsers without RGBA-support */
@@ -136,7 +152,7 @@ a {
   height: fit-content;
   /* border: 2px solid #610000; */
   margin: auto;
-  width: 90%;
+  width: 95%;
   padding: 20px;
   background: rgb(200, 200, 200); /* Fallback for older browsers without RGBA-support */
   background: rgba(200, 200, 200, 0.7);
@@ -146,7 +162,7 @@ a {
   position: relative;
   height: fit-content;
   margin: auto;
-  width: 90%;
+  width: 95%;
   padding: 20px;
   background: rgb(200, 200, 200); /* Fallback for older browsers without RGBA-support */
   background: rgba(200, 200, 200, 0.7);
@@ -156,7 +172,7 @@ a {
   position: relative;
   height: fit-content;
   margin: auto;
-  width: 90%;
+  width: 95%;
   padding: 20px;
   background: rgb(200, 200, 200); /* Fallback for older browsers without RGBA-support */
   background: rgba(200, 200, 200, 0.7);
