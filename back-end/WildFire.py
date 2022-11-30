@@ -375,11 +375,24 @@ def averageFireDuration(output, numberOfFires, state):
                 if(duration >= 1):
                     totalDays = totalDays + duration    
         if(state):
-            WildfireStateResponse["Average Fire Duration"] = str(int(totalDays/numberOfFires))+" Day(s)"
+            calc = int(totalDays/numberOfFires)
+            if(calc > 1):
+                text = str(calc) + " Days"
+            elif(calc == 1):
+                text = str(calc) + " Day"
+            else:
+                text = " < 1" +" Day"
+            WildfireStateResponse["Average Fire Duration"] = text
             
         else:
-            print(totalDays)
-            WildfireResponse["Average Fire Duration"] = str(int(totalDays/numberOfFires))+" Day(s)"
+            calc = int(totalDays/numberOfFires)
+            if(calc > 1):
+                text = str(calc) + " Days"
+            elif(calc == 1):
+                text = str(calc) + " Day"
+            else:
+                text = " < 1" +" Day"
+            WildfireResponse["Average Fire Duration"] = text
     except Exception as e:
         print("Avg duration Function: " + e)
 

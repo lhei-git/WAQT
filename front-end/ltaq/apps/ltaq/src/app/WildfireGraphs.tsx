@@ -384,17 +384,15 @@ export default function WildFireGraphs({ county, state }: Props) {
         <div className="pagebreak"> </div> {/*For page printing*/}
         {Object.keys(averageData).length > 1 ? (
           <>
+           <h3>
+                <b>Average Fire Duration (in Days) per Month</b>
+              </h3>
           <Grid
             container
             direction="row"
             justifyContent="center"
             alignItems="center"
           >
-            <div>
-              <h3>
-                <b>Average Fire Duration (in Days) per Month</b>
-              </h3>
-            </div>
             <div className={styles['graph']}>
               <Line
                 data={{
