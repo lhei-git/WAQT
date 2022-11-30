@@ -1,11 +1,11 @@
 state_name,state_abbr,long_name,fips,sumlev,region,division,state,region_name,division_name
-Alabama,AL,Alabama AL,1,40,3,6,1,South,East South Central
-Alaska,AK,Alaska AK,2,40,4,9,2,West,Pacific
-Arizona,AZ,Arizona AZ,4,40,4,8,4,West,Mountain
-Arkansas,AR,Arkansas AR,5,40,3,7,5,South,West South Central
-California,CA,California CA,6,40,4,9,6,West,Pacific
-Colorado,CO,Colorado CO,8,40,4,8,8,West,Mountain
-Connecticut,CT,Connecticut CT,9,40,1,1,9,Northeast,New England
+Alabama,AL,Alabama AL,01,40,3,6,1,South,East South Central
+Alaska,AK,Alaska AK,02,40,4,9,2,West,Pacific
+Arizona,AZ,Arizona AZ,04,40,4,8,4,West,Mountain
+Arkansas,AR,Arkansas AR,05,40,3,7,5,South,West South Central
+California,CA,California CA,06,40,4,9,6,West,Pacific
+Colorado,CO,Colorado CO,08,40,4,8,8,West,Mountain
+Connecticut,CT,Connecticut CT,09,40,1,1,9,Northeast,New England
 Delaware,DE,Delaware DE,10,40,3,5,10,South,South Atlantic
 Florida,FL,Florida FL,12,40,3,5,12,South,South Atlantic
 Georgia,GA,Georgia GA,13,40,3,5,13,South,South Atlantic
