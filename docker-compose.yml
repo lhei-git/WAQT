@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+  airnow:
+    build:
+      context: ./back-end/
+      dockerfile: static.Dockerfile
+    command: ["gunicorn", "--bind 127.0.0.1:8000", "airnow:gunicorn_app"]
+    volumes:
+      - ./back-end
+    ports:
+      - "8000:8000"
+
+  wildfire:
+    build:
+      context: ./back-end/
+      dockerfile: static.Dockerfile
+    command: ["gunicorn", "--bind 127.0.0.1:8001", "WildFire:gunicorn_app"]
+    volumes:
+      - ./back-end
+    ports:
+      - "8001:8001"
+
+  client:
+    build:
+      context: ./front-end/ltaq/
+      dockerfile: static.Dockerfile
+    command: ["npm", "start"]
+    volumes:
+      - ./front-end/ltaq
+      - node-modules:/front-end/ltaq/node_modules
+    environment:
+      - NODE_ENV=development
+    ports:
+      - '4200:4200'
+    depends_on:
+      - airnow
+      - wildfire
+
+volumes:
+  node-modules:
