@@ -6,18 +6,20 @@ import ozoneValue from "./ozone.jpg";
 import pm25Value from "./pm25.jpg"; 
 import pm10Value from "./pm10.jpg"; 
 import FireTable from "./fireTable.jpg"; 
-//import Nav from './navAbout';
-import TwitterIcon from '@mui/icons-material/Twitter';
+import Nav from './navAbout';
+
 
 const About = () => {
   return (
     <>
+    <Nav />
     <div className={aboutStyle['backBody']}>
       <h2 className={aboutStyle['title']}></h2>
       <body className={aboutStyle['body']}>
         <br />
         <p>        
-          
+
+        <div className={aboutStyle['about']}> 
         <h1> About WAQT</h1>
           <br/>
           <p>One of the major silent killers and reducers of quality of life in
@@ -80,8 +82,9 @@ const About = () => {
           Ryan Kaszubski, Ahmad Aoun and Kevin Kluka during the Fall of 2022 for their senior capstone project. 
           </p>
           <br/>
+          </div>
          
-          <div>
+          <div className={aboutStyle['about']}> 
           <h1>The Major Pollutants</h1>
           <br/>
 
@@ -107,8 +110,8 @@ const About = () => {
           <br />
           </div>
 
-          <div>
-          <h1>US Air Quality Index </h1>
+          <div className={aboutStyle['about']}> 
+          <h1 id="AQI">US Air Quality Index </h1>
           <br />
 
           <p> 
@@ -155,7 +158,7 @@ const About = () => {
           </table>
           </div>
           <br />
-
+         
           <li><strong>"Good" AQI is 0 - 50.</strong> Air quality is considered satisfactory, and air pollution poses little or no risk.</li>
           <li><strong>"Moderate" AQI is 51 - 100.</strong> Air quality is acceptable; however, for some pollutants there may be a moderate health concern for a very small
           number of people. For example, people who are unusually sensitive to ozone may experience respiratory symptoms.</li>
@@ -171,8 +174,8 @@ const About = () => {
           <br />
           </div>
 
-          <div>
-          <h1> Air Quality Measures</h1>
+          <div className={aboutStyle['about']}> 
+          <h1 id="AirQualityMeasurements"> Air Quality Measures</h1>
           <br />
 
           <p>
@@ -202,7 +205,7 @@ const About = () => {
           </div>
          
 
-        <div>
+          <div className={aboutStyle['about']}> 
           <h1> Wildfire Statistics</h1>
           <p> 
           The WAQT app provides various statistical measures of current and historical wildfires, primarily calculated from the 
@@ -212,7 +215,7 @@ const About = () => {
           <br />   
           </div>
           <div className={aboutStyle['fire-table']}>
-          <img src={FireTable}></img>
+          { <img src={FireTable}></img> }
           <br />
       
           <br/>
