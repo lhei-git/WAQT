@@ -12,7 +12,7 @@ import Nav from './navAbout';
 const About = () => {
   return (
     <>
-    <Nav />
+    <Nav/>
     <div className={aboutStyle['backBody']}>
       <h2 className={aboutStyle['title']}></h2>
       <body className={aboutStyle['body']}>
