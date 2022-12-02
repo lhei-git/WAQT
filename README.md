@@ -18,4 +18,4 @@ The WAQT app also produces various graphs of the historical trends of the three 
 - Navigate to the front-end `./front-end/ltaq`
 - Install Node modules `npm install --force`
 - Run the front-end `npm start`
-- Nativage to localhost:4200 to start using WAQT. 
+- Navigate to localhost:4200 to start using WAQT. 
