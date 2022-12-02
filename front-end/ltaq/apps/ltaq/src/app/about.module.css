@@ -47,11 +47,6 @@ body {
   margin-left: 3.4em;
 }
 
-/* visited link */
-a:visited {
-  color: rgb(0, 4, 255);
-}
-
 
 /* h1{
   text-align: left;
