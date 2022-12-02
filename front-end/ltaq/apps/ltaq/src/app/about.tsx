@@ -265,6 +265,12 @@ const About = () => {
           <p>Further information about WAQT is available in our GitHub page. 
           </p>
           <br />
+          <p> Images from</p>
+          <a href="https://unsplash.com/photos/zpbzMHIe_NU"> https://unsplash.com/photos/zpbzMHIe_NU </a>
+          <br/>
+          <a href="https://www.flickr.com/photos/ingaker/51718599244/"> https://www.flickr.com/photos/ingaker/51718599244/ </a>
+          <br/>
+          <br/>
         </div>
           </p>
         </body>
