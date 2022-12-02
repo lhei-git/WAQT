@@ -430,7 +430,7 @@ export default function WildFireGraphs({ county, state }: Props) {
         {/* top 10 fires by duration */}
         <br />
         <br />
-        <h1>
+        <h1 style={{color: 'black'}}>
                 <LocalFireDepartmentIcon fontSize="large" /> Top 10 
               </h1>
         {Object.keys(durationData).length > 1 ? (
