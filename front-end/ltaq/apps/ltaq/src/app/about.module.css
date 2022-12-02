@@ -43,7 +43,7 @@ body, h1, h2, h3, h4, h5, h6 {
 
 /* link */
 a:link {
-  color: rgb(0, 4, 255);
+  color: rgb(82, 84, 200);
 }
 
 
@@ -118,17 +118,9 @@ a:link {
     background-color: #D61E03 ;
   }
 
-.ozone img{
-width: 30%;
-}
-.pm25 img{
-width: 30%;
-}
-.pm10 img{
-width: 30%;
-}
+
 .fire-table img{
-width: 60%;
+width: 50%;
 }
 
 .backBody {

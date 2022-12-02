@@ -7,7 +7,34 @@ import pm25Value from "./pm25.jpg";
 import pm10Value from "./pm10.jpg"; 
 import FireTable from "./fireTable.jpg"; 
 import Nav from './navAbout';
+import InfoIcon from '@mui/icons-material/Info';
+import AirIcon from '@mui/icons-material/Air';
+import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 
+const goodBoxStyle = {
+  fill: 'green',
+  strokeWidth: 3,
+}
+const moderateBoxStyle = {
+  fill: 'yellow',
+  strokeWidth: 3,
+}
+const sensistiveBoxStyle = {
+  fill: 'orange',
+  strokeWidth: 3,
+}
+const unhealthyBoxStyle = {
+  fill: 'red',
+  strokeWidth: 3,
+}
+const veryunhealthyBoxStyle = {
+  fill: 'purple',
+  strokeWidth: 3,
+}
+const hazardBoxStyle = {
+  fill: 'brown',
+  strokeWidth: 3,
+}
 
 const About = () => {
   return (
@@ -20,7 +47,7 @@ const About = () => {
         <p>        
 
         <div className={aboutStyle['about']}> 
-        <h1> About WAQT</h1>
+        <h1> <InfoIcon fontSize="small" /> About WAQT </h1>
           <br/>
           <p>One of the major silent killers and reducers of quality of life in
             the world today is air pollution. The European Environmental Agency
@@ -85,7 +112,7 @@ const About = () => {
           </div>
          
           <div className={aboutStyle['about']}> 
-          <h1>The Major Pollutants</h1>
+          <h1> <AirIcon fontSize="small" /> The Major Pollutants </h1>
           <br/>
 
           <p>
@@ -111,7 +138,7 @@ const About = () => {
           </div>
 
           <div className={aboutStyle['about']}> 
-          <h1 id="AQI">US Air Quality Index </h1>
+          <h1 id="AQI"> <AirIcon fontSize="small" /> US Air Quality Index </h1>
           <br />
 
           <p> 
@@ -175,7 +202,7 @@ const About = () => {
           </div>
 
           <div className={aboutStyle['about']}> 
-          <h1 id="AirQualityMeasurements"> Air Quality Measures</h1>
+          <h1 id="AirQualityMeasurements"> <AirIcon fontSize="small" /> Air Quality Measures</h1>
           <br />
 
           <p>
@@ -186,19 +213,35 @@ const About = () => {
           </p>
           <br />
           <div className={aboutStyle['ozone']}>
-          <p><strong>Ozone:</strong></p>
-          <img className="ozone" src={ozoneValue}/>
+          <strong> Ozone:  </strong>
+          <p><svg width="20" height="20"><rect width="20" height="20" style={goodBoxStyle}/></svg>{" Good (<=.054 ppm)"}</p>
+          <p><svg width="20" height="20"><rect width="20" height="20" style={moderateBoxStyle}/></svg>{" Moderate (.055-.070 ppm)"}</p>
+          <p><svg width="20" height="20"><rect width="20" height="20" style={sensistiveBoxStyle}/></svg>{" Unhealthy for Sensitive Groups (.071-.085 ppm)"}</p>
+          <p><svg width="20" height="20"><rect width="20" height="20" style={unhealthyBoxStyle}/></svg>{" Unhealthy (.086-.105 ppm)"}</p>
+          <p><svg width="20" height="20"><rect width="20" height="20" style={veryunhealthyBoxStyle}/></svg>{" Very Unhealthy (.106-.200 ppm)"}</p>
+          <p><svg width="20" height="20"><rect width="20" height="20" style={hazardBoxStyle}/></svg>{" Hazardous (>=.405 ppm)"}</p>
           </div>
     
           <br/>
           <div className={aboutStyle['pm25']}>
-          <p><strong>PM2.5:</strong></p>
-          <img src={pm25Value}/>
+          <strong> PM2.5 </strong> 
+          <p><svg width="20" height="20"><rect width="20" height="20" style={goodBoxStyle}/></svg>{" Good (<= 12.0 ug/m3)"}</p>
+          <p><svg width="20" height="20"><rect width="20" height="20" style={moderateBoxStyle}/></svg>{" Moderate (12.1-35.4 ug/m3"}</p>
+          <p><svg width="20" height="20"><rect width="20" height="20" style={sensistiveBoxStyle}/></svg>{" Unhealthy for Sensitive Groups (35.5-55.4 ug/m3)"}</p>
+          <p><svg width="20" height="20"><rect width="20" height="20" style={unhealthyBoxStyle}/></svg>{" Unhealthy (55.5-150.4 ug/m3)"}</p>
+          <p><svg width="20" height="20"><rect width="20" height="20" style={veryunhealthyBoxStyle}/></svg>{" Very Unhealthy (150.5-250.4ug/m3)"}</p>
+          <p><svg width="20" height="20"><rect width="20" height="20" style={hazardBoxStyle}/></svg>{" Hazardous (>=250.5 ug/m3)"}</p> 
+
           </div>
           <br/>
           <div className={aboutStyle['pm10']}>
-          <p><strong>PM10:</strong></p>
-          <img src={pm10Value}/>
+          <strong> PM10 </strong>
+          <p><svg width="20" height="20"><rect width="20" height="20" style={goodBoxStyle}/></svg>{" Good (<=54 ug/m3)"}</p>
+          <p><svg width="20" height="20"><rect width="20" height="20" style={moderateBoxStyle}/></svg>{" Moderate (55-154 ug/m3)"}</p>
+          <p><svg width="20" height="20"><rect width="20" height="20" style={sensistiveBoxStyle}/></svg>{" Unhealthy for Sensitive Groups (155-254 ug/m3)"}</p>
+          <p><svg width="20" height="20"><rect width="20" height="20" style={unhealthyBoxStyle}/></svg>{" Unhealthy (255-354 ug/m3)"}</p>
+          <p><svg width="20" height="20"><rect width="20" height="20" style={veryunhealthyBoxStyle}/></svg>{" Very Unhealthy (355-424 ug/m3)"}</p>
+          <p><svg width="20" height="20"><rect width="20" height="20" style={hazardBoxStyle}/></svg>{" Hazardous (>=425 ug/m3)"}</p>
           <br/>
           <br/>
           </div>
@@ -206,7 +249,7 @@ const About = () => {
          
 
           <div className={aboutStyle['about']}> 
-          <h1> Wildfire Statistics</h1>
+          <h1> <LocalFireDepartmentIcon fontSize="small" /> Wildfire Statistics </h1>
           <p> 
           The WAQT app provides various statistical measures of current and historical wildfires, primarily calculated from the 
           Wildland Fire Locations Full History API. The calculations are performed as explained below only for incidents which have 
