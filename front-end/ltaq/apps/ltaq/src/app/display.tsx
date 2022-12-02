@@ -295,7 +295,7 @@ export default function App() {
           <div className="pagebreak"> </div> {/*For page printing*/}
           <div className="w3-container">
             <div className="wildfireGraphs">
-              <h1>
+              <h1 style={{color: 'black'}}>
                 <LocalFireDepartmentIcon fontSize="large" /> Wildfire Historical
                 Trends
               </h1>
