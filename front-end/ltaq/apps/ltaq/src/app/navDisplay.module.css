@@ -42,7 +42,7 @@
 }
 
 .link a {
-  text-decoration: none;
+  text-decoration: none !important;
   float: left;
   color: white;
   font-size: x-large;

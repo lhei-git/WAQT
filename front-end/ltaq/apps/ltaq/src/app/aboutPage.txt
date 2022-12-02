@@ -2,19 +2,52 @@ import React from 'react';
 import styles from './nav.module.css';
 import * as data from './links.json';
 import aboutStyle from './about.module.css';
-import TwitterIcon from '@mui/icons-material/Twitter';
-//import Nav from './navAbout';
+import ozoneValue from "./ozone.jpg"; 
+import pm25Value from "./pm25.jpg"; 
+import pm10Value from "./pm10.jpg"; 
+import FireTable from "./fireTable.jpg"; 
+import Nav from './navAbout';
+import InfoIcon from '@mui/icons-material/Info';
+import AirIcon from '@mui/icons-material/Air';
+import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
+
+const goodBoxStyle = {
+  fill: 'green',
+  strokeWidth: 3,
+}
+const moderateBoxStyle = {
+  fill: 'yellow',
+  strokeWidth: 3,
+}
+const sensistiveBoxStyle = {
+  fill: 'orange',
+  strokeWidth: 3,
+}
+const unhealthyBoxStyle = {
+  fill: 'red',
+  strokeWidth: 3,
+}
+const veryunhealthyBoxStyle = {
+  fill: 'purple',
+  strokeWidth: 3,
+}
+const hazardBoxStyle = {
+  fill: 'brown',
+  strokeWidth: 3,
+}
 
 const About = () => {
   return (
     <>
+    <Nav/>
     <div className={aboutStyle['backBody']}>
       <h2 className={aboutStyle['title']}></h2>
       <body className={aboutStyle['body']}>
         <br />
-        <p>
-          <div>
-          <h1>About WAQT</h1>
+        <p>        
+
+        <div className={aboutStyle['about']}> 
+        <h1> <InfoIcon fontSize="small" /> About WAQT </h1>
           <br/>
           <p>One of the major silent killers and reducers of quality of life in
             the world today is air pollution. The European Environmental Agency
@@ -25,6 +58,7 @@ const About = () => {
             are<a href="https://www.preventionweb.net/files/73797_wildfiresbriefingnote.pdf"> exacerbating air pollution around the world.</a>
           </p>
           <br />
+
           <p>
           While many applications exist to report current levels of air pollutants, 
           these applications do not provide historical trends of pollution and air 
@@ -35,12 +69,14 @@ const About = () => {
           not enable visualization of air quality trends in the previous 5 or 7 years.
           </p>
           <br />
+
           <p>Although wildfires have become a serious concern, particularly in the United States 
           (US), where wildfire burned 4 million acres in 2020 in California. However, few current 
           applications exist to visualize current active wildfires and historic information about 
           wildfires in the US.
           </p>
           <br />
+
           <p>
           The Wildfire & Air Quality Tracker (WAQT) app was developed to provide citizens, scientists, 
           policy makers and the public alike the ability to easily search for air quality and wildfire 
@@ -50,6 +86,7 @@ const About = () => {
           application programming interface (API) of the US Environmental Protection Agency (EPA).  
           </p>
           <br />
+
           <p>
           WAQT also retrieves the current active wildfires in the searched location from the [XYZ] API, 
           of the National Interagency Fire Center, and various calculations of historical wildfire data 
@@ -57,6 +94,7 @@ const About = () => {
           API</a> of the National Interagency Fire Center. 
           </p>
           <br />
+
           <p> 
           The WAQT app also produces various graphs of the historical trends of the three major pollutants 
           identified from the year 2015 until the most recent data available. This long-term air quality 
@@ -65,22 +103,24 @@ const About = () => {
           wildfires—when the data is available. Further details about wildfire data calculations are provided below.
           </p>
           <br /> 
+
           <p>
           WAQT was conceptualized by Nic DePaula, who guided the development process. WAQT was developed by 
           Ryan Kaszubski, Ahmad Aoun and Kevin Kluka during the Fall of 2022 for their senior capstone project. 
           </p>
           <br/>
           </div>
-
-          
-          <div>
-          <h1>The Major Pollutants</h1>
+         
+          <div className={aboutStyle['about']}> 
+          <h1> <AirIcon fontSize="small" /> The Major Pollutants </h1>
           <br/>
+
           <p>
           EPA sets national air quality standards for 6 common pollutants, 3 of which are measured 
           by WAQT given their prominence in issues of air quality:
           </p>
           <br />
+          
           <ul>
           <li><a href="https://www.epa.gov/ground-level-ozone-pollution">Ozone (O3)</a></li>
           <li><a href="https://www.epa.gov/pm-pollution">Particulate Matter 2.5 (PM 2.5)</a></li>
@@ -88,6 +128,7 @@ const About = () => {
           </ul>
           <br />
           </div>
+
           <div>
           <p>
           Ozone refers to ground-level ozone. PM10 includes particles less than or equal to 10 micrometers in diameter. 
@@ -96,19 +137,19 @@ const About = () => {
           <br />
           </div>
 
-          <div>
-          <h1>US Air Quality Index </h1>
+          <div className={aboutStyle['about']}> 
+          <h1 id="AQI"> <AirIcon fontSize="small" /> US Air Quality Index </h1>
           <br />
+
           <p> 
           The US AQI provides a standard to measure pollution and categories to interpret health concern for humans. 
           Different countries have different AQI standards, however with similar pollutants and categories. 
           Measures from the US AQI are developed and interpreted as described below from the US EPA:
           </p> 
           <br />
-          <div className='aboutTable'>
-          <div className='aboutTh'>
-          <div className='aboutTr'>
-          <div className='aboutTd'>
+
+          <div className={aboutStyle['about-table']}>
+         <table>
           <tr>
           <th>Air Quality Index (AQI) Values</th>
           <th>Levels of Health Concern</th>
@@ -141,11 +182,10 @@ const About = () => {
           <td>301 to 500</td>
           <td>Hazardous</td>
           </tr>
-          </div>
-          </div>
-          </div>
+          </table>
           </div>
           <br />
+         
           <li><strong>"Good" AQI is 0 - 50.</strong> Air quality is considered satisfactory, and air pollution poses little or no risk.</li>
           <li><strong>"Moderate" AQI is 51 - 100.</strong> Air quality is acceptable; however, for some pollutants there may be a moderate health concern for a very small
           number of people. For example, people who are unusually sensitive to ozone may experience respiratory symptoms.</li>
@@ -154,15 +194,17 @@ const About = () => {
           <li><strong>"Very Unhealthy" AQI is 201 - 300.</strong> This would trigger a health alert signifying that everyone may experience more serious health effects.</li>
           <li><strong>"Hazardous" AQI greater than 300.</strong> This would trigger health warnings of emergency conditions. The entire population is more likely to be affected.</li>
           <br />
+      
           <p> 
           Further information is available here: <a href="https://www.epa.gov/outdoor-air-quality-data/air-data-basic-information">https://www.epa.gov/outdoor-air-quality-data/air-data-basic-information</a>
           </p>
           <br />
           </div>
 
-          <div>
-          <h1> Air Quality Measures</h1>
+          <div className={aboutStyle['about']}> 
+          <h1 id="AirQualityMeasurements"> <AirIcon fontSize="small" /> Air Quality Measures</h1>
           <br />
+
           <p>
           Air pollutants, such as PM2.5, PM10 and Ozone, are measured via <em>micrograms per cubic meter (µg/m3)</em> or by <em>parts per million (ppm).</em> 
           Its from these measures that the US AQI categories (e.g. 0 to 50) as shown above are developed. Our analyses of long term trends in 
@@ -170,38 +212,212 @@ const About = () => {
           “moderate” air quality. 
           </p>
           <br />
-          <p>Ozone: </p>
-          <img src="ozone.jpg"/>
-          <br />
-          <p>PM2.5: </p>
-          <img src="pm25.jpg"/>
-          <br />
-          <p>PM10: </p>
-          <img src="pm10.jpg"/>
-          <br />
+          <div className={aboutStyle['ozone']}>
+          <strong> Ozone:  </strong>
+          <p><svg width="20" height="20"><rect width="20" height="20" style={goodBoxStyle}/></svg>{" Good (<=.054 ppm)"}</p>
+          <p><svg width="20" height="20"><rect width="20" height="20" style={moderateBoxStyle}/></svg>{" Moderate (.055-.070 ppm)"}</p>
+          <p><svg width="20" height="20"><rect width="20" height="20" style={sensistiveBoxStyle}/></svg>{" Unhealthy for Sensitive Groups (.071-.085 ppm)"}</p>
+          <p><svg width="20" height="20"><rect width="20" height="20" style={unhealthyBoxStyle}/></svg>{" Unhealthy (.086-.105 ppm)"}</p>
+          <p><svg width="20" height="20"><rect width="20" height="20" style={veryunhealthyBoxStyle}/></svg>{" Very Unhealthy (.106-.200 ppm)"}</p>
+          <p><svg width="20" height="20"><rect width="20" height="20" style={hazardBoxStyle}/></svg>{" Hazardous (>=.405 ppm)"}</p>
           </div>
+    
+          <br/>
+          <div className={aboutStyle['pm25']}>
+          <strong> PM2.5 </strong> 
+          <p><svg width="20" height="20"><rect width="20" height="20" style={goodBoxStyle}/></svg>{" Good (<= 12.0 ug/m3)"}</p>
+          <p><svg width="20" height="20"><rect width="20" height="20" style={moderateBoxStyle}/></svg>{" Moderate (12.1-35.4 ug/m3"}</p>
+          <p><svg width="20" height="20"><rect width="20" height="20" style={sensistiveBoxStyle}/></svg>{" Unhealthy for Sensitive Groups (35.5-55.4 ug/m3)"}</p>
+          <p><svg width="20" height="20"><rect width="20" height="20" style={unhealthyBoxStyle}/></svg>{" Unhealthy (55.5-150.4 ug/m3)"}</p>
+          <p><svg width="20" height="20"><rect width="20" height="20" style={veryunhealthyBoxStyle}/></svg>{" Very Unhealthy (150.5-250.4ug/m3)"}</p>
+          <p><svg width="20" height="20"><rect width="20" height="20" style={hazardBoxStyle}/></svg>{" Hazardous (>=250.5 ug/m3)"}</p> 
 
+          </div>
+          <br/>
+          <div className={aboutStyle['pm10']}>
+          <strong> PM10 </strong>
+          <p><svg width="20" height="20"><rect width="20" height="20" style={goodBoxStyle}/></svg>{" Good (<=54 ug/m3)"}</p>
+          <p><svg width="20" height="20"><rect width="20" height="20" style={moderateBoxStyle}/></svg>{" Moderate (55-154 ug/m3)"}</p>
+          <p><svg width="20" height="20"><rect width="20" height="20" style={sensistiveBoxStyle}/></svg>{" Unhealthy for Sensitive Groups (155-254 ug/m3)"}</p>
+          <p><svg width="20" height="20"><rect width="20" height="20" style={unhealthyBoxStyle}/></svg>{" Unhealthy (255-354 ug/m3)"}</p>
+          <p><svg width="20" height="20"><rect width="20" height="20" style={veryunhealthyBoxStyle}/></svg>{" Very Unhealthy (355-424 ug/m3)"}</p>
+          <p><svg width="20" height="20"><rect width="20" height="20" style={hazardBoxStyle}/></svg>{" Hazardous (>=425 ug/m3)"}</p>
+          <br/>
+          <br/>
+          </div>
+          </div>
+         
 
-          <div>
-          <h1> Wildfire Statistics</h1>
+          <div className={aboutStyle['about']}> 
+          <h1> <LocalFireDepartmentIcon fontSize="small" /> Wildfire Statistics </h1>
           <p> 
           The WAQT app provides various statistical measures of current and historical wildfires, primarily calculated from the 
           Wildland Fire Locations Full History API. The calculations are performed as explained below only for incidents which have 
           the specific information available, and for the specified US county and its state. 
           </p>
-          <br />
-          <img src="FireTable.jpg"></img>
-          <br />
+          <br />   
           </div>
+          <div className={aboutStyle['fire-table']}>
+          { <img src={FireTable}></img> }
+          <br />
+      
           <br/>
           <p>Further information about WAQT is available in our GitHub page. 
           </p>
           <br />
-        </p>
+        </div>
+          </p>
         </body>
-      </div>
+
+        </div>
+
     </>
   );
 };
 
 export default About;
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+body, h1, h2, h3, h4, h5, h6 {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.title {
+  position: relative;
+  height: 70px;
+  text-align: center;
+  vertical-align: middle;
+  padding-top: 80px;
+  padding-bottom: 80px;
+  opacity: 50%; 
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  font-size: 50px;
+  font-weight: bold;
+}
+.body {
+  position: relative;
+  height: auto;
+  border: 1px solid #030303;
+  background-color: transparent;
+  margin: auto;
+  font-size: 18px;
+  width: 70%;
+  padding-left: 10em;
+  padding: 20px;
+  list-style-position: inside;
+  position: relative; 
+  top: 25%; 
+  vertical-align: middle;  
+  background: rgb(200, 200, 200); /* Fallback for older browsers without RGBA-support */
+  background: rgba(200, 200, 200, 0.7);
+}
+
+.ol 
+{
+  margin: 0px;
+  padding: 0px;
+  text-indent: -2.2em;
+  margin-left: 3.4em;
+}
+
+/* link */
+a:link {
+  color: rgb(82, 84, 200);
+}
+
+
+
+ .about h1{
+  text-align: left;
+  font-size: 20px;
+  font-weight: bold;
+  color: black;
+}
+.h2{
+  font-style: italic;
+  font-size: 16px;
+  text-align: center;
+  text-align-last: left;
+
+}
+.about-table {
+  table-layout: fixed;
+  text-align: center;
+  width: 65%;
+  border-collapse: collapse;
+}
+.about-table th{
+ background-color: rgba(246, 42, 42, 0.2);
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+.about-table td{
+  border: 1px solid black;
+}
+#about-table tr{
+  line-height: 5px;
+ border: 1px solid black;
+}
+
+  .about-table tr:nth-child(1) th
+  {
+    background-color: #ced1cd;
+  }
+  .about-table tr:nth-child(2) td
+  {
+    background-color: #ced1cd;
+  }
+  .about-table tr:nth-child(3) td
+
+  {
+    background-color: #C5E0B4;
+  }
+
+  .about-table tr:nth-child(4) td  
+  {
+    background-color: #FDFF99;
+  }
+  .about-table tr:nth-child(5) td
+  {
+    background-color: #F4B183 ;
+  }
+  .about-table tr:nth-child(6) td
+
+  {
+    background-color: #FB2A29;
+  }
+
+  .about-table tr:nth-child(7) td
+  {
+    background-color: #9E5FCE;
+  }
+  .about-table tr:nth-child(8) td
+
+  {
+    background-color: #D61E03 ;
+  }
+
+
+.fire-table img{
+width: 50%;
+}
+
+.backBody {
+background-image: linear-gradient(rgba(0, 0, 0, 0.2),
+rgba(0, 0, 0, 0.2)), url(AboutPic.jpg);
+background-size: 100% 100%;
+background-repeat: no-repeat;
+margin: 0;
+padding: 0;
+z-index: -1;
+object-fit: cover;
+position:absolute;
+width: auto; 
+height: auto; 
+margin-bottom:10px;
+background-position: center;
+}
