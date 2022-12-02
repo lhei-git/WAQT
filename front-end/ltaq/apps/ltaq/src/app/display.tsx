@@ -280,11 +280,11 @@ export default function App() {
               />
             </div>
           </div>
-          <br />
+          <br /> 
           <div className="pagebreak"> </div> {/*For page printing*/}
           <div className="w3-container w3-margin-bottom">
             <div className="airQualityGraphs">
-              <h1>
+              <h1 style={{color: 'black'}}>
                 <AirIcon fontSize="large" /> Air Quality Historical Trends
               </h1>
               <br />
