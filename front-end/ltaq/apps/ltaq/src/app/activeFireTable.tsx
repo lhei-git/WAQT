@@ -47,7 +47,7 @@ function ActiveFiresTable({county, state}: Props) {
             
           >
       {/* table to render active wildfire data */}
-      <TableContainer component={Paper} sx={{height: 400}}>
+      <TableContainer component={Paper} style={{backgroundColor: 'white', opacity: '0.75'}} sx={{maxHeight: 400}}>
       <Table sx={{ minWidth: 650}} aria-label="simple table">
         <TableHead>
           <TableRow>
