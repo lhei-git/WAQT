@@ -428,14 +428,22 @@ export default function WildFireGraphs({ county, state }: Props) {
         
         <div className="pagebreak"> </div> {/*For page printing*/}
         {/* top 10 fires by duration */}
-        <h2>
+        <br />
+        <br />
+        <h1>
                 <LocalFireDepartmentIcon fontSize="large" /> Top 10 
-              </h2>
+              </h1>
         {Object.keys(durationData).length > 1 ? (
           <>
           <h3>
                 <b>Top 10 Fires by Duration (in days)</b>
               </h3>
+              <h5>
+                <a href="https://data-nifc.opendata.arcgis.com">
+                  Source: National Interagency Fire Center{' '}
+                  <LaunchIcon fontSize="small" />
+                </a>
+              </h5>
           <Grid
             container
             direction="row"
