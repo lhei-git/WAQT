@@ -178,9 +178,7 @@ export default function App() {
           </h1>
           <div className="w3-row-padding  w3-margin-bottom ">
             <div className="currentAQI">
-              <h2>
-                <AirIcon /> Current Air Quality
-              </h2>
+              
               <br />
               <CurrentAQI lat={lat} lng={lng} />
             </div>
@@ -189,12 +187,11 @@ export default function App() {
           </div>
           <div className="w3-row-padding  w3-margin-bottom ">
             <div className="currentActiveWildfires">
-              <h2>
-                <TerrainIcon /> Geography
-              </h2>
+              <h1>
+                <TerrainIcon /> Current Active Wildfires
+              </h1>
               <br />
               <div className="map">
-                <h2>Current active fires</h2>
                 <GoogleMap
                   options={options} //Google Map render options
                   zoom={10} //Level of Zoom when user first loads the page
@@ -255,27 +252,10 @@ export default function App() {
                     </Marker>
                   ))}
                 </GoogleMap>
-                <p>
-                  {' '}
-                  <a href="https://data-nifc.opendata.arcgis.com/datasets/nifc::wfigs-current-wildland-fire-perimeters/">
-                    {' '}
-                    Active fires from: WFIGS <LaunchIcon fontSize="small" />
-                  </a>
-                </p>
-              </div>
-            </div>
-          </div>
-          <br />
-          <div className="w3-row-padding  w3-margin-bottom ">
-            {/* <div className="pagebreak"> </div> For page printing */}
-            <div className="activeFiresTable">
-              <h2>
-                <LocalFireDepartmentIcon /> Current Wildfires
-              </h2>
-              <br />
-              <h2>Active wildfires</h2>
+                <br />
               <ActiveFiresTable county={countyFormatted} state={splitVals} />
-              <p>
+              <br />
+              <p className='source'>
                 {' '}
                 <a href="https://data-nifc.opendata.arcgis.com/datasets/nifc::wfigs-current-wildland-fire-perimeters/api">
                   {' '}
@@ -283,18 +263,16 @@ export default function App() {
                   <LaunchIcon fontSize="medium" />
                 </a>
               </p>
+              </div>
             </div>
           </div>
-          <div className="pagebreak"> </div> {/*For page printing*/}
+          <br />
           <div className="pagebreak"> </div> {/*For page printing*/}
           <br />
+  
           <div className="w3-row-padding  w3-margin-bottom ">
             <div className="currentFireStatsTable">
-              <h2>
-                <TrendingUpIcon /> Statistics
-              </h2>
-              <br />
-              <h2> Current and historical fire statistics</h2>
+            <h1><TrendingUpIcon /> Current and Historical Wildfire Statistics</h1>
               <FireStatsTable
                 county={countyFormatted}
                 state={splitVals}
@@ -306,9 +284,9 @@ export default function App() {
           <div className="pagebreak"> </div> {/*For page printing*/}
           <div className="w3-container w3-margin-bottom">
             <div className="airQualityGraphs">
-              <h2>
+              <h1>
                 <AirIcon fontSize="large" /> Air Quality Historical Trends
-              </h2>
+              </h1>
               <br />
               <AirQualityGraphs county={countyFormatted} state={splitVals} />
             </div>
@@ -317,10 +295,10 @@ export default function App() {
           <div className="pagebreak"> </div> {/*For page printing*/}
           <div className="w3-container">
             <div className="wildfireGraphs">
-              <h2>
+              <h1>
                 <LocalFireDepartmentIcon fontSize="large" /> Wildfire Historical
                 Trends
-              </h2>
+              </h1>
               <br />
               <WildFireGraphs county={countyFormatted} state={splitVals} />
             </div>

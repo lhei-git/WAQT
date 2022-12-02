@@ -87,7 +87,7 @@ a {
 } */
 
 .backBody {
-  background-image: linear-gradient(to right, #434343 0%, black 100%);
+  background-color: #2E2E2E;
   background-size: 100% 100%;
   background-repeat: repeat;
   margin: 0;
@@ -116,15 +116,15 @@ a {
   max-width: 75%;
   padding: 20px;
   /* z-index: 10; */
-  background: rgb(200, 200, 200); /* Fallback for older browsers without RGBA-support */
-  background: rgba(200, 200, 200, 0.7);
+  background-image: url('./air1.jpg');
+  background-position: bottom;
 }
 
 .currentActiveWildfires {
   /* border: 5px solid red; */
   position: relative;
   margin: auto;
-  width: 95%;
+  max-width: 85%;
   padding: 20px;
   /* z-index: 10; */
   background: rgb(200, 200, 200); /* Fallback for older browsers without RGBA-support */
@@ -135,7 +135,7 @@ a {
   /* border: 5px solid red; */
   position: relative;
   margin: auto;
-  width: 95%;
+  max-width: 85%;
   padding: 20px;
   /* z-index: 10; */
   background: rgb(200, 200, 200); /* Fallback for older browsers without RGBA-support */
@@ -147,30 +147,34 @@ a {
   height: fit-content;
   /* border: 2px solid #610000; */
   margin: auto;
-  width: 95%;
+  max-width: 85%;
   padding: 20px;
-  background: rgb(200, 200, 200); /* Fallback for older browsers without RGBA-support */
-  background: rgba(200, 200, 200, 0.7);
+  background-image: url('./fire3.jpg');
+  background-position: center;
 }
 
 .airQualityGraphs {
   position: relative;
   height: fit-content;
   margin: auto;
-  max-width: 75%;
+  max-width: 85%;
   padding: 20px;
-  background: rgb(200, 200, 200); /* Fallback for older browsers without RGBA-support */
-  background: rgba(200, 200, 200, 0.7);
+  background-color: #EAB2A1;
 }
 
 .wildfireGraphs {
   position: relative;
   height: fit-content;
   margin: auto;
-  max-width: 75%;
+  max-width: 85%;
   padding: 20px;
-  background: rgb(200, 200, 200); /* Fallback for older browsers without RGBA-support */
-  background: rgba(200, 200, 200, 0.7);
+  background-color: #FBA502;
+}
+
+.source {
+  color: white;
+  font-size: large;
+  text-align: center;
 }
 
 /* @page{size:auto; margin: 5mm;} */

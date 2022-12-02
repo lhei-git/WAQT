@@ -420,12 +420,7 @@ export default function WildFireGraphs({ county, state }: Props) {
               />
             </div>
           </Grid>
-          <h5>
-          <a href="https://data-nifc.opendata.arcgis.com">
-            Source: National Interagency Fire Center{' '}
-            <LaunchIcon fontSize="small" />
-          </a>
-        </h5>
+        
         </>
         ) : (
           <></>
@@ -488,6 +483,12 @@ export default function WildFireGraphs({ county, state }: Props) {
           <h3>
                 <b>Top 10 Fires by Total Acres Burned</b>
               </h3>
+              <h5>
+                <a href="https://data-nifc.opendata.arcgis.com">
+                  Source: National Interagency Fire Center{' '}
+                  <LaunchIcon fontSize="small" />
+                </a>
+              </h5>
           <Grid
             container
             direction="row"
@@ -522,12 +523,7 @@ export default function WildFireGraphs({ county, state }: Props) {
                 }}
               />
             </div>
-            <h5>
-                <a href="https://data-nifc.opendata.arcgis.com">
-                  Source: National Interagency Fire Center{' '}
-                  <LaunchIcon fontSize="small" />
-                </a>
-              </h5>
+            
           </Grid>
           
               </>
