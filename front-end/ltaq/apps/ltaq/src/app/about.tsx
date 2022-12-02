@@ -271,6 +271,7 @@ const About = () => {
           <a href="https://www.flickr.com/photos/ingaker/51718599244/"> https://www.flickr.com/photos/ingaker/51718599244/ </a>
           <br/>
           <br/>
+      
         </div>
           </p>
         </body>
