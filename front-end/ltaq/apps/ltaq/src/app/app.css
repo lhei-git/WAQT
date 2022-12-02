@@ -87,7 +87,7 @@ a {
 } */
 
 .backBody {
-  background-image: linear-gradient( #e43606, yellow);
+  background-image: linear-gradient(to right, #434343 0%, black 100%);
   background-size: 100% 100%;
   background-repeat: repeat;
   margin: 0;
@@ -113,7 +113,7 @@ a {
   position: relative;
   height: fit-content;
   margin: auto;
-  width: 95%;
+  max-width: 75%;
   padding: 20px;
   /* z-index: 10; */
   background: rgb(200, 200, 200); /* Fallback for older browsers without RGBA-support */
@@ -157,7 +157,7 @@ a {
   position: relative;
   height: fit-content;
   margin: auto;
-  width: 95%;
+  max-width: 75%;
   padding: 20px;
   background: rgb(200, 200, 200); /* Fallback for older browsers without RGBA-support */
   background: rgba(200, 200, 200, 0.7);
@@ -167,7 +167,7 @@ a {
   position: relative;
   height: fit-content;
   margin: auto;
-  width: 95%;
+  max-width: 75%;
   padding: 20px;
   background: rgb(200, 200, 200); /* Fallback for older browsers without RGBA-support */
   background: rgba(200, 200, 200, 0.7);

@@ -47,8 +47,8 @@ function ActiveFiresTable({county, state}: Props) {
             
           >
       {/* table to render active wildfire data */}
-      <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <TableContainer component={Paper} sx={{height: 400}}>
+      <Table sx={{ minWidth: 650}} aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell align="center" sx={{fontSize: "2rem"}}>Fire Name</TableCell>
@@ -58,7 +58,7 @@ function ActiveFiresTable({county, state}: Props) {
         </TableHead>
         <TableBody>
           {/* only show most recent 5 wildfires */}
-          {data.splice(0,5).map((item, index) => (
+          {data.map((item, index) => (
             <TableRow
               key={index}
             >
