@@ -172,7 +172,7 @@ a {
 }
 
 .source {
-  color: white;
+  color: white !important;
   font-size: large;
   text-align: center;
 }
