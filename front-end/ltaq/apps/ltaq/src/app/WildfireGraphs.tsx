@@ -219,6 +219,13 @@ export default function WildFireGraphs({ county, state }: Props) {
     durationisLoading
   ) {
     return <p>Loading...</p>;
+  } else if (
+        Object.keys(countData).length == 0 &&
+        Object.keys(acresData).length == 0 &&
+        Object.keys(averageData).length == 0 &&
+        Object.keys(top10Data).length == 0 &&
+        Object.keys(durationData).length == 0 ) {
+          return <p>No Data Available</p>
   } else {
     if (FIRSTRUN) {
       //set the data for the default year (the previous year)
@@ -286,10 +293,10 @@ export default function WildFireGraphs({ county, state }: Props) {
           <></>
         )}
         {/* count */}
-        <h3><b>Total Fires per Month</b></h3>
-        <h5><a href="https://data-nifc.opendata.arcgis.com">Source: National Interagency Fire Center <LaunchIcon fontSize="small" /></a></h5>
         {Object.keys(countData).length > 1 ?
         <>
+        <h3><b>Total Fires per Month</b></h3>
+        <h5><a href="https://data-nifc.opendata.arcgis.com">Source: National Interagency Fire Center <LaunchIcon fontSize="small" /></a></h5>
           <Grid
             container
             direction="column"
@@ -330,13 +337,14 @@ export default function WildFireGraphs({ county, state }: Props) {
         : <></>}
         <div className="pagebreak"> </div> {/*For page printing*/}
         {/* acres per month */}
-        <h3>
+        
+        {Object.keys(countData).length > 1 ? (
+          <>
+          <h3>
                 <b>Total Acres Burned per Month</b>
               </h3>
               <h5><a href="https://data-nifc.opendata.arcgis.com">Source: National Interagency Fire Center <LaunchIcon fontSize="small" /></a></h5>
 
-        {Object.keys(countData).length > 1 ? (
-          <>
           <Grid
             container
             direction="column"

@@ -204,6 +204,11 @@ export default function AirQualityGraphs({ county, state }: Props) {
 
   if (isLoading) {
     return <p>Loading...</p>;
+  } else if (
+    Object.keys(data['PM25']).length == 0 &&
+    Object.keys(data['PM10']).length == 0 &&
+    Object.keys(data['Ozone']).length == 0) {
+      return <p>No Data Available</p>
   } else {
     if (FIRSTRUN) {
       //set the data for the default year (the previous year)
