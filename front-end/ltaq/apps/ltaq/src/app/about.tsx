@@ -188,6 +188,7 @@ const About = () => {
           </div>
           <br />
          
+         <ul className={aboutStyle['aqi']}> 
           <li><strong>"Good" AQI is 0 - 50.</strong> Air quality is considered satisfactory, and air pollution poses little or no risk.</li>
           <li><strong>"Moderate" AQI is 51 - 100.</strong> Air quality is acceptable; however, for some pollutants there may be a moderate health concern for a very small
           number of people. For example, people who are unusually sensitive to ozone may experience respiratory symptoms.</li>
@@ -196,6 +197,7 @@ const About = () => {
           <li><strong>"Very Unhealthy" AQI is 201 - 300.</strong> This would trigger a health alert signifying that everyone may experience more serious health effects.</li>
           <li><strong>"Hazardous" AQI greater than 300.</strong> This would trigger health warnings of emergency conditions. The entire population is more likely to be affected.</li>
           <br />
+          </ul>
       
           <p> 
           Further information is available here: <a href="https://www.epa.gov/outdoor-air-quality-data/air-data-basic-information">https://www.epa.gov/outdoor-air-quality-data/air-data-basic-information</a>
@@ -203,6 +205,7 @@ const About = () => {
           <br />
           <br/>
           </div>
+         
 
           <div className={aboutStyle['about']}> 
           <h1 id="AirQualityMeasurements"> <AirIcon fontSize="medium" /> Air Quality Measures</h1>
@@ -272,6 +275,12 @@ const About = () => {
           <a href="https://unsplash.com/photos/zpbzMHIe_NU"> https://unsplash.com/photos/zpbzMHIe_NU </a>
           <br/>
           <a href="https://www.flickr.com/photos/ingaker/51718599244/"> https://www.flickr.com/photos/ingaker/51718599244/ </a>
+          <br/>
+          <a href="https://unsplash.com/photos/KWYTn9_QKRE"> https://unsplash.com/photos/KWYTn9_QKRE </a>
+          <br/>
+          <a href="https://www.flickr.com/photos/gotovan/43845650554/"> https://www.flickr.com/photos/gotovan/43845650554/ </a>
+          <br/>
+          <a href="https://unsplash.com/photos/DwtX9mMHBJ0"> https://unsplash.com/photos/DwtX9mMHBJ0 </a>
           <br/>
           <br/>
       
