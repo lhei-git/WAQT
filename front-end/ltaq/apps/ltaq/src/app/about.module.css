@@ -3,35 +3,33 @@ body, h1, h2, h3, h4, h5, h6 {
 }
 
 .title {
-  color: white;
   position: relative;
   height: 70px;
   text-align: center;
   vertical-align: middle;
   padding-top: 80px;
   padding-bottom: 80px;
-  /* opacity: 50%; */
-  /* border: 2px solid #610000; */
+  opacity: 50%; 
   font-family: Arial, Helvetica, sans-serif;
-  color: #fffdfd;
   text-align: center;
   font-size: 50px;
   font-weight: bold;
 }
+/* styling for whole body of about page */
 .body {
   position: relative;
   height: auto;
-  /* border: 2px solid #610000; */
+  border: 1px solid #030303;
   background-color: transparent;
   margin: auto;
+  font-size: 18px;
   width: 70%;
-  /* padding-left: 10em */
+  padding-left: 10em;
   padding: 20px;
   list-style-position: inside;
-  /* position: relative; */
-  /* top: 25%; */
-  /* vertical-align: middle; */
-  /* height: 200px; */
+  position: relative; 
+  top: 25%; 
+  vertical-align: middle;  
   background: rgb(200, 200, 200); /* Fallback for older browsers without RGBA-support */
   background: rgba(200, 200, 200, 0.7);
 }
@@ -44,17 +42,27 @@ body, h1, h2, h3, h4, h5, h6 {
   margin-left: 3.4em;
 }
 
-/* visited link */
+/* link */
+a:link {
+  color: rgb(82, 84, 200);
+}
+/* link changes color once clicked */
 a:visited {
-  color: rgb(0, 4, 255);
+  color: rgb(82, 84, 200);
 }
-
-
-/* h1{
+/* section heading styling*/
+ .about h1{
   text-align: left;
-  font-size: 20px;
+  font-size: 28px;
   font-weight: bold;
+  color: black;
 }
+/* aligns text with the bullet points */
+ul.aqi{
+  list-style-position: outside;
+  padding: 15px;
+}
+/* more styling for headers */
 .h2{
   font-style: italic;
   font-size: 16px;
@@ -62,33 +70,26 @@ a:visited {
   text-align-last: left;
 
 }
+/* styling for table, th, td, tr */
 .about-table {
-
   table-layout: fixed;
+  text-align: center;
   width: 65%;
-  border: 1px solid black;
   border-collapse: collapse;
-
 }
 .about-table th{
-  background-color: rgba(216, 209, 209, 0.2);
+ background-color: rgba(246, 42, 42, 0.2);
   border: 1px solid black;
   border-collapse: collapse;
 }
-
 .about-table td{
   border: 1px solid black;
-tr{
-  background-color: rgba(216, 209, 209, 0.2);
-  border: 1px solid;
-  border-collapse: collapse;
-  line-height: 5px;
 }
-.about-table tr{
+#about-table tr{
   line-height: 5px;
-  border: 1px solid black;
+ border: 1px solid black;
 }
-
+/* cell color for each individual cell for AQI values */
   .about-table tr:nth-child(1) th
   {
     background-color: #ced1cd;
@@ -126,32 +127,23 @@ tr{
   {
     background-color: #D61E03 ;
   }
-.ozone img{
-width: 40%;
-}
-.pm25 img{
-width: 40%;
-}
-.pm10 img{
-width: 40%;
-}
+
+/* sizing for fire stats table image */
 .fire-table img{
-width: 60%;
+width: 50%;
 }
 
+/* styling for background images on about page */
 .backBody {
-background-image: linear-gradient(rgba(0, 0, 0, 0.2),
-rgba(0, 0, 0, 0.2)), url(AboutPic.jpg);
-background-size: 100% 100%;
+background-image: url(AboutPic.jpg), url(AboutPic2.jpg), url(AboutPic3.jpg);
+background-size: auto;
 background-repeat: no-repeat;
 margin: 0;
 padding: 0;
 z-index: -1;
 object-fit: cover;
-position:absolute;
+position: absolute;
 width: auto; 
-height: auto; 
-margin-bottom:10px;
-background-position: center;
+margin-bottom:0;
+background-position: center top, center, bottom;
 }
-
