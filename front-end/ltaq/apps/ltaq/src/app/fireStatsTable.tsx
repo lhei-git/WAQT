@@ -134,7 +134,7 @@ function FireStatsTable({ county, state, fullName }: Props) {
     </TableContainer>
 
 
-    <p className={styles['source']}> <a href = "https://www.nifc.gov/"> Source: National Interagency Fire Agency <LaunchIcon fontSize="small"/></a></p>
+    <p className={styles['source']}> <a className='source' href = "https://www.nifc.gov/"> Source: National Interagency Fire Agency <LaunchIcon fontSize="small"/></a></p>
           
        
         

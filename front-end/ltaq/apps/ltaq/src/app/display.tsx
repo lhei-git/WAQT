@@ -257,7 +257,7 @@ export default function App() {
               <br />
               <p className='source'>
                 {' '}
-                <a href="https://data-nifc.opendata.arcgis.com/datasets/nifc::wfigs-current-wildland-fire-perimeters/api">
+                <a className='source' href="https://data-nifc.opendata.arcgis.com/datasets/nifc::wfigs-current-wildland-fire-perimeters/api">
                   {' '}
                   Data source: WFIGS – Active fires API
                   <LaunchIcon fontSize="medium" />

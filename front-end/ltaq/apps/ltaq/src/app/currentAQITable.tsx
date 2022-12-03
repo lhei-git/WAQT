@@ -153,8 +153,8 @@ function CurrentAQI({ lat, lng }: Props) {
         </div>
         <div className={styles["centerText"]}>
           <br/>
-        <p className={styles['source']}> <a href = "https://www.airnow.gov/" target="_blank"> Source: Air Now <LaunchIcon fontSize="small"/></a></p>
-        <p className={styles['source']}> <a href = "/about#AirQualityMeasurements" target="_blank"> More Information on AQI <LaunchIcon fontSize="small"/></a></p>
+        <p className={styles['source']}> <a className='source' href = "https://www.airnow.gov/" target="_blank"> Source: Air Now <LaunchIcon fontSize="small"/></a></p>
+        <p className={styles['source']}> <a className='source' href = "/about#AirQualityMeasurements" target="_blank"> More Information on AQI <LaunchIcon fontSize="small"/></a></p>
         </div>
 
 

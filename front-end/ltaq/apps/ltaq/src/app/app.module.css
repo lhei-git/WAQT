@@ -23,7 +23,7 @@ h2, h3, h4, h5 {
 }
 
 .source {
-  color: white;
+  color: white !important;
   font-size: large;
 }
 
