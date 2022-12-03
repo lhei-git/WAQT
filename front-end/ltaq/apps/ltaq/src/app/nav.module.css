@@ -16,14 +16,9 @@
   color: rgb(42, 17, 230);
   display: flex;
   position: absolute;
-  top: 0;
   right: 0;
 }
 
-.logo-container a:hover {
-  text-decoration: none;
-  color: black;
-}
 
 .logo-container span {
   font-weight: 500;
@@ -48,10 +43,6 @@
   font-size: x-large;
 }
 
-.link a:hover {
-  text-decoration: none;
-  color: black;
-}
 
 @media print {
   .navbar {

@@ -6,13 +6,11 @@ import styles from './app.module.css';
 Chart.register(...registerables);
 import Grid from '@mui/material/Unstable_Grid2';
 import LaunchIcon from '@mui/icons-material/Launch';
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import { styled, alpha } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import Menu, { MenuProps } from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { number } from 'prop-types';
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 
 //returns a graph which displays Data
@@ -221,6 +219,13 @@ export default function WildFireGraphs({ county, state }: Props) {
     durationisLoading
   ) {
     return <p>Loading...</p>;
+  } else if (
+        Object.keys(countData).length == 0 &&
+        Object.keys(acresData).length == 0 &&
+        Object.keys(averageData).length == 0 &&
+        Object.keys(top10Data).length == 0 &&
+        Object.keys(durationData).length == 0 ) {
+          return <p>No Data Available</p>
   } else {
     if (FIRSTRUN) {
       //set the data for the default year (the previous year)
@@ -288,12 +293,13 @@ export default function WildFireGraphs({ county, state }: Props) {
           <></>
         )}
         {/* count */}
-        <h3><b>Total Fires per Month</b></h3>
         {Object.keys(countData).length > 1 ?
         <>
+        <h3><b>Total Fires per Month</b></h3>
+        <h5><a href="https://data-nifc.opendata.arcgis.com">Source: National Interagency Fire Center <LaunchIcon fontSize="small" /></a></h5>
           <Grid
             container
-            direction="row"
+            direction="column"
             justifyContent="center"
             alignItems="center"
           >
@@ -326,19 +332,22 @@ export default function WildFireGraphs({ county, state }: Props) {
               />
             </div>
           </Grid>
-          <h5><a href="https://data-nifc.opendata.arcgis.com">Source: National Interagency Fire Center <LaunchIcon fontSize="small" /></a></h5>
+          
           </>
         : <></>}
         <div className="pagebreak"> </div> {/*For page printing*/}
         {/* acres per month */}
-        <h3>
-                <b>Total Acres Burned per Month</b>
-              </h3>
+        
         {Object.keys(countData).length > 1 ? (
           <>
+          <h3>
+                <b>Total Acres Burned per Month</b>
+              </h3>
+              <h5><a href="https://data-nifc.opendata.arcgis.com">Source: National Interagency Fire Center <LaunchIcon fontSize="small" /></a></h5>
+
           <Grid
             container
-            direction="row"
+            direction="column"
             justifyContent="center"
             alignItems="center"
           >
@@ -371,12 +380,7 @@ export default function WildFireGraphs({ county, state }: Props) {
               />
             </div>
           </Grid>
-          <h5>
-                <a href="https://data-nifc.opendata.arcgis.com">
-                  Source: National Interagency Fire Center{' '}
-                  <LaunchIcon fontSize="small" />
-                </a>
-              </h5>
+
           </>
         ) : (
           <></>
@@ -384,17 +388,17 @@ export default function WildFireGraphs({ county, state }: Props) {
         <div className="pagebreak"> </div> {/*For page printing*/}
         {Object.keys(averageData).length > 1 ? (
           <>
+           <h3>
+                <b>Average Fire Duration (in Days) per Month</b>
+              </h3>
+              <h5><a href="https://data-nifc.opendata.arcgis.com">Source: National Interagency Fire Center <LaunchIcon fontSize="small" /></a></h5>
+
           <Grid
             container
-            direction="row"
+            direction="column"
             justifyContent="center"
             alignItems="center"
           >
-            <div>
-              <h3>
-                <b>Average Fire Duration (in Days) per Month</b>
-              </h3>
-            </div>
             <div className={styles['graph']}>
               <Line
                 data={{
@@ -424,12 +428,7 @@ export default function WildFireGraphs({ county, state }: Props) {
               />
             </div>
           </Grid>
-          <h5>
-          <a href="https://data-nifc.opendata.arcgis.com">
-            Source: National Interagency Fire Center{' '}
-            <LaunchIcon fontSize="small" />
-          </a>
-        </h5>
+        
         </>
         ) : (
           <></>
@@ -437,14 +436,22 @@ export default function WildFireGraphs({ county, state }: Props) {
         
         <div className="pagebreak"> </div> {/*For page printing*/}
         {/* top 10 fires by duration */}
-        <h2>
+        <br />
+        <br />
+        <h1 style={{color: 'black'}}>
                 <LocalFireDepartmentIcon fontSize="large" /> Top 10 
-              </h2>
+              </h1>
         {Object.keys(durationData).length > 1 ? (
           <>
           <h3>
                 <b>Top 10 Fires by Duration (in days)</b>
               </h3>
+              <h5>
+                <a href="https://data-nifc.opendata.arcgis.com">
+                  Source: National Interagency Fire Center{' '}
+                  <LaunchIcon fontSize="small" />
+                </a>
+              </h5>
           <Grid
             container
             direction="row"
@@ -480,12 +487,7 @@ export default function WildFireGraphs({ county, state }: Props) {
               />
             </div>
           </Grid>
-          <h5>
-                <a href="https://data-nifc.opendata.arcgis.com">
-                  Source: National Interagency Fire Center{' '}
-                  <LaunchIcon fontSize="small" />
-                </a>
-              </h5>
+
           </>
         ) : (
           <></>
@@ -497,6 +499,12 @@ export default function WildFireGraphs({ county, state }: Props) {
           <h3>
                 <b>Top 10 Fires by Total Acres Burned</b>
               </h3>
+              <h5>
+                <a href="https://data-nifc.opendata.arcgis.com">
+                  Source: National Interagency Fire Center{' '}
+                  <LaunchIcon fontSize="small" />
+                </a>
+              </h5>
           <Grid
             container
             direction="row"
@@ -531,13 +539,9 @@ export default function WildFireGraphs({ county, state }: Props) {
                 }}
               />
             </div>
+            
           </Grid>
-          <h5>
-                <a href="https://data-nifc.opendata.arcgis.com">
-                  Source: National Interagency Fire Center{' '}
-                  <LaunchIcon fontSize="small" />
-                </a>
-              </h5>
+          
               </>
         ) : (
           <></>

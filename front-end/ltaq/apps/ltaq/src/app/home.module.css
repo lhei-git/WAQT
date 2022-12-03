@@ -1,13 +1,13 @@
 * {
   margin: 0;
   padding: 0;
+  line-height: normal !important;
   /* box-sizing: border-box;  */
   /* height: 100% */
 }
 
 .container {
-  position: relative;
-  height: 900px;
+  
   background-image: linear-gradient(rgba(0, 0, 0, 0.2),
   rgba(0, 0, 0, 0.2)),url(wildfire.jpg);
   background-size: cover;

@@ -41,7 +41,6 @@ const About = () => {
     <>
     <Nav/>
     <div className={aboutStyle['backBody']}>
-      <h2 className={aboutStyle['title']}></h2>
       <body className={aboutStyle['body']}>
         <br />
         <p>        

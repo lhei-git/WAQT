@@ -29,6 +29,7 @@ const Links: React.FC<{ links: Link[] }> = ({ links }) => {
 const Nav: React.FC<{}> = () => {
   return (
     <nav className={styles['navbar']}>
+      <Links links={links} />
       <div className={styles['logo-container']}>
         <span className={styles['logo']}>
           {' '}
@@ -39,7 +40,6 @@ const Nav: React.FC<{}> = () => {
           </a>
         </span>
       </div>
-      <Links links={links} />
     </nav>
   );
 };
