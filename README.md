@@ -19,3 +19,12 @@ The WAQT app also produces various graphs of the historical trends of the three 
 - Install Node modules `npm install --force`
 - Run the front-end `npm start`
 - Navigate to localhost:4200 to start using WAQT. 
+
+# Contributing
+The code is divided into two sections, the front-end and the back-end. The front-end handles all rendering and styling using React and TypeScript. The back-end handles all API calls and data calculations using Python and Flask.
+## Wildfire Code
+All wildfire data retrival and logic is located in wildfire.py. Each major piece (trend graphs, current and historical statistics and active wildfires) has an endpoint which the front-end retrives the formatted data from. The front-end renders all wildfire data in activeFireTable.tsx, fireStatsTable.tsx and wildfireGraphs.tsx located in ./front-end/ltaq/src/app
+## Air Quality Code
+All air quality code is located in airnow.py. The current air quality index and historical air quality trends each have their own endpoint for the front-end to connect to inside airnow.py. You must provide API keys to run this code. All rendering for the air quality code is performed in activeFireTable.tsx, airQualityGraphs.tsx and currentAQITable.tsx. 
+## Location Searching Code
+All searching is conducted using the Google Maps API. You must provide an API key for this to function. Code for the map is in display.tsx.
