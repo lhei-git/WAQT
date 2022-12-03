@@ -15,6 +15,7 @@ body, h1, h2, h3, h4, h5, h6 {
   font-size: 50px;
   font-weight: bold;
 }
+/* styling for whole body of about page */
 .body {
   position: relative;
   height: auto;
@@ -45,21 +46,23 @@ body, h1, h2, h3, h4, h5, h6 {
 a:link {
   color: rgb(82, 84, 200);
 }
+/* link changes color once clicked */
 a:visited {
   color: rgb(82, 84, 200);
 }
-
+/* section heading styling*/
  .about h1{
   text-align: left;
   font-size: 28px;
   font-weight: bold;
   color: black;
 }
+/* aligns text with the bullet points */
 ul.aqi{
   list-style-position: outside;
   padding: 15px;
 }
-
+/* more styling for headers */
 .h2{
   font-style: italic;
   font-size: 16px;
@@ -67,6 +70,7 @@ ul.aqi{
   text-align-last: left;
 
 }
+/* styling for table, th, td, tr */
 .about-table {
   table-layout: fixed;
   text-align: center;
@@ -85,7 +89,7 @@ ul.aqi{
   line-height: 5px;
  border: 1px solid black;
 }
-
+/* cell color for each individual cell for AQI values */
   .about-table tr:nth-child(1) th
   {
     background-color: #ced1cd;
@@ -124,11 +128,12 @@ ul.aqi{
     background-color: #D61E03 ;
   }
 
-
+/* sizing for fire stats table image */
 .fire-table img{
 width: 50%;
 }
 
+/* styling for background images on about page */
 .backBody {
 background-image: url(AboutPic.jpg), url(AboutPic2.jpg), url(AboutPic3.jpg);
 background-size: auto;

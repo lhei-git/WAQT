@@ -11,6 +11,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import AirIcon from '@mui/icons-material/Air';
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 
+// color coordinated boxes for AQI legend
 const goodBoxStyle = {
   fill: 'green',
   strokeWidth: 3,
@@ -35,7 +36,6 @@ const hazardBoxStyle = {
   fill: 'brown',
   strokeWidth: 3,
 }
-
 const About = () => {
   return (
     <>
@@ -46,9 +46,10 @@ const About = () => {
         <br />
         <p>        
 
-        <div className={aboutStyle['about']}> 
-        <h1> <InfoIcon fontSize="medium" /> About WAQT </h1>
-          <br/>
+        <div className={aboutStyle['about']}> {/*  wildfire/air quality facts & Info about the website */}
+        <h1> <InfoIcon fontSize="medium" /> About WAQT </h1> {/* section heading with icon */}
+          <br/> 
+          {/* paragraph with clickable links for more information */}
           <p>One of the major silent killers and reducers of quality of life in
             the world today is air pollution. The European Environmental Agency
             considers air pollution <a href="https://www.eea.europa.eu/themes/air/">"the biggest environmental health risk in
@@ -112,8 +113,8 @@ const About = () => {
           <br/>
           </div>
          
-          <div className={aboutStyle['about']}> 
-          <h1> <AirIcon fontSize="medium" /> The Major Pollutants </h1>
+          <div className={aboutStyle['about']}> {/* Major pollutants */}
+          <h1> <AirIcon fontSize="medium" /> The Major Pollutants </h1> {/* section heading with icon */}
           <br/>
 
           <p>
@@ -122,7 +123,7 @@ const About = () => {
           </p>
           <br />
           
-          <ul>
+          <ul> {/* bullet list with clickable links with info about each major pollutant */}
           <li><a href="https://www.epa.gov/ground-level-ozone-pollution">Ozone (O3)</a></li>
           <li><a href="https://www.epa.gov/pm-pollution">Particulate Matter 2.5 (PM 2.5)</a></li>
           <li><a href="https://www.epa.gov/pm-pollution">Particulate Matter 10 (PM10)</a></li>
@@ -140,7 +141,7 @@ const About = () => {
           </div>
 
           <div className={aboutStyle['about']}> 
-          <h1 id="AQI"> <AirIcon fontSize="medium" /> US Air Quality Index </h1>
+          <h1 id="AQI"> <AirIcon fontSize="medium" /> US Air Quality Index </h1> {/* section heading with icon */}
           <br />
 
           <p> 
@@ -150,8 +151,8 @@ const About = () => {
           </p> 
           <br />
 
-          <div className={aboutStyle['about-table']}>
-         <table>
+          <div className={aboutStyle['about-table']}> 
+         <table> {/* air quality index table with colored cells for users to differ levels of health concern */}
           <tr>
           <th>Air Quality Index (AQI) Values</th>
           <th>Levels of Health Concern</th>
@@ -188,7 +189,7 @@ const About = () => {
           </div>
           <br />
          
-         <ul className={aboutStyle['aqi']}> 
+         <ul className={aboutStyle['aqi']}> {/* bulleted list explaining in depth health level concerns */}
           <li><strong>"Good" AQI is 0 - 50.</strong> Air quality is considered satisfactory, and air pollution poses little or no risk.</li>
           <li><strong>"Moderate" AQI is 51 - 100.</strong> Air quality is acceptable; however, for some pollutants there may be a moderate health concern for a very small
           number of people. For example, people who are unusually sensitive to ozone may experience respiratory symptoms.</li>
@@ -208,7 +209,7 @@ const About = () => {
          
 
           <div className={aboutStyle['about']}> 
-          <h1 id="AirQualityMeasurements"> <AirIcon fontSize="medium" /> Air Quality Measures</h1>
+          <h1 id="AirQualityMeasurements"> <AirIcon fontSize="medium" /> Air Quality Measures</h1> {/* section heading with icon */}
           <br />
 
           <p>
@@ -218,8 +219,8 @@ const About = () => {
           “moderate” air quality. 
           </p>
           <br />
-          <div className={aboutStyle['ozone']}>
-          <strong> Ozone:  </strong>
+          <div className={aboutStyle['ozone']}> {/* creates legend displaying  ozone pollutant measurements */}
+          <strong> Ozone:  </strong> {/* bold table heading */}
           <p><svg width="20" height="20"><rect width="20" height="20" style={goodBoxStyle}/></svg>{" Good (<=.054 ppm)"}</p>
           <p><svg width="20" height="20"><rect width="20" height="20" style={moderateBoxStyle}/></svg>{" Moderate (.055-.070 ppm)"}</p>
           <p><svg width="20" height="20"><rect width="20" height="20" style={sensistiveBoxStyle}/></svg>{" Unhealthy for Sensitive Groups (.071-.085 ppm)"}</p>
@@ -229,8 +230,8 @@ const About = () => {
           </div>
     
           <br/>
-          <div className={aboutStyle['pm25']}>
-          <strong> PM2.5 </strong> 
+          <div className={aboutStyle['pm25']}> {/* creates legend displaying pm2.5 pollutant measurements */}
+          <strong> PM2.5 </strong> {/* bold table heading */}
           <p><svg width="20" height="20"><rect width="20" height="20" style={goodBoxStyle}/></svg>{" Good (<= 12.0 ug/m3)"}</p>
           <p><svg width="20" height="20"><rect width="20" height="20" style={moderateBoxStyle}/></svg>{" Moderate (12.1-35.4 ug/m3"}</p>
           <p><svg width="20" height="20"><rect width="20" height="20" style={sensistiveBoxStyle}/></svg>{" Unhealthy for Sensitive Groups (35.5-55.4 ug/m3)"}</p>
@@ -240,8 +241,8 @@ const About = () => {
 
           </div>
           <br/>
-          <div className={aboutStyle['pm10']}>
-          <strong> PM10 </strong>
+          <div className={aboutStyle['pm10']}> {/* creates legend displaying  pm10 pollutant measurements */}
+          <strong> PM10 </strong> {/* bold table headoing */}
           <p><svg width="20" height="20"><rect width="20" height="20" style={goodBoxStyle}/></svg>{" Good (<=54 ug/m3)"}</p>
           <p><svg width="20" height="20"><rect width="20" height="20" style={moderateBoxStyle}/></svg>{" Moderate (55-154 ug/m3)"}</p>
           <p><svg width="20" height="20"><rect width="20" height="20" style={sensistiveBoxStyle}/></svg>{" Unhealthy for Sensitive Groups (155-254 ug/m3)"}</p>
@@ -255,7 +256,7 @@ const About = () => {
          
 
           <div className={aboutStyle['about']}> 
-          <h1> <LocalFireDepartmentIcon fontSize="medium" /> Wildfire Statistics </h1>
+          <h1> <LocalFireDepartmentIcon fontSize="medium" /> Wildfire Statistics </h1> {/* section heading with icon */}
           <p> 
           The WAQT app provides various statistical measures of current and historical wildfires, primarily calculated from the 
           Wildland Fire Locations Full History API. The calculations are performed as explained below only for incidents which have 
@@ -263,15 +264,15 @@ const About = () => {
           </p>
           <br />   
           </div>
-          <div className={aboutStyle['fire-table']}>
-          { <img src={FireTable}></img> }
+          <div className={aboutStyle['fire-table']}> 
+          { <img src={FireTable}></img> } {/* displays fire stats table image  */}
           <br />
       
           <br/>
           <p>Further information about WAQT is available in our GitHub page. 
           </p>
           <br />
-          <p> Images from</p>
+          <p> Images from</p> {/* displays links for image citations */}
           <a href="https://unsplash.com/photos/zpbzMHIe_NU"> https://unsplash.com/photos/zpbzMHIe_NU </a>
           <br/>
           <a href="https://www.flickr.com/photos/ingaker/51718599244/"> https://www.flickr.com/photos/ingaker/51718599244/ </a>
