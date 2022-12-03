@@ -47,7 +47,7 @@ const About = () => {
         <p>        
 
         <div className={aboutStyle['about']}> 
-        <h1> <InfoIcon fontSize="small" /> About WAQT </h1>
+        <h1> <InfoIcon fontSize="medium" /> About WAQT </h1>
           <br/>
           <p>One of the major silent killers and reducers of quality of life in
             the world today is air pollution. The European Environmental Agency
@@ -82,13 +82,13 @@ const About = () => {
           policy makers and the public alike the ability to easily search for air quality and wildfire 
           information for a particular county of interest (currently in the US only). WAQT provides a 
           location’s current air quality measures for Ozone, PM2.5 and PM10—some of the most common air 
-          pollutants—based on the US Air Quality Index (AQI). This information is retrieved from the [XYZ] 
-          application programming interface (API) of the US Environmental Protection Agency (EPA).  
+          pollutants—based on the US Air Quality Index (AQI). This information is retrieved from the <a href="https://www.epa.gov/aqs">EPA</a> &  <a href="https://docs.airnowapi.org">AirNow </a> 
+            application programming interface (API) of the US Environmental Protection Agency (EPA).  
           </p>
           <br />
 
           <p>
-          WAQT also retrieves the current active wildfires in the searched location from the [XYZ] API, 
+          WAQT also retrieves the current active wildfires in the searched location from the <a href="https://data-nifc.opendata.arcgis.com/">National Interagency Fire Center</a> API, 
           of the National Interagency Fire Center, and various calculations of historical wildfire data 
           for the searched location, and the entire state, from the <a href="https://data-nifc.opendata.arcgis.com/datasets/nifc::wfigs-wildland-fire-locations-full-history/about">Wildland Fire Locations Full History 
           API</a> of the National Interagency Fire Center. 
@@ -106,13 +106,14 @@ const About = () => {
 
           <p>
           WAQT was conceptualized by Nic DePaula, who guided the development process. WAQT was developed by 
-          Ryan Kaszubski, Ahmad Aoun and Kevin Kluka during the Fall of 2022 for their senior capstone project. 
+          Ryan Kaszubski, Ahmad Aoun and Kevin Kluka during the Fall of 2022 for their senior capstone project for the <a href= "https://lhei.org">Lab for Health and Environmental Informatics </a> (LHEI). 
           </p>
+          <br/>
           <br/>
           </div>
          
           <div className={aboutStyle['about']}> 
-          <h1> <AirIcon fontSize="small" /> The Major Pollutants </h1>
+          <h1> <AirIcon fontSize="medium" /> The Major Pollutants </h1>
           <br/>
 
           <p>
@@ -135,10 +136,11 @@ const About = () => {
           PM2.5 includes particles less than or equal to 2.5 micrometers and is also called fine particle pollution.
           </p>
           <br />
+          <br/>
           </div>
 
           <div className={aboutStyle['about']}> 
-          <h1 id="AQI"> <AirIcon fontSize="small" /> US Air Quality Index </h1>
+          <h1 id="AQI"> <AirIcon fontSize="medium" /> US Air Quality Index </h1>
           <br />
 
           <p> 
@@ -199,10 +201,11 @@ const About = () => {
           Further information is available here: <a href="https://www.epa.gov/outdoor-air-quality-data/air-data-basic-information">https://www.epa.gov/outdoor-air-quality-data/air-data-basic-information</a>
           </p>
           <br />
+          <br/>
           </div>
 
           <div className={aboutStyle['about']}> 
-          <h1 id="AirQualityMeasurements"> <AirIcon fontSize="small" /> Air Quality Measures</h1>
+          <h1 id="AirQualityMeasurements"> <AirIcon fontSize="medium" /> Air Quality Measures</h1>
           <br />
 
           <p>
@@ -249,7 +252,7 @@ const About = () => {
          
 
           <div className={aboutStyle['about']}> 
-          <h1> <LocalFireDepartmentIcon fontSize="small" /> Wildfire Statistics </h1>
+          <h1> <LocalFireDepartmentIcon fontSize="medium" /> Wildfire Statistics </h1>
           <p> 
           The WAQT app provides various statistical measures of current and historical wildfires, primarily calculated from the 
           Wildland Fire Locations Full History API. The calculations are performed as explained below only for incidents which have 

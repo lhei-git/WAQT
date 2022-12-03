@@ -45,12 +45,13 @@ body, h1, h2, h3, h4, h5, h6 {
 a:link {
   color: rgb(82, 84, 200);
 }
-
-
+a:visited {
+  color: rgb(82, 84, 200);
+}
 
  .about h1{
   text-align: left;
-  font-size: 20px;
+  font-size: 28px;
   font-weight: bold;
   color: black;
 }
@@ -124,17 +125,15 @@ width: 50%;
 }
 
 .backBody {
-background-image: linear-gradient(rgba(0, 0, 0, 0.2),
-rgba(0, 0, 0, 0.2)), url(AboutPic.jpg);
-background-size: 100% 100%;
+background-image: url(AboutPic.jpg), url(AboutPic2.jpg), url(AboutPic3.jpg);
+background-size: auto;
 background-repeat: no-repeat;
 margin: 0;
 padding: 0;
 z-index: -1;
 object-fit: cover;
-position:absolute;
+position: absolute;
 width: auto; 
-height: auto; 
-margin-bottom:10px;
-background-position: center;
+margin-bottom:0;
+background-position: center top, center, bottom;
 }
