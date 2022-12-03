@@ -50,10 +50,7 @@ body {
 a:link {
   color: rgb(82, 84, 200);
 }
-/* link changes color once clicked */
-a:visited {
-  color: rgb(82, 84, 200);
-}
+
 /* section heading styling*/
  .about h1{
   text-align: left;
@@ -139,18 +136,17 @@ width: 50%;
 
 /* styling for background images on about page */
 .backBody {
-background-image: url(AboutPic.jpg), url(AboutPic2.jpg), url(AboutPic3.jpg);
-background-size: auto;
-background-repeat: no-repeat;
-margin: 0;
-padding: 0;
-z-index: -1;
-object-fit: cover;
-position: absolute;
-width: auto; 
-height: auto; 
-margin-bottom:10px;
-background-position: center;
-}
-*/
+  background-image: url(AboutPic.jpg), url(AboutPic2.jpg), url(AboutPic3.jpg);
+  background-size: auto;
+  background-repeat: no-repeat;
+  margin: 0;
+  padding: 0;
+  z-index: -1;
+  object-fit: cover;
+  position: absolute;
+  width: auto; 
+  margin-bottom:0;
+  background-position: center top, center, bottom;
+  }
+
 
