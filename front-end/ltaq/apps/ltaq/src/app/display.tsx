@@ -187,8 +187,8 @@ export default function App() {
           </div>
           <div className="w3-row-padding  w3-margin-bottom ">
             <div className="currentActiveWildfires">
-              <h1>
-                <TerrainIcon /> Current Active Wildfires
+              <h1> <b>
+                <TerrainIcon /> Current Active Wildfires </b>
               </h1>
               <br />
               <div className="map">
@@ -272,7 +272,7 @@ export default function App() {
   
           <div className="w3-row-padding  w3-margin-bottom ">
             <div className="currentFireStatsTable">
-            <h1><TrendingUpIcon /> Current and Historical Wildfire Statistics</h1>
+            <h1><b><TrendingUpIcon /> Current and Historical Wildfire Statistics</b></h1>
               <FireStatsTable
                 county={countyFormatted}
                 state={splitVals}
@@ -285,7 +285,7 @@ export default function App() {
           <div className="w3-container w3-margin-bottom">
             <div className="airQualityGraphs">
               <h1 style={{color: 'black'}}>
-                <AirIcon fontSize="large" /> Air Quality Historical Trends
+                <b><AirIcon fontSize="large" /> Air Quality Historical Trends </b>
               </h1>
               <br />
               <AirQualityGraphs county={countyFormatted} state={splitVals} />
@@ -296,8 +296,8 @@ export default function App() {
           <div className="w3-container">
             <div className="wildfireGraphs">
               <h1 style={{color: 'black'}}>
-                <LocalFireDepartmentIcon fontSize="large" /> Wildfire Historical
-                Trends
+                <b><LocalFireDepartmentIcon fontSize="large" /> Wildfire Historical
+                Trends </b>
               </h1>
               <br />
               <WildFireGraphs county={countyFormatted} state={splitVals} />
