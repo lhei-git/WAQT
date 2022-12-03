@@ -9,3 +9,10 @@ h3 {
   margin-right: auto;
   text-align: center;
 }
+
+.source {
+  color: white;
+  font-size: large;
+  text-align: center;
+  text-decoration: none;
+}

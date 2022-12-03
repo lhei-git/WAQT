@@ -35,12 +35,38 @@ const modalStyle = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 800,
+  width: 400,
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
   p: 4,
 };
+//styles for the aqi color boxes in the modals
+const goodBoxStyle = {
+  fill: 'green',
+  strokeWidth: 3,
+}
+const moderateBoxStyle = {
+  fill: 'yellow',
+  strokeWidth: 3,
+}
+const sensistiveBoxStyle = {
+  fill: 'orange',
+  strokeWidth: 3,
+}
+const unhealthyBoxStyle = {
+  fill: 'red',
+  strokeWidth: 3,
+}
+const veryunhealthyBoxStyle = {
+  fill: 'purple',
+  strokeWidth: 3,
+}
+const hazardBoxStyle = {
+  fill: 'brown',
+  strokeWidth: 3,
+}
+
 export default function AirQualityGraphs({ county, state }: Props) {
   //url information
   const url =
@@ -170,10 +196,19 @@ export default function AirQualityGraphs({ county, state }: Props) {
   const [openModal2, setOpen2] = useState(false);
   const handleOpen2 = () => setOpen2(true);
   const handleModalClose2 = () => setOpen2(false);
+
+  const [openModal3, setOpen3] = useState(false);
+  const handleOpen3 = () => setOpen3(true);
+  const handleModalClose3 = () => setOpen3(false);
   
 
   if (isLoading) {
     return <p>Loading...</p>;
+  } else if (
+    Object.keys(data['PM25']).length == 0 &&
+    Object.keys(data['PM10']).length == 0 &&
+    Object.keys(data['Ozone']).length == 0) {
+      return <p>No Data Available</p>
   } else {
     if (FIRSTRUN) {
       //set the data for the default year (the previous year)
@@ -235,24 +270,6 @@ export default function AirQualityGraphs({ county, state }: Props) {
               </StyledMenu>
             </div>
            {/* modal content */}
-      <Modal
-            open={openModal}
-            onClose={handleModalClose}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-          >
-            <Box sx={modalStyle}>
-              <Typography id="modal-modal-title" variant="h6" component="h2">
-                AQI Information:
-              </Typography>
-              <Typography id="modal-modal-description">
-                <img src={aqiImage1} />
-              </Typography>
-              <Typography align="center">
-                    <Button onClick={handleModalClose}>{<CloseIcon fontSize="medium"/>}</Button>
-              </Typography>
-            </Box>
-          </Modal> 
       </>
     : <></>}
         {/* render all graphs here */}
@@ -261,6 +278,7 @@ export default function AirQualityGraphs({ county, state }: Props) {
         <div>
               <h3><b>Highest PM 2.5 Values Per Quarter</b><Button onClick={handleOpen}>{<HelpIcon />}</Button></h3>
               <h4>Unit: Micrograms/cubic meter</h4>
+              <h5>Source: <a href="https://www.epa.gov/aqs">EPA AQS <LaunchIcon fontSize="small" /></a></h5>
             </div>
           <Grid
             container
@@ -299,15 +317,38 @@ export default function AirQualityGraphs({ county, state }: Props) {
               />
             </div>
           </Grid>
-          <h5>Source: <a href="https://www.epa.gov/aqs">EPA AQS <LaunchIcon fontSize="small" /></a></h5>
           </>
           : <></>}
+          <Modal
+            open={openModal}
+            onClose={handleModalClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box sx={modalStyle}>
+              <Typography id="modal-modal-title" variant="h6" component="h2">
+                PM 2.5 AQI Information:
+              </Typography>
+              <Typography id="modal-modal-description">
+                  <p><svg width="20" height="20"><rect width="20" height="20" style={goodBoxStyle}/></svg>{" Good (<= 12.0 ug/m3)"}</p>
+                  <p><svg width="20" height="20"><rect width="20" height="20" style={moderateBoxStyle}/></svg>{" Moderate (12.1-35.4 ug/m3"}</p>
+                  <p><svg width="20" height="20"><rect width="20" height="20" style={sensistiveBoxStyle}/></svg>{" Unhealthy for Sensitive Groups (35.5-55.4 ug/m3)"}</p>
+                  <p><svg width="20" height="20"><rect width="20" height="20" style={unhealthyBoxStyle}/></svg>{" Unhealthy (55.5-150.4 ug/m3)"}</p>
+                  <p><svg width="20" height="20"><rect width="20" height="20" style={veryunhealthyBoxStyle}/></svg>{" Very Unhealthy (150.5-250.4ug/m3)"}</p>
+                  <p><svg width="20" height="20"><rect width="20" height="20" style={hazardBoxStyle}/></svg>{" Hazardous (>=250.5 ug/m3)"}</p>
+              </Typography>
+              <Typography align="center">
+                    <Button onClick={handleModalClose}>{<CloseIcon fontSize="medium"/>}</Button>
+              </Typography>
+            </Box>
+          </Modal> 
         <div className="pagebreak"> </div> {/*For page printing*/}
         {Object.keys(data["PM10"]).length > 1 ?
         <>
         <div>
-              <h3><b>Highest PM 10 Values Per Quarter</b><Button onClick={handleOpen}>{<HelpIcon />}</Button></h3>
+              <h3><b>Highest PM 10 Values Per Quarter</b><Button onClick={handleOpen2}>{<HelpIcon />}</Button></h3>
               <h4>Unit: Micrograms/cubic meter</h4>
+              <h5>Source: <a href="https://www.epa.gov/aqs">EPA AQS <LaunchIcon fontSize="small" /></a></h5>
             </div>
           <Grid
             container
@@ -344,15 +385,38 @@ export default function AirQualityGraphs({ county, state }: Props) {
               />
             </div>
           </Grid>
-          <h5>Source: <a href="https://www.epa.gov/aqs">EPA AQS <LaunchIcon fontSize="small" /></a></h5>
           </>
           : <></>}
+          <Modal
+            open={openModal2}
+            onClose={handleModalClose2}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box sx={modalStyle}>
+              <Typography id="modal-modal-title" variant="h6" component="h2">
+                PM 10 AQI Information:
+              </Typography>
+              <Typography id="modal-modal-description">
+                  <p><svg width="20" height="20"><rect width="20" height="20" style={goodBoxStyle}/></svg>{" Good (<=54 ug/m3)"}</p>
+                  <p><svg width="20" height="20"><rect width="20" height="20" style={moderateBoxStyle}/></svg>{" Moderate (55-154 ug/m3)"}</p>
+                  <p><svg width="20" height="20"><rect width="20" height="20" style={sensistiveBoxStyle}/></svg>{" Unhealthy for Sensitive Groups (155-254 ug/m3)"}</p>
+                  <p><svg width="20" height="20"><rect width="20" height="20" style={unhealthyBoxStyle}/></svg>{" Unhealthy (255-354 ug/m3)"}</p>
+                  <p><svg width="20" height="20"><rect width="20" height="20" style={veryunhealthyBoxStyle}/></svg>{" Very Unhealthy (355-424 ug/m3)"}</p>
+                  <p><svg width="20" height="20"><rect width="20" height="20" style={hazardBoxStyle}/></svg>{" Hazardous (>=425 ug/m3)"}</p>
+              </Typography>
+              <Typography align="center">
+                    <Button onClick={handleModalClose2}>{<CloseIcon fontSize="medium"/>}</Button>
+              </Typography>
+            </Box>
+          </Modal> 
         <div className="pagebreak"> </div> {/*For page printing*/}
         {Object.keys(data["Ozone"]).length > 1 ?
         <>
         <div>
-              <h3><b>Highest Ozone Values Per Quarter</b><Button onClick={handleOpen2}>{<HelpIcon />}</Button></h3>
+              <h3><b>Highest Ozone Values Per Quarter</b><Button onClick={handleOpen3}>{<HelpIcon />}</Button></h3>
               <h4>Unit: Parts per million</h4>
+              <h5>Source: <a href="https://www.epa.gov/aqs">EPA AQS <LaunchIcon fontSize="small" /></a></h5>
             </div>
           <Grid
             container
@@ -389,28 +453,33 @@ export default function AirQualityGraphs({ county, state }: Props) {
               />
             </div>
           </Grid>
-          <h5>Source: <a href="https://www.epa.gov/aqs">EPA AQS <LaunchIcon fontSize="small" /></a></h5>
           </>
           : <></>}
         <div>
           <Modal
-            open={openModal2}
-            onClose={handleModalClose2}
+            open={openModal3}
+            onClose={handleModalClose3}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
           >
             <Box sx={modalStyle}>
               <Typography id="modal-modal-title" variant="h6" component="h2">
-                AQI Information:
+                Ozone AQI Information:
               </Typography>
               <Typography id="modal-modal-description">
-                <img src={aqiImage2} />
+                  <p><svg width="20" height="20"><rect width="20" height="20" style={goodBoxStyle}/></svg>{" Good (<=.054 ppm)"}</p>
+                  <p><svg width="20" height="20"><rect width="20" height="20" style={moderateBoxStyle}/></svg>{" Moderate (.055-.070 ppm)"}</p>
+                  <p><svg width="20" height="20"><rect width="20" height="20" style={sensistiveBoxStyle}/></svg>{" Unhealthy for Sensitive Groups (.071-.085 ppm)"}</p>
+                  <p><svg width="20" height="20"><rect width="20" height="20" style={unhealthyBoxStyle}/></svg>{" Unhealthy (.086-.105 ppm)"}</p>
+                  <p><svg width="20" height="20"><rect width="20" height="20" style={veryunhealthyBoxStyle}/></svg>{" Very Unhealthy (.106-.200 ppm)"}</p>
+                  <p><svg width="20" height="20"><rect width="20" height="20" style={hazardBoxStyle}/></svg>{" Hazardous (>=.405 ppm)"}</p>
               </Typography>
               <Typography align="center">
-                    <Button onClick={handleModalClose2}>{<CloseIcon fontSize="medium"/>}</Button>
+                    <Button onClick={handleModalClose3}>{<CloseIcon fontSize="medium"/>}</Button>
               </Typography>
             </Box>
           </Modal> 
+          
       </div>
       </>
     );

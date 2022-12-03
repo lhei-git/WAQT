@@ -78,7 +78,7 @@ def getTotalFiresCounty(county, state, test):
             countUrl = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+county+"'%20AND%20POOState%20%3D%20'US-"+state+"'&outFields=IncidentName,DailyAcres,ContainmentDateTime,FireDiscoveryDateTime&returnGeometry=false&returnCountOnly=true&outSR=4326&f=json"
             count_response_API = requests.get(countUrl)    
             countOutput = json.loads(count_response_API.text)
-        WildfireResponse["Total Fires"] = countOutput["count"]
+        WildfireResponse["Total Fires"] = "{:,}".format(int(countOutput["count"]))
         return int(countOutput["count"])
     except Exception as e:
         print("Total Fires County Function: " + e)
@@ -93,7 +93,7 @@ def getTotalFiresState(state, test):
             countUrl = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOState%20%3D%20'US-"+state+"'&outFields=IncidentName,DailyAcres,ContainmentDateTime,FireDiscoveryDateTime&returnGeometry=false&returnCountOnly=true&outSR=4326&f=json"
             count_response_API = requests.get(countUrl)    
             countOutput = json.loads(count_response_API.text)
-        WildfireStateResponse["Total Fires"] = countOutput["count"]
+        WildfireStateResponse["Total Fires"] = "{:,}".format(int(countOutput["count"]))
         return int(countOutput["count"])
     except Exception as e:
         print("Total Fire State Function: " + e)    
@@ -109,7 +109,7 @@ def getHumanCausedFires(county, state, stateOnly, test):
                 countUrl = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=FireCause%20%3D%20'HUMAN'%20AND%20POOState%20%3D%20'US-"+state+"'&outFields=FireCause&returnGeometry=false&returnCountOnly=true&outSR=4326&f=json"
                 count_response_API = requests.get(countUrl)    
                 countOutput = json.loads(count_response_API.text)
-            WildfireStateResponse["Total Fires Caused by Humans"] = countOutput["count"]
+            WildfireStateResponse["Total Fires Caused by Humans"] = "{:,}".format(int(countOutput["count"]))
         else:
             if(test):
                 jsonTestData = open('./TestData/wildfireCountTestData.json')
@@ -119,7 +119,7 @@ def getHumanCausedFires(county, state, stateOnly, test):
                 countUrl = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=FireCause%20%3D%20'HUMAN'%20AND%20POOCounty%20%3D%20'"+county+"'%20AND%20POOState%20%3D%20'US-"+state+"'&outFields=FireCause&returnGeometry=false&returnCountOnly=true&outSR=4326&f=json"
                 count_response_API = requests.get(countUrl)    
                 countOutput = json.loads(count_response_API.text)
-            WildfireResponse["Total Fires Caused by Humans"] = countOutput["count"]
+            WildfireResponse["Total Fires Caused by Humans"] = "{:,}".format(int(countOutput["count"]))
     except Exception as e:
         print("Human caused fire Function: " + e)
 #get the count of natural caused fires
@@ -134,7 +134,7 @@ def getNaturalCausedFires(county, state, stateOnly, test):
                 countUrl = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=FireCause%20%3D%20'NATURAL'%20AND%20POOState%20%3D%20'US-"+state+"'&outFields=FireCause&returnGeometry=false&returnCountOnly=true&outSR=4326&f=json"
                 count_response_API = requests.get(countUrl)    
                 countOutput = json.loads(count_response_API.text)
-            WildfireStateResponse["Total Fires Caused by Nature"] = countOutput["count"]
+            WildfireStateResponse["Total Fires Caused by Nature"] = "{:,}".format(int(countOutput["count"]))
         else:
             if(test):
                 jsonTestData = open('./TestData/wildfireCountTestData.json')
@@ -144,7 +144,7 @@ def getNaturalCausedFires(county, state, stateOnly, test):
                 countUrl = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=FireCause%20%3D%20'NATURAL'%20AND%20POOCounty%20%3D%20'"+county+"'%20AND%20POOState%20%3D%20'US-"+state+"'&outFields=FireCause&returnGeometry=false&returnCountOnly=true&outSR=4326&f=json"
                 count_response_API = requests.get(countUrl)    
                 countOutput = json.loads(count_response_API.text)
-            WildfireResponse["Total Fires Caused by Nature"] = countOutput["count"]
+            WildfireResponse["Total Fires Caused by Nature"] = "{:,}".format(int(countOutput["count"]))
     except Exception as e:
         print("Natural caused fire Function: " + e)
 
@@ -180,9 +180,9 @@ def totalAcres(county, state, stateOnly, test):
             else: 
                 i = i + 1
         if(stateOnly):
-            WildfireStateResponse["Total Acres Burned"] = sum
+            WildfireStateResponse["Total Acres Burned"] = "{:,}".format(sum)
         else:
-            WildfireResponse["Total Acres Burned"] = sum
+            WildfireResponse["Total Acres Burned"] = "{:,}".format(sum)
         return sum
     except Exception as e:
         print(e)
@@ -375,11 +375,24 @@ def averageFireDuration(output, numberOfFires, state):
                 if(duration >= 1):
                     totalDays = totalDays + duration    
         if(state):
-            WildfireStateResponse["Average Fire Duration"] = str(int(totalDays/numberOfFires))+" Day(s)"
+            calc = int(totalDays/numberOfFires)
+            if(calc > 1):
+                text = str(calc) + " Days"
+            elif(calc == 1):
+                text = str(calc) + " Day"
+            else:
+                text = " < 1" +" Day"
+            WildfireStateResponse["Average Fire Duration"] = text
             
         else:
-            print(totalDays)
-            WildfireResponse["Average Fire Duration"] = str(int(totalDays/numberOfFires))+" Day(s)"
+            calc = int(totalDays/numberOfFires)
+            if(calc > 1):
+                text = str(calc) + " Days"
+            elif(calc == 1):
+                text = str(calc) + " Day"
+            else:
+                text = " < 1" +" Day"
+            WildfireResponse["Average Fire Duration"] = text
     except Exception as e:
         print("Avg duration Function: " + e)
 
@@ -577,7 +590,7 @@ def create_app(config=None):
             getNaturalCausedFires("None", state, True, unitTesting)
             #total acres burned
             totalAcresSum = totalAcres("None", state, True, unitTesting)
-            WildfireStateResponse["Average Acres Burned Per Fire"] = int(totalAcresSum / numberOfFires)
+            WildfireStateResponse["Average Acres Burned Per Fire"] = int(totalAcresSum / numberOfFires)    
             #longest fire
             longestBurningFire(output, True)
             #average duration

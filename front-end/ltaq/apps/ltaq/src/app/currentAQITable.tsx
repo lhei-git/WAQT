@@ -84,14 +84,14 @@ function CurrentAQI({ lat, lng }: Props) {
       <>
         {/* current aqi text */}
         <div className={styles["centerText"]}>
-          <h1><WbSunnyIcon /> Current AQI: {
+          <h1><b><WbSunnyIcon /> Current AQI: {
             (highestAqi == 0) ? "Good" :
               (highestAqi == 1) ? "Moderate" :
                 (highestAqi == 2) ? "Unhealthy for Sensitive Groups" :
                   (highestAqi == 3) ? "Unhealthy" :
                     (highestAqi == 4) ? "Very Unhealthy" :
                       (highestAqi == 5) ? "Hazardous" : "Not Available"
-          }
+          }</b>
             {/* modal button */}
             <Button onClick={handleOpen}>{<HelpIcon />}</Button>
 
@@ -153,8 +153,8 @@ function CurrentAQI({ lat, lng }: Props) {
         </div>
         <div className={styles["centerText"]}>
           <br/>
-        <p> <a href = "https://www.airnow.gov/" target="_blank"> Source: Air Now <LaunchIcon fontSize="small"/></a></p>
-        <p> <a href = "/about#AirQualityMeasurements" target="_blank"> More Information on AQI <LaunchIcon fontSize="small"/></a></p>
+        <p className={styles['source']}> <a href = "https://www.airnow.gov/" target="_blank"> Source: Air Now <LaunchIcon fontSize="small"/></a></p>
+        <p className={styles['source']}> <a href = "/about#AirQualityMeasurements" target="_blank"> More Information on AQI <LaunchIcon fontSize="small"/></a></p>
         </div>
 
 
