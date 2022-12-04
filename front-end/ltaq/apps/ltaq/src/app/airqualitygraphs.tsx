@@ -6,19 +6,18 @@ import styles from './app.module.css';
 Chart.register(...registerables);
 import Grid from '@mui/material/Unstable_Grid2';
 import LaunchIcon from '@mui/icons-material/Launch';
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import { styled, alpha } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import Menu, { MenuProps } from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import HelpIcon from '@mui/icons-material/Help';
 import CloseIcon from '@mui/icons-material/Close';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import aqiImage1 from "./aqiGraphs1.jpg";
-import aqiImage2 from "./aqiGraphs2.jpg";
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 //returns a graph which displays Data
 //This data can be in a specific date range
 interface Props {
@@ -152,35 +151,29 @@ export default function AirQualityGraphs({ county, state }: Props) {
     setAnchorEl(null);
   };
 
-  //when the user wants to see all data
-  function allData() {
-    setDataFilter25(data['PM25']);
-    setDataFilter10(data['PM10']);
-    setDataFilterOzone(data['Ozone']);
-    setAnchorEl(null);
-  }
-
   //data for a user specified year
-  function filterTrendsYear(selectedYear: number) {
-    console.log(selectedYear);
+  function filterTrendsYear(selectedYear1: number, selectedYear2: number) {
     const filterDataTemp25: any[] = [];
     const filterDataTemp10: any[] = [];
     const filterDataTempOzone: any[] = [];
-
-    for (const key in data['PM25']) {
-      if (key.includes(selectedYear.toString())) {
-        filterDataTemp25[key] = data['PM25'][key];
+    let i = selectedYear1
+    while(i <= selectedYear2) {
+      for (const key in data['PM25']) {
+        if (key.includes(i.toString())) {
+          filterDataTemp25[key] = data['PM25'][key];
+        }
       }
-    }
-    for (const key in data['PM10']) {
-      if (key.includes(selectedYear.toString())) {
-        filterDataTemp10[key] = data['PM10'][key];
+      for (const key in data['PM10']) {
+        if (key.includes(i.toString())) {
+          filterDataTemp10[key] = data['PM10'][key];
+        }
       }
-    }
-    for (const key in data['Ozone']) {
-      if (key.includes(selectedYear.toString())) {
-        filterDataTempOzone[key] = data['Ozone'][key];
+      for (const key in data['Ozone']) {
+        if (key.includes(i.toString())) {
+          filterDataTempOzone[key] = data['Ozone'][key];
+        }
       }
+      i++
     }
 
     setDataFilter25(filterDataTemp25);
@@ -201,6 +194,20 @@ export default function AirQualityGraphs({ county, state }: Props) {
   const handleOpen3 = () => setOpen3(true);
   const handleModalClose3 = () => setOpen3(false);
   
+  const [selectedYear1, setSelectedYear1] = useState(2021)
+  const [selectedYear2, setSelectedYear2] = useState(2021)
+
+  const handleChange1 = (event: SelectChangeEvent) => {
+    setSelectedYear1(event.target.value as unknown as number);
+  };
+
+  const handleChange2 = (event: SelectChangeEvent) => {
+    setSelectedYear2(event.target.value as unknown as number);
+  };
+  //only show later years in selection box
+  function checkYear(year) {
+    return year >= selectedYear1;
+  }
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -238,38 +245,50 @@ export default function AirQualityGraphs({ county, state }: Props) {
         Object.keys(data['Ozone']).length > 1 ? 
           <>
             <div className={styles['divCenter']}>
-              <Button
-                aria-haspopup="true"
-                aria-expanded={open ? 'true' : undefined}
-                variant="contained"
-                disableElevation
-                onClick={handleClick}
-                endIcon={<KeyboardArrowDownIcon />}
+            <FormControl sx={{ m: 1, minWidth: 120 }}>
+              <InputLabel htmlFor="start-select">Start Year</InputLabel>
+              <Select
+                labelId="start-year"
+                id="start-year"
+                value={selectedYear1.toString()}
+                label="start-year"
+                onChange={handleChange1}
               >
-                Select Year
-              </Button>
-              <StyledMenu
-                MenuListProps={{
-                  'aria-labelledby': 'demo-customized-button',
-                }}
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-              >
-                <MenuItem onClick={() => allData()} disableRipple>
-                  2015 - {currentYear}
-                </MenuItem>
                 {listOfYears.map((item) => (
                   <MenuItem
-                    onClick={() => filterTrendsYear(item)}
-                    disableRipple
+                  value = {item}
                   >
                     {item}
                   </MenuItem>
                 ))}
-              </StyledMenu>
+              </Select>
+            </FormControl>
+            <FormControl sx={{ m: 1, minWidth: 120 }}>
+              <InputLabel htmlFor="end-select">End Year</InputLabel>
+              <Select
+                labelId="end-year"
+                id="end-year"
+                value={selectedYear1.toString()}
+                label="end-year"
+                onChange={handleChange2}
+              >
+                {listOfYears.filter(checkYear).map((item) => (
+                  <MenuItem
+                  value = {item}                 
+                  >
+                    {item}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
             </div>
-           {/* modal content */}
+            <div className={styles['divCenter']}>
+              <Button variant="outlined" 
+              onClick={() => filterTrendsYear(selectedYear1, selectedYear2)}>
+                Submit
+                </Button>
+            </div>
+          
       </>
     : <></>}
         {/* render all graphs here */}
