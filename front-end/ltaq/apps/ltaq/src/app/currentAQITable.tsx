@@ -19,6 +19,9 @@ import {
   CardHeader,
   CardActions
 } from "@material-ui/core/";
+import air1 from './air1.jpg'
+import air2 from './air2.jpg'
+import airHighest from './airHighest.jpg'
 
 //props that will take the lat and lon
 interface Props {
@@ -82,9 +85,14 @@ function CurrentAQI({ lat, lng }: Props) {
     ))
     return (
       <>
+      <div className="currentAQI" style={{
+         backgroundImage: (highestAqi == 0) ? "url('"+air2+"')" :
+         (highestAqi == 1) ? "url('"+air1+"')" :
+         (highestAqi >= 2) ? "url('"+airHighest+"')" : "url('"+air1+"')"
+        }}>
         {/* current aqi text */}
         <div className={styles["centerText"]}>
-          <h1><b><WbSunnyIcon /> Current AQI: {
+          <h1 style={{color: 'white'}}><b><WbSunnyIcon /> Current AQI: {
             (highestAqi == 0) ? "Good" :
               (highestAqi == 1) ? "Moderate" :
                 (highestAqi == 2) ? "Unhealthy for Sensitive Groups" :
@@ -159,7 +167,7 @@ function CurrentAQI({ lat, lng }: Props) {
         <p className={styles['source']}> <a className='source' href = "/about#AirQualityMeasurements" target="_blank"> More Information on AQI <LaunchIcon fontSize="small"/></a></p>
         </div>
 
-
+      </div>
       </>
     );
   }
