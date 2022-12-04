@@ -1,2 +1,4 @@
 FROM node:18.8.0
-RUN npm install
+WORKDIR /front-end/ltaq
+COPY ./ /front-end/ltaq
+RUN npm install --force

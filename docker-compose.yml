@@ -4,31 +4,24 @@ services:
   airnow:
     build:
       context: ./back-end/
-      dockerfile: static.Dockerfile
-    command: ["gunicorn", "--bind 127.0.0.1:8000", "airnow:gunicorn_app"]
-    volumes:
-      - ./back-end
+      dockerfile: Dockerfile
+    command: gunicorn --bind 127.0.0.1:8000 airnow:gunicorn_app
     ports:
       - "8000:8000"
 
   wildfire:
     build:
       context: ./back-end/
-      dockerfile: static.Dockerfile
-    command: ["gunicorn", "--bind 127.0.0.1:8001", "WildFire:gunicorn_app"]
-    volumes:
-      - ./back-end
+      dockerfile: Dockerfile
+    command: gunicorn --bind 127.0.0.1:8001 WildFire:gunicorn_app
     ports:
       - "8001:8001"
 
   client:
     build:
       context: ./front-end/ltaq/
-      dockerfile: static.Dockerfile
-    command: ["npm", "start"]
-    volumes:
-      - ./front-end/ltaq
-      - node-modules:/front-end/ltaq/node_modules
+      dockerfile: Dockerfile
+    command: npm start
     environment:
       - NODE_ENV=development
     ports:
