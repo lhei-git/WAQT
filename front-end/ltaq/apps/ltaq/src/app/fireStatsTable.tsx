@@ -79,15 +79,17 @@ function FireStatsTable({ county, state, fullName }: Props) {
   const url2 = 'http://localhost:8001/wildfire/stateonly?location=' + state
   console.log(url)
   let formattedName = fullName.split(",")
+  //use state arrays to house the data
   const [data, setData] = useState<any[]>([]);
   const [stateData, setStateData] = useState<any[]>([]);
   const [isLoading, setLoading] = useState(true);
   let dataAvalable = false
+  //hook for city/county data
   useEffect(() => {
     axios.get(url)
       .then((response) => setData(response.data));
   }, []);
-
+  //hook for state data
   useEffect(() => {
     axios.get(url2)
       .then((response) => setStateData(response.data));
@@ -101,6 +103,7 @@ function FireStatsTable({ county, state, fullName }: Props) {
   else if (data && stateData) {
     return (
       <>
+      {/*Grid for responsiveness */}
         <Grid
             container
             direction="row"
@@ -133,8 +136,8 @@ function FireStatsTable({ county, state, fullName }: Props) {
       </Table>
     </TableContainer>
 
-
-    <p className={styles['source']}> <a href = "https://www.nifc.gov/"> Source: National Interagency Fire Agency <LaunchIcon fontSize="small"/></a></p>
+  {/* Sources*/}
+    <p className={styles['source']}> <a className='source' href = "https://www.nifc.gov/"> Source: National Interagency Fire Agency <LaunchIcon fontSize="small"/></a></p>
           
        
         

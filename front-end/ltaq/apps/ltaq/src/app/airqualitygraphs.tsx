@@ -1,24 +1,23 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Bar, Line } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
 import axios from 'axios';
 import styles from './app.module.css';
 Chart.register(...registerables);
 import Grid from '@mui/material/Unstable_Grid2';
 import LaunchIcon from '@mui/icons-material/Launch';
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import { styled, alpha } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import Menu, { MenuProps } from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import HelpIcon from '@mui/icons-material/Help';
 import CloseIcon from '@mui/icons-material/Close';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import aqiImage1 from "./aqiGraphs1.jpg";
-import aqiImage2 from "./aqiGraphs2.jpg";
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 //returns a graph which displays Data
 //This data can be in a specific date range
 interface Props {
@@ -97,50 +96,7 @@ export default function AirQualityGraphs({ county, state }: Props) {
     listOfYears[index] = year;
     year--;
   }
-  //drop down menu styling
-  //https://mui.com/material-ui/react-menu/
-  const StyledMenu = styled((props: MenuProps) => (
-    <Menu
-      elevation={0}
-      anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'right',
-      }}
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      {...props}
-    />
-  ))(({ theme }) => ({
-    '& .MuiPaper-root': {
-      borderRadius: 6,
-      marginTop: theme.spacing(1),
-      minWidth: 180,
-      color:
-        theme.palette.mode === 'light'
-          ? 'rgb(55, 65, 81)'
-          : theme.palette.grey[300],
-      boxShadow:
-        'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
-      '& .MuiMenu-list': {
-        padding: '4px 0',
-      },
-      '& .MuiMenuItem-root': {
-        '& .MuiSvgIcon-root': {
-          fontSize: 18,
-          color: theme.palette.text.secondary,
-          marginRight: theme.spacing(1.5),
-        },
-        '&:active': {
-          backgroundColor: alpha(
-            theme.palette.primary.main,
-            theme.palette.action.selectedOpacity
-          ),
-        },
-      },
-    },
-  }));
+  
   //drop down menu functions
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -152,35 +108,29 @@ export default function AirQualityGraphs({ county, state }: Props) {
     setAnchorEl(null);
   };
 
-  //when the user wants to see all data
-  function allData() {
-    setDataFilter25(data['PM25']);
-    setDataFilter10(data['PM10']);
-    setDataFilterOzone(data['Ozone']);
-    setAnchorEl(null);
-  }
-
   //data for a user specified year
-  function filterTrendsYear(selectedYear: number) {
-    console.log(selectedYear);
+  function filterTrendsYear(selectedYear1: number, selectedYear2: number) {
     const filterDataTemp25: any[] = [];
     const filterDataTemp10: any[] = [];
     const filterDataTempOzone: any[] = [];
-
-    for (const key in data['PM25']) {
-      if (key.includes(selectedYear.toString())) {
-        filterDataTemp25[key] = data['PM25'][key];
+    let i = selectedYear1
+    while(i <= selectedYear2) {
+      for (const key in data['PM25']) {
+        if (key.includes(i.toString())) {
+          filterDataTemp25[key] = data['PM25'][key];
+        }
       }
-    }
-    for (const key in data['PM10']) {
-      if (key.includes(selectedYear.toString())) {
-        filterDataTemp10[key] = data['PM10'][key];
+      for (const key in data['PM10']) {
+        if (key.includes(i.toString())) {
+          filterDataTemp10[key] = data['PM10'][key];
+        }
       }
-    }
-    for (const key in data['Ozone']) {
-      if (key.includes(selectedYear.toString())) {
-        filterDataTempOzone[key] = data['Ozone'][key];
+      for (const key in data['Ozone']) {
+        if (key.includes(i.toString())) {
+          filterDataTempOzone[key] = data['Ozone'][key];
+        }
       }
+      i++
     }
 
     setDataFilter25(filterDataTemp25);
@@ -200,11 +150,29 @@ export default function AirQualityGraphs({ county, state }: Props) {
   const [openModal3, setOpen3] = useState(false);
   const handleOpen3 = () => setOpen3(true);
   const handleModalClose3 = () => setOpen3(false);
+
+  //handles for the year range user input
   
+  const [selectedYear1, setSelectedYear1] = useState(2021)
+  const [selectedYear2, setSelectedYear2] = useState(2021)
+
+  //set selected year here
+  const handleChange1 = (event: SelectChangeEvent) => {
+    setSelectedYear1(event.target.value as unknown as number);
+  };
+
+  const handleChange2 = (event: SelectChangeEvent) => {
+    setSelectedYear2(event.target.value as unknown as number);
+  };
+  //only show later years in selection box
+  function checkYear(year) {
+    return year >= selectedYear1;
+  }
 
   if (isLoading) {
     return <p>Loading...</p>;
   } else if (
+    // checker if no data is available
     Object.keys(data['PM25']).length == 0 &&
     Object.keys(data['PM10']).length == 0 &&
     Object.keys(data['Ozone']).length == 0) {
@@ -237,42 +205,62 @@ export default function AirQualityGraphs({ county, state }: Props) {
         Object.keys(data['PM10']).length > 1 ||
         Object.keys(data['Ozone']).length > 1 ? 
           <>
+          {/* this is for the year range drop down menus, using MUI */}
             <div className={styles['divCenter']}>
-              <Button
-                aria-haspopup="true"
-                aria-expanded={open ? 'true' : undefined}
-                variant="contained"
-                disableElevation
-                onClick={handleClick}
-                endIcon={<KeyboardArrowDownIcon />}
+            <FormControl sx={{ m: 1, minWidth: 120 }}>
+              <InputLabel htmlFor="start-select">Start Year</InputLabel>
+              <Select
+                labelId="start-year"
+                id="start-year"
+                value={selectedYear1.toString()}
+                label="start-year"
+                onChange={handleChange1}
               >
-                Select Year
-              </Button>
-              <StyledMenu
-                MenuListProps={{
-                  'aria-labelledby': 'demo-customized-button',
-                }}
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-              >
-                <MenuItem onClick={() => allData()} disableRipple>
-                  2015 - {currentYear}
-                </MenuItem>
+                {/* map all years here */}
                 {listOfYears.map((item) => (
                   <MenuItem
-                    onClick={() => filterTrendsYear(item)}
-                    disableRipple
+                  value = {item}
                   >
                     {item}
                   </MenuItem>
                 ))}
-              </StyledMenu>
+              </Select>
+            </FormControl>
+            <FormControl sx={{ m: 1, minWidth: 120 }}>
+              <InputLabel htmlFor="end-select">End Year</InputLabel>
+              <Select
+                labelId="end-year"
+                id="end-year"
+                value={selectedYear1.toString()}
+                label="end-year"
+                onChange={handleChange2}
+              >
+                {/* map years that are past the first selected year */}
+                {listOfYears.filter(checkYear).map((item) => (
+                  <MenuItem
+                  value = {item}                 
+                  >
+                    {item}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
             </div>
-           {/* modal content */}
+            <div className={styles['divCenter']}>
+              <Button variant="outlined" 
+              onClick={() => filterTrendsYear(selectedYear1, selectedYear2)}>
+                Submit
+                </Button>
+            </div>
+          
       </>
     : <></>}
         {/* render all graphs here */}
+        {/* this uses the charts js library
+          Each graph is in a grid and is rendered using the filtered data
+          https://www.chartjs.org/
+          Graphs will not render if there is no data
+        */}
         {Object.keys(data["PM25"]).length > 1 ?
         <>
         <div>
@@ -387,6 +375,8 @@ export default function AirQualityGraphs({ county, state }: Props) {
           </Grid>
           </>
           : <></>}
+          
+        {/* pop up modal for AQI information*/}
           <Modal
             open={openModal2}
             onClose={handleModalClose2}
@@ -456,6 +446,7 @@ export default function AirQualityGraphs({ county, state }: Props) {
           </>
           : <></>}
         <div>
+           {/* pop up modal for AQI information*/}
           <Modal
             open={openModal3}
             onClose={handleModalClose3}

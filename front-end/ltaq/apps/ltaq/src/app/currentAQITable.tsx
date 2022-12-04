@@ -134,6 +134,7 @@ function CurrentAQI({ lat, lng }: Props) {
               <Grid 
               key={item.ParameterName}
               >
+                 {/*styled cards based off what the AQI is for that card*/}
                 <Card style={{backgroundColor: (item.Category.Name == "Good") ? 'green' : (item.Category.Name == "Moderate" ? 'yellow' : 'red'), textAlign: "center", minWidth: 200, marginLeft:20, marginBottom:10}}>
                   <CardHeader
                     title={item.ParameterName == "O3" ? "Ozone" : item.ParameterName}
@@ -151,10 +152,11 @@ function CurrentAQI({ lat, lng }: Props) {
           </Grid>
 
         </div>
+         {/* Sources*/}
         <div className={styles["centerText"]}>
           <br/>
-        <p className={styles['source']}> <a href = "https://www.airnow.gov/" target="_blank"> Source: Air Now <LaunchIcon fontSize="small"/></a></p>
-        <p className={styles['source']}> <a href = "/about#AirQualityMeasurements" target="_blank"> More Information on AQI <LaunchIcon fontSize="small"/></a></p>
+        <p className={styles['source']}> <a className='source' href = "https://www.airnow.gov/" target="_blank"> Source: Air Now <LaunchIcon fontSize="small"/></a></p>
+        <p className={styles['source']}> <a className='source' href = "/about#AirQualityMeasurements" target="_blank"> More Information on AQI <LaunchIcon fontSize="small"/></a></p>
         </div>
 
 
