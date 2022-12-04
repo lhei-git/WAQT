@@ -177,11 +177,8 @@ export default function App() {
             </button>
           </h1>
           <div className="w3-row-padding  w3-margin-bottom ">
-            <div className="currentAQI">
-              
               <br />
               <CurrentAQI lat={lat} lng={lng} />
-            </div>
             <div className="pagebreak"> </div> {/*For page printing*/}
             <br />
           </div>
