@@ -116,9 +116,9 @@ function FireStatsTable({ county, state, fullName }: Props) {
       <Table sx={{ minWidth: 300}}  aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell align="center"  sx={{fontSize: "2rem"}}>Fire Statistics</TableCell>
-            <TableCell align="center" sx={{fontSize: "2rem"}}>{formattedName[0]}</TableCell>
-            <TableCell align="center" sx={{fontSize: "2rem"}}>{StateAbbrv[state]}</TableCell>
+            <TableCell align="center"  sx={{fontSize: "2rem", fontWeight: 'bold'}}>Fire Statistics</TableCell>
+            <TableCell align="center" sx={{fontSize: "2rem", fontWeight: 'bold'}}>{formattedName[0]}</TableCell>
+            <TableCell align="center" sx={{fontSize: "2rem", fontWeight: 'bold'}}>{StateAbbrv[state]}</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -127,9 +127,9 @@ function FireStatsTable({ county, state, fullName }: Props) {
             <TableRow
               key={key}
             >
-              <TableCell align="center" sx={{fontSize: "1.8rem"}}>{key}</TableCell>
-              <TableCell align="center" sx={{fontSize: "1.8rem"}}>{data[key]}</TableCell>
-              <TableCell align="center" sx={{fontSize: "1.8rem"}}>{stateData[key]}</TableCell>
+              <TableCell align="center" sx={{fontSize: "1.8rem", fontWeight: 'bold'}}>{key}</TableCell>
+              <TableCell align="center" sx={{fontSize: "1.8rem", fontWeight: 'bold'}}>{data[key]}</TableCell>
+              <TableCell align="center" sx={{fontSize: "1.8rem", fontWeight: 'bold'}}>{stateData[key]}</TableCell>
             </TableRow>
           ))}
         </TableBody>
