@@ -323,6 +323,26 @@ export default function WildFireGraphs({ county, state }: Props) {
                       display: true,
                     },
                   },
+                  scales: {
+                    y: {
+                      ticks: {
+                        color: 'black',
+                        font: {
+                          size: 14,
+                          weight: 'bold'
+                      }
+                      }
+                    },
+                    x: {
+                      ticks: {
+                        color: 'black',
+                        font: {
+                          size: 14,
+                          weight: 'bold'
+                      }
+                      }
+                    },
+                  }
                 }}
               />
             </div>
@@ -371,6 +391,26 @@ export default function WildFireGraphs({ county, state }: Props) {
                       display: true,
                     },
                   },
+                  scales: {
+                    y: {
+                      ticks: {
+                        color: 'black',
+                        font: {
+                          size: 14,
+                          weight: 'bold'
+                      }
+                      }
+                    },
+                    x: {
+                      ticks: {
+                        color: 'black',
+                        font: {
+                          size: 14,
+                          weight: 'bold'
+                      }
+                      }
+                    },
+                  }
                 }}
               />
             </div>
@@ -419,6 +459,26 @@ export default function WildFireGraphs({ county, state }: Props) {
                       display: true,
                     },
                   },
+                  scales: {
+                    y: {
+                      ticks: {
+                        color: 'black',
+                        font: {
+                          size: 14,
+                          weight: 'bold'
+                      }
+                      }
+                    },
+                    x: {
+                      ticks: {
+                        color: 'black',
+                        font: {
+                          size: 14,
+                          weight: 'bold'
+                      }
+                      }
+                    },
+                  }
                 }}
               />
             </div>
@@ -478,6 +538,26 @@ export default function WildFireGraphs({ county, state }: Props) {
                       display: true,
                     },
                   },
+                  scales: {
+                    y: {
+                      ticks: {
+                        color: 'black',
+                        font: {
+                          size: 14,
+                          weight: 'bold'
+                      }
+                      }
+                    },
+                    x: {
+                      ticks: {
+                        color: 'black',
+                        font: {
+                          size: 14,
+                          weight: 'bold'
+                      }
+                      }
+                    },
+                  }
                 }}
               />
             </div>
@@ -531,6 +611,26 @@ export default function WildFireGraphs({ county, state }: Props) {
                       display: true,
                     },
                   },
+                  scales: {
+                    y: {
+                      ticks: {
+                        color: 'black',
+                        font: {
+                          size: 14,
+                          weight: 'bold'
+                      }
+                      }
+                    },
+                    x: {
+                      ticks: {
+                        color: 'black',
+                        font: {
+                          size: 14,
+                          weight: 'bold'
+                      }
+                      }
+                    },
+                  }
                 }}
               />
             </div>

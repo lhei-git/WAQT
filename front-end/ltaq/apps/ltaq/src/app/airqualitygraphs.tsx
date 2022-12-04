@@ -18,6 +18,7 @@ import Typography from '@mui/material/Typography';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { brotliDecompress } from 'zlib';
 //returns a graph which displays Data
 //This data can be in a specific date range
 interface Props {
@@ -301,6 +302,26 @@ export default function AirQualityGraphs({ county, state }: Props) {
                       display: true,
                     },
                   },
+                  scales: {
+                    y: {
+                      ticks: {
+                        color: 'black',
+                        font: {
+                          size: 14,
+                          weight: 'bold'
+                      }
+                      }
+                    },
+                    x: {
+                      ticks: {
+                        color: 'black',
+                        font: {
+                          size: 14,
+                          weight: 'bold'
+                      }
+                      }
+                    },
+                  }
                 }}
               />
             </div>
@@ -369,6 +390,26 @@ export default function AirQualityGraphs({ county, state }: Props) {
                       display: true,
                     },
                   },
+                  scales: {
+                    y: {
+                      ticks: {
+                        color: 'black',
+                        font: {
+                          size: 14,
+                          weight: 'bold'
+                      }
+                      }
+                    },
+                    x: {
+                      ticks: {
+                        color: 'black',
+                        font: {
+                          size: 14,
+                          weight: 'bold'
+                      }
+                      }
+                    },
+                  }
                 }}
               />
             </div>
@@ -439,6 +480,26 @@ export default function AirQualityGraphs({ county, state }: Props) {
                       display: true,
                     },
                   },
+                  scales: {
+                    y: {
+                      ticks: {
+                        color: 'black',
+                        font: {
+                          size: 14,
+                          weight: 'bold'
+                      }
+                      }
+                    },
+                    x: {
+                      ticks: {
+                        color: 'black',
+                        font: {
+                          size: 14,
+                          weight: 'bold'
+                      }
+                      }
+                    },
+                  }
                 }}
               />
             </div>
