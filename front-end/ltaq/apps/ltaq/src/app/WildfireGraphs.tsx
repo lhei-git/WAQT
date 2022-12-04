@@ -10,8 +10,10 @@ import { styled, alpha } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import Menu, { MenuProps } from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 //returns a graph which displays Data
 //This data can be in a specific date range
@@ -91,31 +93,49 @@ export default function WildFireGraphs({ county, state }: Props) {
   }
 
   //data for a user specified year
-  function filterTrendsYear(selectedYear: number) {
-    console.log(selectedYear);
+  function filterTrendsYear(selectedYear1: number, selectedYear2: number) {
     const filteredcountDataTemp: any[] = [];
     const filteredacresDataTemp: any[] = [];
     const filteredaverageDataTemp: any[] = [];
     //populate temp arrays with the data for the specified year
-    for (const key in countData) {
-      if (key.includes(selectedYear.toString())) {
-        filteredcountDataTemp[key] = countData[key];
+    let i = selectedYear1
+    while(i <= selectedYear2) {
+      for (const key in countData) {
+        if (key.includes(i.toString())) {
+          filteredcountDataTemp[key] = countData[key];
+        }
       }
-    }
-    for (const key in acresData) {
-      if (key.includes(selectedYear.toString())) {
-        filteredacresDataTemp[key] = acresData[key];
+      for (const key in acresData) {
+        if (key.includes(i.toString())) {
+          filteredacresDataTemp[key] = acresData[key];
+        }
       }
-    }
-    for (const key in averageData) {
-      if (key.includes(selectedYear.toString())) {
-        filteredaverageDataTemp[key] = averageData[key];
+      for (const key in averageData) {
+        if (key.includes(i.toString())) {
+          filteredaverageDataTemp[key] = averageData[key];
+        }
       }
+      i++
     }
     setFilteredCountData(filteredcountDataTemp);
     setFilteredAcresData(filteredacresDataTemp);
     setFilteredAverageData(filteredaverageDataTemp);
     setAnchorEl(null);
+  }
+
+  const [selectedYear1, setSelectedYear1] = useState(2021)
+  const [selectedYear2, setSelectedYear2] = useState(2021)
+
+  const handleChange1 = (event: SelectChangeEvent) => {
+    setSelectedYear1(event.target.value as unknown as number);
+  };
+
+  const handleChange2 = (event: SelectChangeEvent) => {
+    setSelectedYear2(event.target.value as unknown as number);
+  };
+  //only show later years in selection box
+  function checkYear(year) {
+    return year >= selectedYear1;
   }
 
   //year range for drop down menu
@@ -257,36 +277,48 @@ export default function WildFireGraphs({ county, state }: Props) {
         Object.keys(durationData).length > 1 ? (
           <>
             <div className={styles['divCenter']}>
-              <Button
-                aria-haspopup="true"
-                aria-expanded={open ? 'true' : undefined}
-                variant="contained"
-                disableElevation
-                onClick={handleClick}
-                endIcon={<KeyboardArrowDownIcon />}
+            <FormControl sx={{ m: 1, minWidth: 120 }}>
+              <InputLabel htmlFor="start-select">Start Year</InputLabel>
+              <Select
+                labelId="start-year"
+                id="start-year"
+                value={selectedYear1.toString()}
+                label="start-year"
+                onChange={handleChange1}
               >
-                Select Year
-              </Button>
-              <StyledMenu
-                MenuListProps={{
-                  'aria-labelledby': 'demo-customized-button',
-                }}
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-              >
-                <MenuItem onClick={() => allData()} disableRipple>
-                  2015 - {currentYear}
-                </MenuItem>
                 {listOfYears.map((item) => (
                   <MenuItem
-                    onClick={() => filterTrendsYear(item)}
-                    disableRipple
+                  value = {item}
                   >
                     {item}
                   </MenuItem>
                 ))}
-              </StyledMenu>
+              </Select>
+            </FormControl>
+            <FormControl sx={{ m: 1, minWidth: 120 }}>
+              <InputLabel htmlFor="end-select">End Year</InputLabel>
+              <Select
+                labelId="end-year"
+                id="end-year"
+                value={selectedYear1.toString()}
+                label="end-year"
+                onChange={handleChange2}
+              >
+                {listOfYears.filter(checkYear).map((item) => (
+                  <MenuItem
+                  value = {item}                 
+                  >
+                    {item}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            </div>
+            <div className={styles['divCenter']}>
+              <Button variant="outlined" 
+              onClick={() => filterTrendsYear(selectedYear1, selectedYear2)}>
+                Submit
+                </Button>
             </div>
           </>
         ) : (
