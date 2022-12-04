@@ -60,7 +60,7 @@ type MapOptions = google.maps.MapOptions;
 export default function App() {
   //Google Maps Script/API Key
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: 'KEY_HERE',
+    googleMapsApiKey: '',
     libraries: ['places'],
   });
   //Google Map Render Options

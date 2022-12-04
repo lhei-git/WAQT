@@ -3,7 +3,7 @@
         {
             "status": "Success",
             "request_time": "2022-11-25T16:48:41-05:00",
-            "url": "https://aqs.epa.gov/data/api/quarterlyData/byCounty?email=EMAIL_HERE&key=KEY_HERE&param=88101,44201,81102&bdate=20220101&edate=20221231&state=06&county=037",
+            "url": "https://aqs.epa.gov/data/api/quarterlyData/byCounty?email=gn2289@wayne.edu&key=cobaltcat74&param=88101,44201,81102&bdate=20220101&edate=20221231&state=06&county=037",
             "rows": 337
         }
     ],

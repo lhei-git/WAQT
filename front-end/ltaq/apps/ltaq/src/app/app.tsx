@@ -9,7 +9,7 @@ import Footer from './footer'
 //This renders the search and greeting page of our web app
 const App = () => {
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: 'KEY_HERE',
+    googleMapsApiKey: 'AIzaSyDGIeoq8LW_KoZl-8Bm5y_n9bGWjvI44ZQ',
     libraries: ['places'],
   });
 
