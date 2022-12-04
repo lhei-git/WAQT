@@ -43,8 +43,7 @@ const About = () => {
     <div className={aboutStyle['backBody']}>
       <body className={aboutStyle['body']}>
         <br />
-        <p>        
-
+              
         <div className={aboutStyle['about']}> {/*  wildfire/air quality facts & Info about the website */}
         <h1> <InfoIcon fontSize="medium" /> About WAQT </h1> {/* section heading with icon */}
           <br/> 
@@ -268,30 +267,33 @@ const About = () => {
           <br />
       
           <br/>
+          </div>
+          <div className={aboutStyle['about']}> 
           <p>Further information about WAQT is available in our GitHub page. 
           </p>
           <br />
           <p> Images from</p> {/* displays links for image citations */}
-          <a href="https://unsplash.com/photos/zpbzMHIe_NU"> https://unsplash.com/photos/zpbzMHIe_NU </a>
+          <a style={{width: '50px', wordWrap: 'break-word'}}href="https://unsplash.com/photos/zpbzMHIe_NU"> https://unsplash.com/photos/zpbzMHIe_NU </a>
           <br/>
-          <a href="https://www.flickr.com/photos/ingaker/51718599244/"> https://www.flickr.com/photos/ingaker/51718599244/ </a>
+          <a style={{width: '50px', wordWrap: 'break-word'}} href="https://www.flickr.com/photos/ingaker/51718599244/"> https://www.flickr.com/photos/ingaker/51718599244/ </a>
           <br/>
-          <a href="https://unsplash.com/photos/KWYTn9_QKRE"> https://unsplash.com/photos/KWYTn9_QKRE </a>
+          <a style={{width: '50px', wordWrap: 'break-word'}} href="https://unsplash.com/photos/KWYTn9_QKRE"> https://unsplash.com/photos/KWYTn9_QKRE </a>
           <br/>
-          <a href="https://www.flickr.com/photos/gotovan/43845650554/"> https://www.flickr.com/photos/gotovan/43845650554/ </a>
+          <a style={{width: '50px', wordWrap: 'break-word'}} href="https://www.flickr.com/photos/gotovan/43845650554/"> https://www.flickr.com/photos/gotovan/43845650554/ </a>
           <br/>
-          <a href="https://unsplash.com/photos/DwtX9mMHBJ0"> https://unsplash.com/photos/DwtX9mMHBJ0 </a>
+          <a style={{width: '50px', wordWrap: 'break-word'}} href="https://unsplash.com/photos/DwtX9mMHBJ0"> https://unsplash.com/photos/DwtX9mMHBJ0 </a>
           <br/>
-          <a href="https://www.flickr.com/photos/kikomeinkater/26305212549/sizes/l/"> https://www.flickr.com/photos/kikomeinkater/26305212549/sizes/l/ </a>
+          <a style={{width: '50px', wordWrap: 'break-word'}} href="https://www.flickr.com/photos/kikomeinkater/26305212549/sizes/l/"> https://www.flickr.com/photos/kikomeinkater/26305212549/sizes/l/ </a>
           <br/>
-          <a href="https://www.flickr.com/photos/cslmedia888/30677065680/sizes/k/"> https://www.flickr.com/photos/cslmedia888/30677065680/sizes/k/ </a>
+          <a style={{width: '50px', wordWrap: 'break-word'}} href="https://www.flickr.com/photos/cslmedia888/30677065680/sizes/k/"> https://www.flickr.com/photos/cslmedia888/30677065680/sizes/k/ </a>
           <br />
           <br />
         </div>
-          </p>
+          
         </body>
 
         </div>
+      
 
     </>
   );

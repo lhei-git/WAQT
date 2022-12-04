@@ -257,7 +257,7 @@ export default function WildFireGraphs({ county, state }: Props) {
               <Select
                 labelId="end-year"
                 id="end-year"
-                value={selectedYear1.toString()}
+                value={selectedYear2.toString()}
                 label="end-year"
                 onChange={handleChange2}
               >
@@ -323,6 +323,26 @@ export default function WildFireGraphs({ county, state }: Props) {
                       display: true,
                     },
                   },
+                  scales: {
+                    y: {
+                      ticks: {
+                        color: 'black',
+                        font: {
+                          size: 14,
+                          weight: 'bold'
+                      }
+                      }
+                    },
+                    x: {
+                      ticks: {
+                        color: 'black',
+                        font: {
+                          size: 14,
+                          weight: 'bold'
+                      }
+                      }
+                    },
+                  }
                 }}
               />
             </div>
@@ -371,6 +391,26 @@ export default function WildFireGraphs({ county, state }: Props) {
                       display: true,
                     },
                   },
+                  scales: {
+                    y: {
+                      ticks: {
+                        color: 'black',
+                        font: {
+                          size: 14,
+                          weight: 'bold'
+                      }
+                      }
+                    },
+                    x: {
+                      ticks: {
+                        color: 'black',
+                        font: {
+                          size: 14,
+                          weight: 'bold'
+                      }
+                      }
+                    },
+                  }
                 }}
               />
             </div>
@@ -419,6 +459,26 @@ export default function WildFireGraphs({ county, state }: Props) {
                       display: true,
                     },
                   },
+                  scales: {
+                    y: {
+                      ticks: {
+                        color: 'black',
+                        font: {
+                          size: 14,
+                          weight: 'bold'
+                      }
+                      }
+                    },
+                    x: {
+                      ticks: {
+                        color: 'black',
+                        font: {
+                          size: 14,
+                          weight: 'bold'
+                      }
+                      }
+                    },
+                  }
                 }}
               />
             </div>
@@ -478,6 +538,26 @@ export default function WildFireGraphs({ county, state }: Props) {
                       display: true,
                     },
                   },
+                  scales: {
+                    y: {
+                      ticks: {
+                        color: 'black',
+                        font: {
+                          size: 14,
+                          weight: 'bold'
+                      }
+                      }
+                    },
+                    x: {
+                      ticks: {
+                        color: 'black',
+                        font: {
+                          size: 14,
+                          weight: 'bold'
+                      }
+                      }
+                    },
+                  }
                 }}
               />
             </div>
@@ -531,6 +611,26 @@ export default function WildFireGraphs({ county, state }: Props) {
                       display: true,
                     },
                   },
+                  scales: {
+                    y: {
+                      ticks: {
+                        color: 'black',
+                        font: {
+                          size: 14,
+                          weight: 'bold'
+                      }
+                      }
+                    },
+                    x: {
+                      ticks: {
+                        color: 'black',
+                        font: {
+                          size: 14,
+                          weight: 'bold'
+                      }
+                      }
+                    },
+                  }
                 }}
               />
             </div>
