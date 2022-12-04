@@ -83,12 +83,14 @@ def extractTrendData(output, year):
     global PM25Trends
     global PM10Trends 
     global OzoneTrends  
+    #this represents 4 quarters in a year
     quarter = 1
     while quarter <= 4:
         PM25Total = 0.0
         PM10Total = 0.0
         OzoneTotal = 0.0
         try:
+            #loop through the api output and grab the max values for that quarter
             for i in range(len(output['Data'])):
                 if contains(output['Data'][i]['parameter'], "PM2.5") and contains(output['Data'][i]['quarter'], str(quarter)) and int(output['Data'][i]['year']) == year:
                     if(output['Data'][i]['maximum_value']):
@@ -109,7 +111,8 @@ def extractTrendData(output, year):
                         #print(output['Data'][i]['arithmetic_mean'])
                         if(OzoneTotal < float(output['Data'][i]['maximum_value'])):
                             OzoneTotal = float(output['Data'][i]['maximum_value'])
-
+            #ignore 0 values
+            #output example: Q1 2022: 45
             if(PM25Total != 0):
                 PM25Trends["Q"+str(quarter)+" "+str(year)] = PM25Total 
 
@@ -182,6 +185,7 @@ def airNowEndpoint():
         #https://aqs.epa.gov/aqsweb/documents/data_api.html#quarterly
         county = request.args.get("county")
         state = request.args.get("state") 
+        #fips csv files for translating to fips for the api
         try:
             with open('fips.csv', newline='') as f:
                 reader = csv.reader(f)
@@ -198,13 +202,14 @@ def airNowEndpoint():
                         stateFips = str(name[3])
                 f.close
         
-
+            #get all trend data from 2015 until the current year
             today = datetime.datetime.now()
             PM25Trends.clear()
             PM10Trends.clear()
             OzoneTrends.clear()
             endYear = today.year
             year = 2015
+            #the api must be called on a loop due to it only allowing one year at a time
             while(endYear >= year):
                 url = "https://aqs.epa.gov/data/api/quarterlyData/byCounty?email="+EMAIL+"&key="+AQS_KEY+"&param=88101,44201,81102&bdate="+str(year)+"0101&edate="+str(year)+"1231&state="+stateFips+"&county="+countyFips
                 print(url)
@@ -212,7 +217,7 @@ def airNowEndpoint():
                 output = json.loads(response_API.text)
                 extractTrendData(output, year)  
                 year = year + 1
-            
+            #AllTrends houses the final output
             AllTrends = {}
             AllTrends["PM25"] = PM25Trends
             AllTrends["PM10"] = PM10Trends

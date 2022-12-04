@@ -1,12 +1,10 @@
 import datetime
-from operator import contains
 import requests, os
 import json
 import dateutil.relativedelta
 from collections import OrderedDict
-from flask import Flask, jsonify, request
+from flask import Flask, request
 from flask_cors import CORS
-#https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOState%20%3D%20'US-CO'%20AND%20%20(FireDiscoveryDateTime >= DATE '2022-06-01 00:00:00')%20AND%20%20(DailyAcres >= 1)&outFields=IncidentName,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json
 #These dictionaries will house the JSON responses for the front-end
 ActiveFireResponse = {}
 WildfireResponse = {}
@@ -19,6 +17,38 @@ WildfireTotalResponse = {}
 WildfireAcres = {}
 top10AcresRes = {}
 top10DurationRes = {}
+
+'''
+All functions follow similar methods:
+The data is obtained from the Wildfire history or active wildfire api.
+Each api call has unique parameters for that specific method.
+The data is loaded in json.loads and loops exist to do each calculation.
+The formatted/calculated data is then added to a dictionary and returned when
+the front-end calls the flask endpoint.
+
+Each endpoint has a "test" version for unit testing. All data is in the TestData folder.
+
+More information on the API: https://data-nifc.opendata.arcgis.com/ 
+See the documentation for the various parameters
+
+Each method uses try/catch so no errors are displayed on the front-end (if any)
+
+When a location is requested, it's county is used to grab data. When testing, be sure to use counties. 
+
+Each endpoint is called in the front-end, here is a list of them:
+
+/wildfire/county?location=""&state=""
+/wildfire/stateonly?state=""
+/mapmarkers?location=""&state=""
+/wildfire/average?location=""&state=""
+/wildfire/acres?location=""&state=""
+/wildfire/count?location=""&state=""
+/wildfire/top10?location=""&state=""
+/wildfire/top10Duration?location=""&state=""
+
+By default, this runs on port 8001, but can be customized.
+
+'''
 
 #Time converter for converting UNIX Time
 def timeConverter(timeToConvert):

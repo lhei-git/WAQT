@@ -1,6 +1,5 @@
 // App.js
 import { useEffect, useState } from "react";
-import styles from "./app.module.css";
 import axios from "axios"
 import Grid from '@mui/material/Unstable_Grid2';
 import Table from '@mui/material/Table';
@@ -22,6 +21,7 @@ function ActiveFiresTable({county, state}: Props) {
   //This grabs all data from the active fire endpoint
   const url = "http://localhost:8001/mapmarkers?county="+county+"&state="+state
   console.log(url)
+  //this houses the data
   const [data, setData] = useState<any[]>([]);
   const [isLoading, setLoading] = useState(true);
   //hook to populate the array 
@@ -57,7 +57,7 @@ function ActiveFiresTable({county, state}: Props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {/* only show most recent 5 wildfires */}
+          {/* only show most recent 5 wildfires before scrolling */}
           {data.map((item, index) => (
             <TableRow
               key={index}
