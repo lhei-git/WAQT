@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Bar, Line } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
 import axios from 'axios';
 import styles from './app.module.css';
@@ -96,50 +96,7 @@ export default function AirQualityGraphs({ county, state }: Props) {
     listOfYears[index] = year;
     year--;
   }
-  //drop down menu styling
-  //https://mui.com/material-ui/react-menu/
-  const StyledMenu = styled((props: MenuProps) => (
-    <Menu
-      elevation={0}
-      anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'right',
-      }}
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      {...props}
-    />
-  ))(({ theme }) => ({
-    '& .MuiPaper-root': {
-      borderRadius: 6,
-      marginTop: theme.spacing(1),
-      minWidth: 180,
-      color:
-        theme.palette.mode === 'light'
-          ? 'rgb(55, 65, 81)'
-          : theme.palette.grey[300],
-      boxShadow:
-        'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
-      '& .MuiMenu-list': {
-        padding: '4px 0',
-      },
-      '& .MuiMenuItem-root': {
-        '& .MuiSvgIcon-root': {
-          fontSize: 18,
-          color: theme.palette.text.secondary,
-          marginRight: theme.spacing(1.5),
-        },
-        '&:active': {
-          backgroundColor: alpha(
-            theme.palette.primary.main,
-            theme.palette.action.selectedOpacity
-          ),
-        },
-      },
-    },
-  }));
+  
   //drop down menu functions
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -193,10 +150,13 @@ export default function AirQualityGraphs({ county, state }: Props) {
   const [openModal3, setOpen3] = useState(false);
   const handleOpen3 = () => setOpen3(true);
   const handleModalClose3 = () => setOpen3(false);
+
+  //handles for the year range user input
   
   const [selectedYear1, setSelectedYear1] = useState(2021)
   const [selectedYear2, setSelectedYear2] = useState(2021)
 
+  //set selected year here
   const handleChange1 = (event: SelectChangeEvent) => {
     setSelectedYear1(event.target.value as unknown as number);
   };
@@ -212,6 +172,7 @@ export default function AirQualityGraphs({ county, state }: Props) {
   if (isLoading) {
     return <p>Loading...</p>;
   } else if (
+    // checker if no data is available
     Object.keys(data['PM25']).length == 0 &&
     Object.keys(data['PM10']).length == 0 &&
     Object.keys(data['Ozone']).length == 0) {
@@ -244,6 +205,7 @@ export default function AirQualityGraphs({ county, state }: Props) {
         Object.keys(data['PM10']).length > 1 ||
         Object.keys(data['Ozone']).length > 1 ? 
           <>
+          {/* this is for the year range drop down menus, using MUI */}
             <div className={styles['divCenter']}>
             <FormControl sx={{ m: 1, minWidth: 120 }}>
               <InputLabel htmlFor="start-select">Start Year</InputLabel>
@@ -254,6 +216,7 @@ export default function AirQualityGraphs({ county, state }: Props) {
                 label="start-year"
                 onChange={handleChange1}
               >
+                {/* map all years here */}
                 {listOfYears.map((item) => (
                   <MenuItem
                   value = {item}
@@ -272,6 +235,7 @@ export default function AirQualityGraphs({ county, state }: Props) {
                 label="end-year"
                 onChange={handleChange2}
               >
+                {/* map years that are past the first selected year */}
                 {listOfYears.filter(checkYear).map((item) => (
                   <MenuItem
                   value = {item}                 
@@ -292,6 +256,11 @@ export default function AirQualityGraphs({ county, state }: Props) {
       </>
     : <></>}
         {/* render all graphs here */}
+        {/* this uses the charts js library
+          Each graph is in a grid and is rendered using the filtered data
+          https://www.chartjs.org/
+          Graphs will not render if there is no data
+        */}
         {Object.keys(data["PM25"]).length > 1 ?
         <>
         <div>
@@ -406,6 +375,8 @@ export default function AirQualityGraphs({ county, state }: Props) {
           </Grid>
           </>
           : <></>}
+          
+        {/* pop up modal for AQI information*/}
           <Modal
             open={openModal2}
             onClose={handleModalClose2}
@@ -475,6 +446,7 @@ export default function AirQualityGraphs({ county, state }: Props) {
           </>
           : <></>}
         <div>
+           {/* pop up modal for AQI information*/}
           <Modal
             open={openModal3}
             onClose={handleModalClose3}

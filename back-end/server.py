@@ -1,3 +1,5 @@
+#This code was moved to wildfire.py
+#This file remains for commit history purposes
 import datetime
 from operator import contains
 import requests, os

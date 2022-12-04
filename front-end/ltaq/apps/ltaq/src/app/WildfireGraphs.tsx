@@ -6,7 +6,6 @@ import styles from './app.module.css';
 Chart.register(...registerables);
 import Grid from '@mui/material/Unstable_Grid2';
 import LaunchIcon from '@mui/icons-material/Launch';
-import { styled, alpha } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import Menu, { MenuProps } from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -123,6 +122,7 @@ export default function WildFireGraphs({ county, state }: Props) {
     setAnchorEl(null);
   }
 
+  //handelers for the year selection range
   const [selectedYear1, setSelectedYear1] = useState(2021)
   const [selectedYear2, setSelectedYear2] = useState(2021)
 
@@ -185,50 +185,6 @@ export default function WildFireGraphs({ county, state }: Props) {
     });
   }, []);
 
-  //drop down menu styling
-  //https://mui.com/material-ui/react-menu/
-  const StyledMenu = styled((props: MenuProps) => (
-    <Menu
-      elevation={0}
-      anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'right',
-      }}
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      {...props}
-    />
-  ))(({ theme }) => ({
-    '& .MuiPaper-root': {
-      borderRadius: 6,
-      marginTop: theme.spacing(1),
-      minWidth: 180,
-      color:
-        theme.palette.mode === 'light'
-          ? 'rgb(55, 65, 81)'
-          : theme.palette.grey[300],
-      boxShadow:
-        'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
-      '& .MuiMenu-list': {
-        padding: '4px 0',
-      },
-      '& .MuiMenuItem-root': {
-        '& .MuiSvgIcon-root': {
-          fontSize: 18,
-          color: theme.palette.text.secondary,
-          marginRight: theme.spacing(1.5),
-        },
-        '&:active': {
-          backgroundColor: alpha(
-            theme.palette.primary.main,
-            theme.palette.action.selectedOpacity
-          ),
-        },
-      },
-    },
-  }));
 
   //if something is loading then display loading...
   if (
@@ -276,6 +232,7 @@ export default function WildFireGraphs({ county, state }: Props) {
         Object.keys(top10Data).length > 1 ||
         Object.keys(durationData).length > 1 ? (
           <>
+          {/*Drop down menu to select years */}
             <div className={styles['divCenter']}>
             <FormControl sx={{ m: 1, minWidth: 120 }}>
               <InputLabel htmlFor="start-select">Start Year</InputLabel>
@@ -324,6 +281,12 @@ export default function WildFireGraphs({ county, state }: Props) {
         ) : (
           <></>
         )}
+        {/* render all graphs here */}
+        {/* this uses the charts js library
+          Each graph is in a grid and is rendered using the filtered data
+          https://www.chartjs.org/
+          Graphs will not render if there is no data
+        */}
         {/* count */}
         {Object.keys(countData).length > 1 ?
         <>
