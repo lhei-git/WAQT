@@ -115,9 +115,7 @@ a {
   margin: auto;
   max-width: 75%;
   padding: 20px;
-  /* z-index: 10; */
-  background-image: url('./air1.jpg');
-  background-position: bottom;
+  /* z-index: 10; */ 
 }
 
 .currentActiveWildfires {

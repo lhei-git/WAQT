@@ -19,6 +19,9 @@ import {
   CardHeader,
   CardActions
 } from "@material-ui/core/";
+import air1 from './air1.jpg'
+import air2 from './air2.jpg'
+import airHighest from './airHighest.jpg'
 
 //props that will take the lat and lon
 interface Props {
@@ -78,13 +81,29 @@ function CurrentAQI({ lat, lng }: Props) {
             (item.Category.Name == "Unhealthy" && highestAqi <= 3) ? highestAqi = 3 :
               (item.Category.Name == "Very Unhealthy" && highestAqi <= 4) ? highestAqi = 4 :
                 (item.Category.Name == "Hazardous" && highestAqi <= 5) ? highestAqi = 5 : highestAqi = highestAqi
-
     ))
+    const goodAQIStyle = {
+      backgroundImage: "linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('"+air2+"')",
+      backgroundPosition: "center"
+    }
+    const moderateAQIStyle = {
+      backgroundImage: "linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('"+air1+"')",
+      backgroundPosition: "bottom"
+    }
+    const badAQIStyle = {
+      backgroundImage: "url('"+airHighest+"')",
+      backgroundPosition: "center"
+    }
     return (
       <>
+      <div className="currentAQI" style={
+         (highestAqi == 0) ? goodAQIStyle :
+         (highestAqi == 1) ? moderateAQIStyle :
+         (highestAqi >= 2) ? badAQIStyle : moderateAQIStyle
+        }>
         {/* current aqi text */}
         <div className={styles["centerText"]}>
-          <h1><b><WbSunnyIcon /> Current AQI: {
+          <h1 style={{color: 'black'}}><b><WbSunnyIcon /> Current AQI: {
             (highestAqi == 0) ? "Good" :
               (highestAqi == 1) ? "Moderate" :
                 (highestAqi == 2) ? "Unhealthy for Sensitive Groups" :
@@ -155,11 +174,11 @@ function CurrentAQI({ lat, lng }: Props) {
          {/* Sources*/}
         <div className={styles["centerText"]}>
           <br/>
-        <p className={styles['source']}> <a className='source' href = "https://www.airnow.gov/" target="_blank"> Source: Air Now <LaunchIcon fontSize="small"/></a></p>
-        <p className={styles['source']}> <a className='source' href = "/about#AirQualityMeasurements" target="_blank"> More Information on AQI <LaunchIcon fontSize="small"/></a></p>
+        <p style={{color: 'black'}}> <a style={{color: 'black'}} href = "https://www.airnow.gov/" target="_blank"> Source: Air Now <LaunchIcon fontSize="small"/></a></p>
+        <p style={{color: 'black'}}> <a style={{color: 'black'}} href = "/about#AirQualityMeasurements" target="_blank"> More Information on AQI <LaunchIcon fontSize="small"/></a></p>
         </div>
 
-
+      </div>
       </>
     );
   }

@@ -282,8 +282,11 @@ const About = () => {
           <br/>
           <a href="https://unsplash.com/photos/DwtX9mMHBJ0"> https://unsplash.com/photos/DwtX9mMHBJ0 </a>
           <br/>
+          <a href="https://www.flickr.com/photos/kikomeinkater/26305212549/sizes/l/"> https://www.flickr.com/photos/kikomeinkater/26305212549/sizes/l/ </a>
           <br/>
-      
+          <a href="https://www.flickr.com/photos/cslmedia888/30677065680/sizes/k/"> https://www.flickr.com/photos/cslmedia888/30677065680/sizes/k/ </a>
+          <br />
+          <br />
         </div>
           </p>
         </body>

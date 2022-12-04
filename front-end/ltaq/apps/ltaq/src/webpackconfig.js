@@ -21,7 +21,7 @@ module.exports = (config) => {
   config.module.rules.push({
     test: /\.module\.css$/,
     use: [
-      { test: /\\.(png|jp(e*)g|svg|gif)$/, use: ['file-loader'], },
+      { test: /\\.(png|jp(e*)g|jpg|svg|gif)$/, use: ['file-loader'], },
       { loader: 'style-loader' },
       { loader: 'css-modules-typescript-loader' },
       {
