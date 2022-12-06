@@ -112,6 +112,46 @@ def getTotalFiresCounty(county, state, test):
         return int(countOutput["count"])
     except Exception as e:
         print("Total Fires County Function: " + e)
+
+def getTotalFiresWithNoDailyAcresCity(county, state):
+    try:
+        countUrl = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+county+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND(DailyAcres = null)&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&returnCountOnly=true&outSR=4326&f=json"
+        count_response_API = requests.get(countUrl)    
+        countOutput = json.loads(count_response_API.text)
+        WildfireResponse["Total Fires"] = "{:,}".format(int(countOutput["count"]))
+        return int(countOutput["count"])
+    except Exception as e:
+        print("Total Fires Daily Acres Function: " + e)
+
+def getTotalFiresWithNoDailyAcresState(state):
+    try:
+        countUrl = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOState%20%3D%20'US-"+state+"'%20AND(DailyAcres = null)&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&returnCountOnly=true&outSR=4326&f=json"
+        count_response_API = requests.get(countUrl)    
+        countOutput = json.loads(count_response_API.text)
+        WildfireResponse["Total Fires"] = "{:,}".format(int(countOutput["count"]))
+        return int(countOutput["count"])
+    except Exception as e:
+        print("Total Fires Daily Acres Function: " + e)
+
+def getTotalFiresWithNoDatesState(state):
+    try:
+        countUrl = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOState%20%3D%20'US-"+state+"'%20AND((FireOutDateTime = null)OR(ContainmentDateTime = null)OR(ControlDateTime = null))&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&returnCountOnly=true&outSR=4326&f=json"
+        count_response_API = requests.get(countUrl)    
+        countOutput = json.loads(count_response_API.text)
+        WildfireResponse["Total Fires"] = "{:,}".format(int(countOutput["count"]))
+        return int(countOutput["count"])
+    except Exception as e:
+        print("Total Fires Daily Acres Function: " + e)
+
+def getTotalFiresWithNoDatesCity(county, state):
+    try:
+        countUrl = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+county+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND((FireOutDateTime = null)OR(ContainmentDateTime = null)OR(ControlDateTime = null))&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&returnCountOnly=true&outSR=4326&f=json"
+        count_response_API = requests.get(countUrl)    
+        countOutput = json.loads(count_response_API.text)
+        WildfireResponse["Total Fires"] = "{:,}".format(int(countOutput["count"]))
+        return int(countOutput["count"])
+    except Exception as e:
+        print("Total Fires Daily Acres Function: " + e)
 #count of wildfires for a state
 def getTotalFiresState(state, test):
     try:
@@ -179,7 +219,7 @@ def getNaturalCausedFires(county, state, stateOnly, test):
         print("Natural caused fire Function: " + e)
 
 #get total acres burned
-def totalAcres(county, state, stateOnly, test):
+def totalAcres(county, state, numberOfFires, stateOnly, test):
     try:
         if(stateOnly):
             if(test):
@@ -203,16 +243,23 @@ def totalAcres(county, state, stateOnly, test):
                 response_API = requests.get(url)    
                 output = json.loads(response_API.text)
         sum = 0 
+        count = 1
         for i in range(len(output['features'])):
             if(str(output['features'][i]['attributes']['DailyAcres']) != "None"):
                 sum = sum + int(output['features'][i]['attributes']['DailyAcres'])
-                i = i + 1
-            else: 
-                i = i + 1
+            else:
+                count = count + 1
+
         if(stateOnly):
+            noDailyAcres = getTotalFiresWithNoDailyAcresState(state)
+            print(noDailyAcres)
             WildfireStateResponse["Total Acres Burned"] = "{:,}".format(sum)
+            WildfireStateResponse["Average Acres Burned Per Fire"] = int(sum / (numberOfFires - noDailyAcres))
         else:
+            noDailyAcres = getTotalFiresWithNoDailyAcresCity(county, state)
+            print(noDailyAcres)
             WildfireResponse["Total Acres Burned"] = "{:,}".format(sum)
+            WildfireResponse["Average Acres Burned Per Fire"] = int(sum / (numberOfFires - noDailyAcres))
         return sum
     except Exception as e:
         print(e)
@@ -377,35 +424,36 @@ def longestBurningFire(output, state):
          WildfireStateResponse["Longest Wildfire Duration"] = "Not Available"
          WildfireResponse["Longest Wildfire Duration"] = "Not Available"
 #average wildfire duration 
-def averageFireDuration(output, numberOfFires, state):       
+def averageFireDuration(output, county, stateName, numberOfFires, state):       
      #Average Fire Duration
     try:
         totalDays = 0
+        count = 0
         for j in range(len(output['features'])):
             #fire out 
             if(str(output['features'][j]['attributes']['FireOutDateTime']) != "None"):
                 start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
                 end = str(output['features'][j]['attributes']['FireOutDateTime'])
                 duration = (float(end[:-3])-float(start[:-3]))/(60*60*24)
-                if(duration >= 1):
-                    totalDays = totalDays + duration
+                totalDays = totalDays + duration
+                count = count + 1
 
             #fire containment
             elif(str(output['features'][j]['attributes']['ContainmentDateTime']) != "None"):
                 start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
                 end = str(output['features'][j]['attributes']['ContainmentDateTime'])
                 duration = (float(end[:-3])-float(start[:-3]))/(60*60*24)
-                if(duration >= 1):
-                    totalDays = totalDays + duration
+                totalDays = totalDays + duration
+                count = count + 1
             #fire control 
             elif(output['features'][j]['attributes']['ControlDateTime']):
                 start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
                 end = str(output['features'][j]['attributes']['ControlDateTime'])
                 duration = (float(end[:-3])-float(start[:-3]))/(60*60*24)
-                if(duration >= 1):
-                    totalDays = totalDays + duration    
+                totalDays = totalDays + duration
+                count = count + 1    
         if(state):
-            calc = int(totalDays/numberOfFires)
+            calc = int(totalDays/(numberOfFires - (getTotalFiresWithNoDatesState(stateName) + 1)))
             if(calc > 1):
                 text = str(calc) + " Days"
             elif(calc == 1):
@@ -415,7 +463,7 @@ def averageFireDuration(output, numberOfFires, state):
             WildfireStateResponse["Average Fire Duration"] = text
             
         else:
-            calc = int(totalDays/numberOfFires)
+            calc = int(totalDays/(numberOfFires - (getTotalFiresWithNoDatesCity(county, stateName)+1)))
             if(calc > 1):
                 text = str(calc) + " Days"
             elif(calc == 1):
@@ -562,13 +610,11 @@ def create_app(config=None):
             getHumanCausedFires(location, state, False, unitTesting)
             getNaturalCausedFires(location, state, False, unitTesting)
             #total acres burned
-            totalAcresSum = totalAcres(location, state, False, unitTesting)
-            #avt acres burned per fire
-            WildfireResponse["Average Acres Burned Per Fire"] = int(totalAcresSum / numberOfFires)
+            totalAcres(location, state, numberOfFires, False, unitTesting)
             #longest fire
             longestBurningFire(output, False)
             #average duration
-            averageFireDuration(output, numberOfFires, False)
+            averageFireDuration(output, location, state, numberOfFires, False)
 
 
             
@@ -619,12 +665,11 @@ def create_app(config=None):
             getHumanCausedFires("None", state, True, unitTesting)
             getNaturalCausedFires("None", state, True, unitTesting)
             #total acres burned
-            totalAcresSum = totalAcres("None", state, True, unitTesting)
-            WildfireStateResponse["Average Acres Burned Per Fire"] = int(totalAcresSum / numberOfFires)    
+            totalAcres("None", state, numberOfFires, True, unitTesting)
             #longest fire
             longestBurningFire(output, True)
             #average duration
-            averageFireDuration(output, numberOfFires, True)
+            averageFireDuration(output, "None", state, numberOfFires, True)
         else:
             print("no fire history")
             WildfireStateResponse["Total Active Wildfires"] = "Not Available"
