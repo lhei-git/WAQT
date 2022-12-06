@@ -1,13 +1,21 @@
-FROM node:18.8.0-alpine as build-step
-COPY . /waq/
-WORKDIR /waq
-RUN npm install --force
-RUN npm run build
+# pull official base image
+#macos: DOCKER_BUILDKIT=0 docker build ...
+FROM node:18.8.0-alpine
+
+# set working directory
+WORKDIR /app
+
+# add `/app/node_modules/.bin` to $PATH
+ENV PATH /app/node_modules/.bin:$PATH
+
+# install app dependencies
+COPY package.json ./
+COPY package-lock.json ./
+RUN npm install --force --fetch-timeout=60000
 
 
-FROM nginx:alpine
-COPY --from=build /waq/build/ /usr/share/nginx/html/
-RUN rm /etc/nginx/conf.d/default.conf
-COPY ./nginx.conf /etc/nginx/conf.d
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+# add app
+COPY . ./
+
+# start app
+CMD ["npm", "start"]
