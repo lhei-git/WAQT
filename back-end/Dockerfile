@@ -1,4 +1,4 @@
-FROM python:3.8.4
+FROM python:3.10-slim-buster
 WORKDIR /back-end
 # install dependencies
 RUN pip install --upgrade pip

@@ -21,14 +21,11 @@ services:
     build:
       context: ./front-end/ltaq/
       dockerfile: Dockerfile
-    command: npm start
-    environment:
-      - NODE_ENV=development
     ports:
       - '4200:4200'
+    volumes:
+      - ./front-end:/waqt
+      - /waqt/node_modules
     depends_on:
       - airnow
       - wildfire
-
-volumes:
-  node-modules:
