@@ -479,14 +479,15 @@ Trend graph calculations
 """
 
 #Ahmad's code from server.py
-#Average Month
+#Average acres per Month
 def averageMonth(dateStart, dateEnd, month, year, output):
     try:
         totalDays = 0
         amountOfFiresWithStartEndDates = 0
         for j in range(len(output['features'])):
-            #fire out 
+            #fire out date range
             if(str(output['features'][j]['attributes']['FireOutDateTime']) != "None"):
+            #start date Jan 2015 until end date Dec 2022
                 start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
                 end = str(output['features'][j]['attributes']['FireOutDateTime'])
                 if (int(end[:-3]) < dateEnd and int(start[:-3]) > dateStart):
@@ -494,8 +495,9 @@ def averageMonth(dateStart, dateEnd, month, year, output):
                     if(duration >= 1):
                         totalDays = totalDays + duration
                         amountOfFiresWithStartEndDates = amountOfFiresWithStartEndDates + 1
-            #fire containment
+            #fire containment date range
             elif(str(output['features'][j]['attributes']['ContainmentDateTime']) != "None"):
+            #start date Jan 2015 until end date Dec 2022
                 start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
                 end = str(output['features'][j]['attributes']['ContainmentDateTime'])
                 if (int(end[:-3]) < dateEnd and int(start[:-3]) > dateStart):
@@ -503,8 +505,9 @@ def averageMonth(dateStart, dateEnd, month, year, output):
                     if(duration >= 1):
                         totalDays = totalDays + duration
                         amountOfFiresWithStartEndDates = amountOfFiresWithStartEndDates + 1
-            #fire control 
+            #fire control date range
             elif(output['features'][j]['attributes']['ControlDateTime']):
+            #start date Jan 2015 until end date Dec 2022
                 start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
                 end = str(output['features'][j]['attributes']['ControlDateTime'])
                 if (int(end[:-3]) < dateEnd and int(start[:-3]) > dateStart):
@@ -512,7 +515,7 @@ def averageMonth(dateStart, dateEnd, month, year, output):
                     if(duration >= 1):
                         totalDays = totalDays + duration
                         amountOfFiresWithStartEndDates = amountOfFiresWithStartEndDates + 1  
-
+#calculates the average fire duration for each year 2015-2022
         if(amountOfFiresWithStartEndDates !=0 and totalDays != 0 ):
             if(round(float(totalDays/amountOfFiresWithStartEndDates)!=0)):
                 WildfireAvgRes[month + " " + str(year)] = str(round(float(totalDays/amountOfFiresWithStartEndDates)))
@@ -520,41 +523,44 @@ def averageMonth(dateStart, dateEnd, month, year, output):
         print("average/month Function: " + e)  
 
 #Ahmad's Code
+#total acres per month
 def acresMonth(dateStart, dateEnd, month, year, output):
+#
     try:
         sum = 0
         for j in range(len(output['features'])):
-            #print(str(output['features'][j]['attributes']['DailyAcres']))
             if (str(output['features'][j]['attributes']['DailyAcres'])!= "None"):
                 str(output['features'][j]['attributes']['DailyAcres'])
+            #start date Jan 2015 until end date Dec 2022
                 start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
                 end = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
                 if (int(end[:-3]) < dateEnd and int(start[:-3]) > dateStart):
                     sum = sum + int(output['features'][j]['attributes']['DailyAcres'])
-
+#prints the total acres per month
         if(sum !=0):
             WildfireAcres[month + " " + str(year)] = sum
     except Exception as e:
         print("acres/month Function: " + e)
 
 #Ahmad's Code
+#fire count per month
 def countMonth(dateStart, dateEnd, month, year, output):
     try:
         total = 0
         for j in range(len(output['features'])):
-                #print(str(output['features'][j]['attributes']['FireDiscoveryDateTime']))
+            #takes the number of fires discovered per month from start date Jan 2015 until end date Dec 2022
                 if (str(output['features'][j]['attributes']['FireDiscoveryDateTime'])!= "None"):
                     str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
                     start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
                     end = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
                     if (int(end[:-3]) < dateEnd and int(start[:-3]) > dateStart):
                         total = total + 1
-                        #print("hello")
                         j = j + 1
                     else:
                         j = j + 1
                 else: 
                     j = j + 1
+                #prints number of fires
         if(total !=0):
             WildfireCount[month + " " + str(year)] = total
     except Exception as e:
@@ -731,10 +737,11 @@ def create_app(config=None):
                 jsonTestData.close()
             else:
                 url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND(DailyAcres > 1)AND(FireDiscoveryDateTime >= DATE '2015-01-01 00:00:00')AND(FireOutDateTime>= DATE '2015-01-01 00:00:00' OR ContainmentDateTime>= DATE '2015-01-01 00:00:00' OR ControlDateTime>= DATE '2015-01-01 00:00:00')&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
-                #print(url)
                 response_API = requests.get(url)
                 output = json.loads(response_API.text)
+            #january 1, 2015
             dateStart = 1420088400 
+#creates dictionary for month names
             MonthDict = { 
             1 : "Jan",
             2 : "Feb",
@@ -755,6 +762,7 @@ def create_app(config=None):
             year = 2015
             WildfireAvgRes.clear()
             while (endYear >= year):
+        #date range for average fires adds 28, 30, 31 days depending on month for accurate data
                 if(month % 2 != 0):
                     averageMonth(dateStart, dateStart + 2678400, MonthDict[month], year, output)
                     dateStart += 2678400
@@ -776,6 +784,7 @@ def create_app(config=None):
         return json.dumps(WildfireAvgRes)
 
     #Ahmad's Code
+    #total fire acres per year endpoint for graphs
     @app.route("/wildfire/acres", methods=['GET'])
     def totalAcresResponse():
         try:
@@ -791,7 +800,9 @@ def create_app(config=None):
                 #print(url)
                 response_API = requests.get(url)
                 output = json.loads(response_API.text)
+                #january 1, 2015
             dateStart = 1420088400
+            #dictionary for month names
             MonthDict = { 
             1 : "Jan",
             2 : "Feb",
@@ -812,6 +823,7 @@ def create_app(config=None):
             year = 2015
             WildfireAcres.clear()
             while (endYear >= year):
+            #date range for average fires adds 28, 30, 31 days depending on month for accurate data
                 if(month % 2 != 0):
                     acresMonth(dateStart, dateStart + 2678400, MonthDict[month], year, output)
                     dateStart += 2678400
@@ -829,13 +841,12 @@ def create_app(config=None):
                     else:
                         month = month + 1
 
-        
-            #print(WildfireAcres)
             return json.dumps(WildfireAcres)
         except Exception as e:
             print("Total Acres graph Function: " + e)
 
     #Ahmad's Code
+    #number of fires per year endpoint for graphs
     @app.route("/wildfire/count", methods=['GET'])
     def NumberOfFiresGraph():
         try:
@@ -848,11 +859,11 @@ def create_app(config=None):
                 jsonTestData.close()
             else:
                 url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND%20%20(DailyAcres >= 0.1)%20&outFields=IncidentName,DailyAcres,ContainmentDateTime,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
-                #print(url)
                 response_API = requests.get(url)    
                 output = json.loads(response_API.text)
-            #WildfireTotalResponse["Total Fires"] = output["count"]
+            #january 1, 2015
             dateStart = 1420088400
+            #dictionary for month names
             MonthDict = { 
             1 : "Jan",
             2 : "Feb",
@@ -873,6 +884,7 @@ def create_app(config=None):
             year = 2015
             WildfireCount.clear()
             while (endYear >= year):
+        #date range for average fires adds 28, 30, 31 days depending on month for accurate data
                 if(month % 2 != 0):
                     countMonth(dateStart, dateStart + 2678400, MonthDict[month], year, output)
                     dateStart += 2678400
@@ -896,6 +908,7 @@ def create_app(config=None):
             print("Number of Fires Graph Function: " + e)
     
     #Ahmad's Code
+    #top 10 fires by acres graph
     @app.route("/wildfire/top10", methods=['GET'])
     def top10Acres():
         try:
@@ -913,7 +926,7 @@ def create_app(config=None):
                 output = json.loads(response_API.text)
             
             top10AcresRes.clear()
-            
+            #calculates and prints all fires sorted from largest acres to lowest
             copyDictionary = output['features'].copy()
             for i in range(len(copyDictionary)):
                 duration= 0
@@ -923,6 +936,7 @@ def create_app(config=None):
                     acres = int(copyDictionary[i]['attributes']['DailyAcres'])
                     name = str(copyDictionary[i]['attributes']['IncidentName']).capitalize() + " " + startYear[0]
                     top10AcresRes[acres] = name
+            #prints only top 10 fires by acres from sorted list
             res = dict(list(OrderedDict(sorted(top10AcresRes.items(), reverse=True)).items())[0: 10])
             return json.dumps(res)
         except Exception as e:
@@ -930,7 +944,8 @@ def create_app(config=None):
     
     
 
-    #Ahmad's Code
+    #Ahmad's Code 
+    #top 10 fires by duration
     @app.route("/wildfire/top10Duration", methods=['GET'])
     def top10Duration():
         try:
@@ -943,7 +958,6 @@ def create_app(config=None):
                 jsonTestData.close()
             else:
                 url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND(DailyAcres > 1)AND(FireDiscoveryDateTime >= DATE '2015-01-01 00:00:00')AND(FireOutDateTime>= DATE '2015-01-01 00:00:00' OR ContainmentDateTime>= DATE '2015-01-01 00:00:00' OR ControlDateTime>= DATE '2015-01-01 00:00:00')&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
-                #print(url)
                 response_API = requests.get(url)
                 output = json.loads(response_API.text)
             top10DurationRes.clear()
@@ -951,6 +965,7 @@ def create_app(config=None):
             for i in range(len(copyDictionary)):
                 duration= 0
                 name = ""
+            #calculates and prints all fires sorted from longest duration to shortest
                 if(str(copyDictionary[i]['attributes']['FireDiscoveryDateTime'])!= "None" ):
                     start = str(copyDictionary[i]['attributes']['FireDiscoveryDateTime'])
                     if(str(copyDictionary[i]['attributes']['FireOutDateTime'])!= "None"):
@@ -971,7 +986,7 @@ def create_app(config=None):
                         startYear = timeConverter(copyDictionary[i]['attributes']['FireDiscoveryDateTime']).split("-")
                         name = (str(copyDictionary[i]['attributes']['IncidentName']).capitalize() + " " + startYear[0])
                         top10DurationRes[round(duration/86400)] = name 
-
+                #prints the top 10 fires by duration from sorted list
             res = dict(list(OrderedDict(sorted(top10DurationRes.items(), reverse=True)).items())[0: 10])
             return json.dumps(res)
         except Exception as e:
