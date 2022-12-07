@@ -21,7 +21,7 @@ import {
 } from "@material-ui/core/";
 import air1 from './air1.jpg'
 import air2 from './air2.jpg'
-import airHighest from './airHighest.jpg'
+import airHighest from './airhighest.jpg'
 
 //props that will take the lat and lon
 interface Props {

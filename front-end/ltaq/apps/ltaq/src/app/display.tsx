@@ -4,23 +4,13 @@ import React, {
   useState,
   useMemo,
   useCallback,
-  useRef,
   useEffect,
-  useLayoutEffect,
 } from 'react';
 import {
   GoogleMap,
   Marker,
-  DirectionsRenderer,
-  Circle,
-  MarkerClusterer,
   InfoWindow,
 } from '@react-google-maps/api';
-import usePlacesAutocomplete, {
-  GeocodeResult,
-  getGeocode,
-  getLatLng,
-} from 'use-places-autocomplete';
 import Nav from './navDisplay';
 import axios from 'axios';
 import CurrentAQI from './currentAQITable';
@@ -31,7 +21,6 @@ import AirIcon from '@mui/icons-material/Air';
 import TerrainIcon from '@mui/icons-material/Terrain';
 import LaunchIcon from '@mui/icons-material/Launch';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
-import fire from './Fire Icon.jpeg';
 import FireStatsTable from './fireStatsTable';
 import { AxiosResponse } from 'axios';
 import AirQualityGraphs from './airqualitygraphs';
@@ -89,6 +78,7 @@ export default function App() {
   //================================================================================
   //================= Grab county, lat, and lng from local storage =================
   //================================================================================
+  //Get the user searched location info from local storage
   const updateLocation = useCallback(() => {
     val = localStorage.getItem('val');
     setPlace(typeof val === 'string' ? val : '');
@@ -97,6 +87,7 @@ export default function App() {
       console.log(splitVal[1]);
     }
 
+    //Extract just the county name
     splitVals = splitVal[1];
     if (val?.includes('County')) {
       console.log(splitVal[0].replace(' County', ''));
@@ -107,7 +98,7 @@ export default function App() {
       console.log(countyFormatted);
     }
 
-    //Grab lat and lng from local storage
+    //Grab lat and lng from local storage and set the location to be used in Display.tsx
     const lattitude = localStorage.getItem('lat');
     const longitude = localStorage.getItem('lng');
     lat = Number(lattitude);
@@ -116,6 +107,7 @@ export default function App() {
     Number(lng);
     setLocation({ lat, lng });
 
+    //Format the URL to send to the URL endpoints WildFire.py and airnow.py
     mapUrl =
       'http://localhost:8001/mapmarkers?county=' +
       countyFormatted +
@@ -130,19 +122,21 @@ export default function App() {
   //=================================================
   //============= Grab Active Wildfires =============
   //=================================================
-
+  //Get the active wildfire api info from the URL endpoint
   useEffect(() => {
     axios.get(mapUrl).then((response) => setData(response.data));
     // setData(data);
     console.log(data);
   }, []);
 
+  //Wait for wildfire data to get be returned from the wildfire api (WildFire.py)
   const getData = async () => {
     const response = await axios.get(mapUrl);
     console.log(response);
     return response;
   };
 
+  ///When wildfire data is returned and present, use that wildfire location data to set the Google Map Markers
   async function fetchMarkerData() {
     const json = await getData();
     setMarkerData(json);
@@ -158,6 +152,7 @@ export default function App() {
   console.log(location);
   console.log(data);
 
+  //Print Button and function
   const handlePrint = () => {
     window.print();
   };
@@ -173,11 +168,13 @@ export default function App() {
               <i className="fa fa-location-arrow"></i> {val}
             </b>
             <button className="printButton" onClick={handlePrint}>
+              {/* Print Button */}
               {<PrintIcon fontSize="large" />}
             </button>
           </h1>
           <div className="w3-row-padding  w3-margin-bottom ">
               <br />
+              {/* Current AQI Section */}
               <CurrentAQI lat={lat} lng={lng} />
             <div className="pagebreak"> </div> {/*For page printing*/}
             <br />
@@ -189,6 +186,7 @@ export default function App() {
               </h1>
               <br />
               <div className="map">
+                {/* Map with Map Markers */}
                 <GoogleMap
                   options={options} //Google Map render options
                   zoom={10} //Level of Zoom when user first loads the page
@@ -206,6 +204,7 @@ export default function App() {
                         }}
                       >
                         {infoWindowID === val && (
+                          //Info Window for when a user clicks on the center location pin
                           <InfoWindow>
                             <React.Fragment>
                               <span>Search Location: {val}</span>
@@ -215,6 +214,7 @@ export default function App() {
                       </Marker>
                     </>
                   )}
+                  {/* Place fire map markers on the map */}
                   {data.map((item, index) => (
                     <Marker
                       key={index}
@@ -230,6 +230,7 @@ export default function App() {
                       }}
                     >
                       {infoWindowID === item && (
+                        // Info Window for when a user clicks on a fire map marker
                         <InfoWindow>
                           <React.Fragment>
                             <span>Fire Name: {item.name}</span>
@@ -250,6 +251,7 @@ export default function App() {
                   ))}
                 </GoogleMap>
                 <br />
+                {/* Active Fires Table displayed under Map */}
               <ActiveFiresTable county={countyFormatted} state={splitVals} />
               <br />
               <p className='source'>

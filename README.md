@@ -17,6 +17,7 @@ The WAQT app also produces various graphs of the historical trends of the three 
 - Run wildfire.py `gunicorn --bind 127.0.0.1:8001 WildFire:gunicorn_app`
 - Navigate to the front-end `./front-end/ltaq`
 - Install Node modules `npm install --force`
+- Insert your Google Maps API key into display.tsx `googleMapsApiKey: "KEY_HERE"`
 - Run the front-end `npm start`
 - Navigate to localhost:4200 to start using WAQT. 
 
