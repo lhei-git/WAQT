@@ -51,11 +51,11 @@ const About = () => {
           {/* paragraph with clickable links for more information */}
           <p>One of the major silent killers and reducers of quality of life in
             the world today is air pollution. The European Environmental Agency
-            considers air pollution <a href="https://www.eea.europa.eu/themes/air/">"the biggest environmental health risk in
-            Europe."</a> Studies indicate that in general, <a href="https://link.springer.com/article/10.1007/s11356-020-09042-2">"air pollution is one of the most important reasons for serious human health effects including
+            considers air pollution <a className={aboutStyle['pageLink']} href="https://www.eea.europa.eu/themes/air/">"the biggest environmental health risk in
+            Europe."</a> Studies indicate that in general, <a className={aboutStyle['pageLink']} href="https://link.springer.com/article/10.1007/s11356-020-09042-2">"air pollution is one of the most important reasons for serious human health effects including
             cardiovascular and respiratory illnesses"</a> Long-term exposure of
-            simply being downwind of a highway <a href="https://academic.oup.com/jeea/article/18/4/1886/5580747"> can significantly reduce life years.</a>  Moreover, likely due to climate change, growing wildfires
-            are<a href="https://www.preventionweb.net/files/73797_wildfiresbriefingnote.pdf"> exacerbating air pollution around the world.</a>
+            simply being downwind of a highway <a className={aboutStyle['pageLink']} href="https://academic.oup.com/jeea/article/18/4/1886/5580747"> can significantly reduce life years.</a>  Moreover, likely due to climate change, growing wildfires
+            are<a className={aboutStyle['pageLink']} href="https://www.preventionweb.net/files/73797_wildfiresbriefingnote.pdf"> exacerbating air pollution around the world.</a>
           </p>
           <br />
 
@@ -64,7 +64,7 @@ const About = () => {
           these applications do not provide historical trends of pollution and air 
           quality for specific places or regions. For example, while it is possible 
           to view real-time data of air quality measures for a particular place, 
-          via applications such as <a href="https://www.airnow.gov"> AirNow</a> and <a href="https://www.iqair.com/us/usa"> IQAir, </a> 
+          via applications such as <a className={aboutStyle['pageLink']} href="https://www.airnow.gov"> AirNow</a> and <a className={aboutStyle['pageLink']} href="https://www.iqair.com/us/usa"> IQAir, </a> 
           current web applications do 
           not enable visualization of air quality trends in the previous 5 or 7 years.
           </p>
@@ -82,15 +82,15 @@ const About = () => {
           policy makers and the public alike the ability to easily search for air quality and wildfire 
           information for a particular county of interest (currently in the US only). WAQT provides a 
           location’s current air quality measures for Ozone, PM2.5 and PM10—some of the most common air 
-          pollutants—based on the US Air Quality Index (AQI). This information is retrieved from the <a href="https://www.epa.gov/aqs">EPA</a> &  <a href="https://docs.airnowapi.org">AirNow </a> 
+          pollutants—based on the US Air Quality Index (AQI). This information is retrieved from the <a className={aboutStyle['pageLink']} href="https://www.epa.gov/aqs">EPA</a> &  <a className={aboutStyle['pageLink']} href="https://docs.airnowapi.org">AirNow </a> 
             application programming interface (API) of the US Environmental Protection Agency (EPA).  
           </p>
           <br />
 
           <p>
-          WAQT also retrieves the current active wildfires in the searched location from the <a href="https://data-nifc.opendata.arcgis.com/">National Interagency Fire Center</a> API, 
+          WAQT also retrieves the current active wildfires in the searched location from the <a className={aboutStyle['pageLink']} href="https://data-nifc.opendata.arcgis.com/">National Interagency Fire Center</a> API, 
           of the National Interagency Fire Center, and various calculations of historical wildfire data 
-          for the searched location, and the entire state, from the <a href="https://data-nifc.opendata.arcgis.com/datasets/nifc::wfigs-wildland-fire-locations-full-history/about">Wildland Fire Locations Full History 
+          for the searched location, and the entire state, from the <a className={aboutStyle['pageLink']} href="https://data-nifc.opendata.arcgis.com/datasets/nifc::wfigs-wildland-fire-locations-full-history/about">Wildland Fire Locations Full History 
           API</a> of the National Interagency Fire Center. 
           </p>
           <br />
@@ -98,7 +98,7 @@ const About = () => {
           <p> 
           The WAQT app also produces various graphs of the historical trends of the three major pollutants 
           identified from the year 2015 until the most recent data available. This long-term air quality 
-          data is pulled from the <a href="https://www.epa.gov/aqs">US EPA Air Quality System (AQS).</a> 
+          data is pulled from the <a className={aboutStyle['pageLink']} href="https://www.epa.gov/aqs">US EPA Air Quality System (AQS).</a> 
           The application also visualizes historical trends of wildfires, including total wildfires and acres burned from 
           wildfires—when the data is available. Further details about wildfire data calculations are provided below.
           </p>
@@ -106,7 +106,7 @@ const About = () => {
 
           <p>
           WAQT was conceptualized by Nic DePaula, who guided the development process. WAQT was developed by 
-          Ryan Kaszubski, Ahmad Aoun and Kevin Kluka during the Fall of 2022 for their senior capstone project for the <a href= "https://lhei.org">Lab for Health and Environmental Informatics </a> (LHEI). 
+          Ryan Kaszubski, Ahmad Aoun and Kevin Kluka during the Fall of 2022 for their senior capstone project for the <a className={aboutStyle['pageLink']} href= "https://lhei.org">Lab for Health and Environmental Informatics </a> (LHEI). 
           </p>
           <br/>
           <br/>
@@ -123,9 +123,9 @@ const About = () => {
           <br />
           
           <ul> {/* bullet list with clickable links with info about each major pollutant */}
-          <li><a href="https://www.epa.gov/ground-level-ozone-pollution">Ozone (O3)</a></li>
-          <li><a href="https://www.epa.gov/pm-pollution">Particulate Matter 2.5 (PM 2.5)</a></li>
-          <li><a href="https://www.epa.gov/pm-pollution">Particulate Matter 10 (PM10)</a></li>
+          <li><a className={aboutStyle['pageLink']} href="https://www.epa.gov/ground-level-ozone-pollution">Ozone (O3)</a></li>
+          <li><a className={aboutStyle['pageLink']} href="https://www.epa.gov/pm-pollution">Particulate Matter 2.5 (PM 2.5)</a></li>
+          <li><a className={aboutStyle['pageLink']} href="https://www.epa.gov/pm-pollution">Particulate Matter 10 (PM10)</a></li>
           </ul>
           <br />
           </div>
@@ -200,7 +200,7 @@ const About = () => {
           </ul>
       
           <p> 
-          Further information is available here: <a href="https://www.epa.gov/outdoor-air-quality-data/air-data-basic-information">https://www.epa.gov/outdoor-air-quality-data/air-data-basic-information</a>
+          Further information is available here: <a className={aboutStyle['pageLink']} href="https://www.epa.gov/outdoor-air-quality-data/air-data-basic-information">https://www.epa.gov/outdoor-air-quality-data/air-data-basic-information</a>
           </p>
           <br />
           <br/>
@@ -272,19 +272,19 @@ const About = () => {
           </p>
           <br />
           <p> Images from</p> {/* displays links for image citations */}
-          <a href="https://unsplash.com/photos/zpbzMHIe_NU"> https://unsplash.com/photos/zpbzMHIe_NU </a>
+          <a className={aboutStyle['pageLink']} href="https://unsplash.com/photos/zpbzMHIe_NU"> https://unsplash.com/photos/zpbzMHIe_NU </a>
           <br/>
-          <a href="https://www.flickr.com/photos/ingaker/51718599244/"> https://www.flickr.com/photos/ingaker/51718599244/ </a>
+          <a className={aboutStyle['pageLink']} href="https://www.flickr.com/photos/ingaker/51718599244/"> https://www.flickr.com/photos/ingaker/51718599244/ </a>
           <br/>
-          <a href="https://unsplash.com/photos/KWYTn9_QKRE"> https://unsplash.com/photos/KWYTn9_QKRE </a>
+          <a className={aboutStyle['pageLink']} href="https://unsplash.com/photos/KWYTn9_QKRE"> https://unsplash.com/photos/KWYTn9_QKRE </a>
           <br/>
-          <a href="https://www.flickr.com/photos/gotovan/43845650554/"> https://www.flickr.com/photos/gotovan/43845650554/ </a>
+          <a className={aboutStyle['pageLink']} href="https://www.flickr.com/photos/gotovan/43845650554/"> https://www.flickr.com/photos/gotovan/43845650554/ </a>
           <br/>
-          <a href="https://unsplash.com/photos/DwtX9mMHBJ0"> https://unsplash.com/photos/DwtX9mMHBJ0 </a>
+          <a className={aboutStyle['pageLink']} href="https://unsplash.com/photos/DwtX9mMHBJ0"> https://unsplash.com/photos/DwtX9mMHBJ0 </a>
           <br/>
-          <a href="https://www.flickr.com/photos/kikomeinkater/26305212549/sizes/l/"> https://www.flickr.com/photos/kikomeinkater/26305212549/sizes/l/ </a>
+          <a className={aboutStyle['pageLink']} href="https://www.flickr.com/photos/kikomeinkater/26305212549/sizes/l/"> https://www.flickr.com/photos/kikomeinkater/26305212549/sizes/l/ </a>
           <br/>
-          <a href="https://www.flickr.com/photos/cslmedia888/30677065680/sizes/k/"> https://www.flickr.com/photos/cslmedia888/30677065680/sizes/k/ </a>
+          <a className={aboutStyle['pageLink']} href="https://www.flickr.com/photos/cslmedia888/30677065680/sizes/k/"> https://www.flickr.com/photos/cslmedia888/30677065680/sizes/k/ </a>
           <br />
           <br />
         </div>
