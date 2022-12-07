@@ -262,8 +262,57 @@ const About = () => {
           </p>
           <br />   
           </div>
-          <div className={aboutStyle['fire-table']}> 
-          { <img src={FireTable}></img> } {/* displays fire stats table image  */}
+          <div id="statstable"> 
+          <table>
+          <thead>
+            <tr>
+              <th style={{textAlign: 'left', wordWrap: 'break-word', borderColor: 'black', borderStyle: 'solid', borderWidth: '1px', overflow: 'hidden', padding: '10px 5px'}}>Measurements</th>
+              <th style={{textAlign: 'left', wordWrap: 'break-word', borderColor: 'black', borderStyle: 'solid', borderWidth: '1px', overflow: 'hidden', padding: '10px 5px'}}>Explanation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style={{textAlign: 'left', wordWrap: 'break-word', borderColor: 'black', borderStyle: 'solid', borderWidth: '1px', overflow: 'hidden', padding: '10px 5px'}}>Total active wildfires</td>
+              <td style={{textAlign: 'left', wordWrap: 'break-word', borderColor: 'black', borderStyle: 'solid', borderWidth: '1px', overflow: 'hidden', padding: '10px 5px'}}>Count of all active wildfires</td>
+            </tr>
+            <tr>
+              <td style={{textAlign: 'left', wordWrap: 'break-word', borderColor: 'black', borderStyle: 'solid', borderWidth: '1px', overflow: 'hidden', padding: '10px 5px'}}>Most recent fire</td>
+              <td style={{textAlign: 'left', wordWrap: 'break-word', borderColor: 'black', borderStyle: 'solid', borderWidth: '1px', overflow: 'hidden', padding: '10px 5px'}}>Wildfire that has the highest discovery date currently available</td>
+            </tr>
+            <tr>
+              <td style={{textAlign: 'left', wordWrap: 'break-word', borderColor: 'black', borderStyle: 'solid', borderWidth: '1px', overflow: 'hidden', padding: '10px 5px'}}>Oldest fire</td>
+              <td style={{textAlign: 'left', wordWrap: 'break-word', borderColor: 'black', borderStyle: 'solid', borderWidth: '1px', overflow: 'hidden', padding: '10px 5px'}}>Wildfire that has the oldest discovery date</td>
+            </tr>
+            <tr>
+              <td style={{textAlign: 'left', wordWrap: 'break-word', borderColor: 'black', borderStyle: 'solid', borderWidth: '1px', overflow: 'hidden', padding: '10px 5px'}}>Total fires in history</td>
+              <td style={{textAlign: 'left', wordWrap: 'break-word', borderColor: 'black', borderStyle: 'solid', borderWidth: '1px', overflow: 'hidden', padding: '10px 5px'}}>Count of all wildfires for the location in the dataset</td>
+            </tr>
+            <tr>
+              <td style={{textAlign: 'left', wordWrap: 'break-word', borderColor: 'black', borderStyle: 'solid', borderWidth: '1px', overflow: 'hidden', padding: '10px 5px'}}>Total fires caused by humans</td>
+              <td style={{textAlign: 'left', wordWrap: 'break-word', borderColor: 'black', borderStyle: 'solid', borderWidth: '1px', overflow: 'hidden', padding: '10px 5px'}}>Count of all wildfires that were caused by humans (does not include NA or undetermined)</td>
+            </tr>
+            <tr>
+              <td style={{textAlign: 'left', wordWrap: 'break-word', borderColor: 'black', borderStyle: 'solid', borderWidth: '1px', overflow: 'hidden', padding: '10px 5px'}}>Total fires of natural cause</td>
+              <td style={{textAlign: 'left', wordWrap: 'break-word', borderColor: 'black', borderStyle: 'solid', borderWidth: '1px', overflow: 'hidden', padding: '10px 5px'}}>Count of all wildfires that were caused by natural causes (does not include NA or undetermined)</td>
+            </tr>
+            <tr>
+              <td style={{textAlign: 'left', wordWrap: 'break-word', borderColor: 'black', borderStyle: 'solid', borderWidth: '1px', overflow: 'hidden', padding: '10px 5px'}}>Total acres burned</td>
+              <td style={{textAlign: 'left', wordWrap: 'break-word', borderColor: 'black', borderStyle: 'solid', borderWidth: '1px', overflow: 'hidden', padding: '10px 5px'}}>Sum of daily acres for all wildfires</td>
+            </tr>
+            <tr>
+              <td style={{textAlign: 'left', wordWrap: 'break-word', borderColor: 'black', borderStyle: 'solid', borderWidth: '1px', overflow: 'hidden', padding: '10px 5px'}}>Average acres burned</td>
+              <td style={{textAlign: 'left', wordWrap: 'break-word', borderColor: 'black', borderStyle: 'solid', borderWidth: '1px', overflow: 'hidden', padding: '10px 5px'}}>Average daily acres burned for all wildfires that have reported acres burned</td>
+            </tr>
+            <tr>
+              <td style={{textAlign: 'left', wordWrap: 'break-word', borderColor: 'black', borderStyle: 'solid', borderWidth: '1px', overflow: 'hidden', padding: '10px 5px'}}>Longest burning wildfire</td>
+              <td style={{textAlign: 'left', wordWrap: 'break-word', borderColor: 'black', borderStyle: 'solid', borderWidth: '1px', overflow: 'hidden', padding: '10px 5px'}}>Fire that has the largest duration</td>
+            </tr>
+            <tr>
+              <td style={{textAlign: 'left', wordWrap: 'break-word', borderColor: 'black', borderStyle: 'solid', borderWidth: '1px', overflow: 'hidden', padding: '10px 5px'}}>Average wildfire duration</td>
+              <td style={{textAlign: 'left', wordWrap: 'break-word', borderColor: 'black', borderStyle: 'solid', borderWidth: '1px', overflow: 'hidden', padding: '10px 5px'}}>Average wildfire duration for all wildfires that have reported acres burned, fire out date and containment date.</td>
+            </tr>
+          </tbody>
+          </table>
           <br />
       
           <br/>

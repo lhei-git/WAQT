@@ -135,13 +135,12 @@ function FireStatsTable({ county, state, fullName }: Props) {
         </TableBody>
       </Table>
     </TableContainer>
-
-  {/* Sources*/}
-    <p className={styles['source']}> <a className='source' href = "https://www.nifc.gov/"> Source: National Interagency Fire Agency <LaunchIcon fontSize="small"/></a></p>
-          
-       
-        
         </Grid>
+        {/* Sources*/}
+        <p className={styles['source']}> <a className='source' href = "https://www.nifc.gov/" target="_blank"> Source: National Interagency Fire Agency <LaunchIcon fontSize="small"/></a></p>
+        <br />
+        <p className={styles['source']}> <a className='source' href = "/about#statstable" target="_blank"> More information on the above calculations <LaunchIcon fontSize="small"/></a></p>      
+     
       </>
     );
   } else {
