@@ -46,11 +46,14 @@ body {
 }
 
 
-/* link */
-a:link {
+/* link 
+a:any-link {
+  color: rgb(82, 84, 200);
+  text-decoration: none;
+} */
+.pageLink{
   color: rgb(82, 84, 200);
 }
-
 /* section heading styling*/
  .about h1{
   text-align: left;
