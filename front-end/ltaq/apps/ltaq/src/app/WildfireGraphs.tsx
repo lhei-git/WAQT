@@ -494,7 +494,7 @@ export default function WildFireGraphs({ county, state }: Props) {
         <br />
         <br />
         <h1 style={{color: 'black'}}>
-                <LocalFireDepartmentIcon fontSize="large" /> Top 10 
+                <LocalFireDepartmentIcon fontSize="large" /> Historical Top 10 
               </h1>
         {Object.keys(durationData).length > 1 ? (
           <>

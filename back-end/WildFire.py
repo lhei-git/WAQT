@@ -135,7 +135,7 @@ def getTotalFiresWithNoDailyAcresState(state):
 
 def getTotalFiresWithNoDatesState(state):
     try:
-        countUrl = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOState%20%3D%20'US-"+state+"'%20AND((FireOutDateTime = null)OR(ContainmentDateTime = null)OR(ControlDateTime = null))&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&returnCountOnly=true&outSR=4326&f=json"
+        countUrl = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOState%20%3D%20'US-"+state+"'%20AND(FireOutDateTime = null)AND(ContainmentDateTime = null)&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&returnCountOnly=true&outSR=4326&f=json"
         count_response_API = requests.get(countUrl)    
         countOutput = json.loads(count_response_API.text)
         WildfireResponse["Total Fires"] = "{:,}".format(int(countOutput["count"]))
@@ -145,7 +145,7 @@ def getTotalFiresWithNoDatesState(state):
 
 def getTotalFiresWithNoDatesCity(county, state):
     try:
-        countUrl = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+county+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND((FireOutDateTime = null)OR(ContainmentDateTime = null)OR(ControlDateTime = null))&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&returnCountOnly=true&outSR=4326&f=json"
+        countUrl = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+county+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND(FireOutDateTime = null)AND(ContainmentDateTime = null)&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&returnCountOnly=true&outSR=4326&f=json"
         count_response_API = requests.get(countUrl)    
         countOutput = json.loads(count_response_API.text)
         WildfireResponse["Total Fires"] = "{:,}".format(int(countOutput["count"]))
@@ -254,12 +254,12 @@ def totalAcres(county, state, numberOfFires, stateOnly, test):
             noDailyAcres = getTotalFiresWithNoDailyAcresState(state)
             print(noDailyAcres)
             WildfireStateResponse["Total Acres Burned"] = "{:,}".format(sum)
-            WildfireStateResponse["Average Acres Burned Per Fire"] = int(sum / (numberOfFires - noDailyAcres))
+            WildfireStateResponse["Average Acres Burned Per Fire"] = round(sum / (numberOfFires - noDailyAcres))
         else:
             noDailyAcres = getTotalFiresWithNoDailyAcresCity(county, state)
             print(noDailyAcres)
             WildfireResponse["Total Acres Burned"] = "{:,}".format(sum)
-            WildfireResponse["Average Acres Burned Per Fire"] = int(sum / (numberOfFires - noDailyAcres))
+            WildfireResponse["Average Acres Burned Per Fire"] = round(sum / (numberOfFires - noDailyAcres))
         return sum
     except Exception as e:
         print(e)
@@ -424,11 +424,24 @@ def longestBurningFire(output, state):
          WildfireStateResponse["Longest Wildfire Duration"] = "Not Available"
          WildfireResponse["Longest Wildfire Duration"] = "Not Available"
 #average wildfire duration 
-def averageFireDuration(output, county, stateName, numberOfFires, state):       
+def averageFireDuration(county, stateName, numberOfFires, state):       
      #Average Fire Duration
     try:
+        if(state):
+            print(stateName)
+            largeState = False
+            if(stateName == "CA" or stateName == "CO" or stateName == "MT" or stateName == "TX" or stateName == "MN" or stateName == "UT" or stateName == "OR" or stateName == "NV" or stateName == "OK" or  stateName == "WA"):
+                largeState = True
+                url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOState%20%3D%20'US-"+stateName+"'%20AND(DailyAcres > 0)AND(FireOutDateTime >= DATE '2003-01-01 00:00:00' AND ContainmentDateTime >= DATE '2003-01-01 00:00:00')&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
+            else:
+                url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOState%20%3D%20'US-"+stateName+"'%20AND(DailyAcres > 0)AND(FireOutDateTime >= DATE '2003-01-01 00:00:00' AND ContainmentDateTime >= DATE '2003-01-01 00:00:00')&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
+            response_API = requests.get(url)    
+            output = json.loads(response_API.text)
+        else:
+            url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+county+"'%20AND%20POOState%20%3D%20'US-"+stateName+"'%20AND(DailyAcres > 0)AND(FireOutDateTime >= DATE '2003-01-01 00:00:00' AND ContainmentDateTime >= DATE '2003-01-01 00:00:00')&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
+            response_API = requests.get(url)    
+            output = json.loads(response_API.text)
         totalDays = 0
-        count = 0
         for j in range(len(output['features'])):
             #fire out 
             if(str(output['features'][j]['attributes']['FireOutDateTime']) != "None"):
@@ -436,7 +449,6 @@ def averageFireDuration(output, county, stateName, numberOfFires, state):
                 end = str(output['features'][j]['attributes']['FireOutDateTime'])
                 duration = (float(end[:-3])-float(start[:-3]))/(60*60*24)
                 totalDays = totalDays + duration
-                count = count + 1
 
             #fire containment
             elif(str(output['features'][j]['attributes']['ContainmentDateTime']) != "None"):
@@ -444,16 +456,10 @@ def averageFireDuration(output, county, stateName, numberOfFires, state):
                 end = str(output['features'][j]['attributes']['ContainmentDateTime'])
                 duration = (float(end[:-3])-float(start[:-3]))/(60*60*24)
                 totalDays = totalDays + duration
-                count = count + 1
-            #fire control 
-            elif(output['features'][j]['attributes']['ControlDateTime']):
-                start = str(output['features'][j]['attributes']['FireDiscoveryDateTime'])
-                end = str(output['features'][j]['attributes']['ControlDateTime'])
-                duration = (float(end[:-3])-float(start[:-3]))/(60*60*24)
-                totalDays = totalDays + duration
-                count = count + 1    
+             
         if(state):
-            calc = int(totalDays/(numberOfFires - (getTotalFiresWithNoDatesState(stateName) + 1)))
+            noDates = getTotalFiresWithNoDatesState(stateName) + 1
+            calc = round(totalDays/(numberOfFires - noDates)) if not largeState else round(totalDays/(noDates))
             if(calc > 1):
                 text = str(calc) + " Days"
             elif(calc == 1):
@@ -463,7 +469,7 @@ def averageFireDuration(output, county, stateName, numberOfFires, state):
             WildfireStateResponse["Average Fire Duration"] = text
             
         else:
-            calc = int(totalDays/(numberOfFires - (getTotalFiresWithNoDatesCity(county, stateName)+1)))
+            calc = round(totalDays/(numberOfFires - (getTotalFiresWithNoDatesCity(county, stateName)+1)))
             if(calc > 1):
                 text = str(calc) + " Days"
             elif(calc == 1):
@@ -620,7 +626,7 @@ def create_app(config=None):
             #longest fire
             longestBurningFire(output, False)
             #average duration
-            averageFireDuration(output, location, state, numberOfFires, False)
+            averageFireDuration(location, state, numberOfFires, False)
 
 
             
@@ -675,7 +681,7 @@ def create_app(config=None):
             #longest fire
             longestBurningFire(output, True)
             #average duration
-            averageFireDuration(output, "None", state, numberOfFires, True)
+            averageFireDuration("None", state, numberOfFires, True)
         else:
             print("no fire history")
             WildfireStateResponse["Total Active Wildfires"] = "Not Available"

@@ -18,7 +18,9 @@ The WAQT app also produces various graphs of the historical trends of the three 
 - Navigate to the front-end `./front-end/ltaq`
 - Install Node modules `npm install --force`
 - Insert your Google Maps API key into display.tsx `googleMapsApiKey: "KEY_HERE"`
-- Run the front-end `npm start`
+- Run for debugging: `npm start`
+- Build the front-end `npx nx run ltaq:build --configuration=production `
+- Run the front-end `npx nx run ltaq:serve --configuration=production  `
 - Navigate to localhost:4200 to start using WAQT. 
 
 # Contributing
