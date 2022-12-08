@@ -18,6 +18,7 @@ The WAQT app also produces various graphs of the historical trends of the three 
 - Navigate to the front-end `./front-end/ltaq`
 - Install Node modules `npm install --force`
 - Insert your Google Maps API key into display.tsx `googleMapsApiKey: "KEY_HERE"`
+- In the droplet run: 'export NODE_OPTIONS=--max_old_space_size=4069'
 - Run for debugging: `npm start`
 - Build the front-end `npx nx run ltaq:build --configuration=production `
 - Run the front-end `npx nx run ltaq:serve --configuration=production  `
