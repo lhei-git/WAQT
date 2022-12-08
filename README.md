@@ -26,14 +26,15 @@ The WAQT app also produces various graphs of the historical trends of the three 
 
 # Run on a server
 - Add all keys
+- HTTPS keys should be located in `~/WAQT/back-end`, if not transfer them here. 
 - `cd ~/WAQT/back-end`
-- `export OPENSSL_CONF=~/WAQT/back-end/openssl.cnf`
+- Runtime argument: `export OPENSSL_CONF=~/WAQT/back-end/openssl.cnf`
 - `gunicorn --certfile fullchain.pem --keyfile privkey.pem -b waqt.lhei.org:8000 airnow:gunicorn_app &`
 - `gunicorn --certfile fullchain.pem --keyfile privkey.pem -b waqt.lhei.org:8001 WildFire:gunicorn_app &`
 - `cd ~/WAQT/front-end/ltaq`
-- `export NODE_OPTIONS=--max_old_space_size=4096`
+- Runtime argument: `export NODE_OPTIONS=--max_old_space_size=4096`
 - `npx nx run ltaq:build --configuration=production &`
-- `export NODE_OPTIONS=--max_old_space_size=4096`
+- Runtime argument: `export NODE_OPTIONS=--max_old_space_size=4096`
 - `npx nx run ltaq:serve --configuration=production &`
 
 # Contributing
