@@ -1,5 +1,5 @@
 # Wildfire & Air Quality Tracker
-
+#### https://waqt.lhei.org/
 The Wildfire & Air Quality Tracker (WAQT) app was developed to provide citizens, scientists, policy makers and the public alike the ability to easily search for air quality and wildfire information for a particular county of interest (currently in the US only). WAQT provides a location’s current air quality measures for Ozone, PM2.5 and PM10—some of the most common air pollutants—based on the US Air Quality Index (AQI). This information is retrieved from the Air Now and EPA AQS application programming interface (API) of the US Environmental Protection Agency (EPA).
 
 WAQT also retrieves the current active wildfires in the searched location from the National Interagency Fire Center API, of the National Interagency Fire Center, and various calculations of historical wildfire data for the searched location, and the entire state, from the Wildland Fire Locations Full History API of the National Interagency Fire Center.
