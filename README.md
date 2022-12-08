@@ -27,6 +27,7 @@ The WAQT app also produces various graphs of the historical trends of the three 
 # Run on a server
 - Add all keys
 - `cd ~/WAQT/back-end`
+- `export OPENSSL_CONF=~/WAQT/back-end/openssl.cnf`
 - `gunicorn --certfile fullchain.pem --keyfile privkey.pem -b waqt.lhei.org:8000 airnow:gunicorn_app &`
 - `gunicorn --certfile fullchain.pem --keyfile privkey.pem -b waqt.lhei.org:8001 WildFire:gunicorn_app &`
 - `cd ~/WAQT/front-end/ltaq`
