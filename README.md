@@ -24,6 +24,17 @@ The WAQT app also produces various graphs of the historical trends of the three 
 - Run the front-end `npx nx run ltaq:serve --configuration=production  `
 - Navigate to localhost:4200 to start using WAQT. 
 
+# Run on a server
+- Add all keys
+- `cd ~/WAQT/back-end`
+- `gunicorn --certfile fullchain.pem --keyfile privkey.pem -b waqt.lhei.org:8000 airnow:gunicorn_app &`
+- `gunicorn --certfile fullchain.pem --keyfile privkey.pem -b waqt.lhei.org:8001 WildFire:gunicorn_app &`
+- `cd ~/WAQT/front-end/ltaq`
+- `export NODE_OPTIONS=--max_old_space_size=4096`
+- `npx nx run ltaq:build --configuration=production &`
+- `export NODE_OPTIONS=--max_old_space_size=4096`
+- `npx nx run ltaq:serve --configuration=production &`
+
 # Contributing
 The code is divided into two sections, the front-end and the back-end. The front-end handles all rendering and styling using React and TypeScript. The back-end handles all API calls and data calculations using Python and Flask.
 ## Wildfire Code
