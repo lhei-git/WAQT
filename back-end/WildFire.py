@@ -135,7 +135,7 @@ def getTotalFiresWithNoDailyAcresState(state):
 
 def getTotalFiresWithNoDatesState(state):
     try:
-        countUrl = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOState%20%3D%20'US-"+state+"'%20AND(FireOutDateTime = null)AND(ContainmentDateTime = null)&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&returnCountOnly=true&outSR=4326&f=json"
+        countUrl = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOState%20%3D%20'US-"+state+"'%20AND(DailyAcres > 0)AND(FireOutDateTime >= DATE '2003-01-01 00:00:00' OR ContainmentDateTime >= DATE '2003-01-01 00:00:00')&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&returnCountOnly=true&outSR=4326&f=json"
         count_response_API = requests.get(countUrl)    
         countOutput = json.loads(count_response_API.text)
         WildfireResponse["Total Fires"] = "{:,}".format(int(countOutput["count"]))
@@ -145,7 +145,7 @@ def getTotalFiresWithNoDatesState(state):
 
 def getTotalFiresWithNoDatesCity(county, state):
     try:
-        countUrl = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+county+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND(FireOutDateTime = null)AND(ContainmentDateTime = null)&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&returnCountOnly=true&outSR=4326&f=json"
+        countUrl = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+county+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND(DailyAcres > 0)AND(FireOutDateTime >= DATE '2003-01-01 00:00:00' OR ContainmentDateTime >= DATE '2003-01-01 00:00:00')&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&returnCountOnly=true&outSR=4326&f=json"
         count_response_API = requests.get(countUrl)    
         countOutput = json.loads(count_response_API.text)
         WildfireResponse["Total Fires"] = "{:,}".format(int(countOutput["count"]))
@@ -432,13 +432,14 @@ def averageFireDuration(county, stateName, numberOfFires, state):
             largeState = False
             if(stateName == "CA" or stateName == "CO" or stateName == "MT" or stateName == "TX" or stateName == "MN" or stateName == "UT" or stateName == "OR" or stateName == "NV" or stateName == "OK" or  stateName == "WA"):
                 largeState = True
-                url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOState%20%3D%20'US-"+stateName+"'%20AND(DailyAcres > 0)AND(FireOutDateTime >= DATE '2003-01-01 00:00:00' AND ContainmentDateTime >= DATE '2003-01-01 00:00:00')&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
+                url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOState%20%3D%20'US-"+stateName+"'%20AND(DailyAcres > 1)AND(FireOutDateTime >= DATE '2003-01-01 00:00:00' AND ContainmentDateTime >= DATE '2003-01-01 00:00:00')&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
+                print(url)
             else:
                 url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOState%20%3D%20'US-"+stateName+"'%20AND(DailyAcres > 0)AND(FireOutDateTime >= DATE '2003-01-01 00:00:00' AND ContainmentDateTime >= DATE '2003-01-01 00:00:00')&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
             response_API = requests.get(url)    
             output = json.loads(response_API.text)
         else:
-            url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+county+"'%20AND%20POOState%20%3D%20'US-"+stateName+"'%20AND(DailyAcres > 0)AND(FireOutDateTime >= DATE '2003-01-01 00:00:00' AND ContainmentDateTime >= DATE '2003-01-01 00:00:00')&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
+            url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+county+"'%20AND%20POOState%20%3D%20'US-"+stateName+"'%20AND(DailyAcres > 0)AND(FireOutDateTime >= DATE '2015-01-01 00:00:00' AND ContainmentDateTime >= DATE '2015-01-01 00:00:00')&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
             response_API = requests.get(url)    
             output = json.loads(response_API.text)
         totalDays = 0
@@ -459,7 +460,7 @@ def averageFireDuration(county, stateName, numberOfFires, state):
              
         if(state):
             noDates = getTotalFiresWithNoDatesState(stateName) + 1
-            calc = round(totalDays/(numberOfFires - noDates)) if not largeState else round(totalDays/(noDates))
+            calc = round(totalDays/(noDates))
             if(calc > 1):
                 text = str(calc) + " Days"
             elif(calc == 1):
@@ -469,7 +470,7 @@ def averageFireDuration(county, stateName, numberOfFires, state):
             WildfireStateResponse["Average Fire Duration"] = text
             
         else:
-            calc = round(totalDays/(numberOfFires - (getTotalFiresWithNoDatesCity(county, stateName)+1)))
+            calc = round(totalDays/(getTotalFiresWithNoDatesCity(county, stateName)+1)) 
             if(calc > 1):
                 text = str(calc) + " Days"
             elif(calc == 1):
