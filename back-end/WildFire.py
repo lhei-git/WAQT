@@ -71,7 +71,7 @@ def fireCheck(output):
         else:
             return True
     except Exception as e:
-        print("Fire Check Function: " + e)
+        print("Fire Check Function: " + str(e))
 #Count of active wildfires
 def countOfActiveFires(county, state, stateOnly, test):
     try:
@@ -81,7 +81,7 @@ def countOfActiveFires(county, state, stateOnly, test):
                 countOutput = json.load(jsonTestData)
                 jsonTestData.close()
             else:
-                url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Current_WildlandFire_Locations/FeatureServer/0/query?where=POOState%20%3D%20'US-"+state+"'&returnGeometry=false&returnCountOnly=true&outSR=4326&f=json"
+                url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Incident_Locations_Current/FeatureServer/0/query?where=POOState%20%3D%20'US-"+state+"'&returnGeometry=false&returnCountOnly=true&outSR=4326&f=json"
                 count_response_API = requests.get(url)    
                 countOutput = json.loads(count_response_API.text)
             WildfireStateResponse["Total Active Wildfires"] = countOutput["count"]
@@ -91,12 +91,12 @@ def countOfActiveFires(county, state, stateOnly, test):
                 countOutput = json.load(jsonTestData)
                 jsonTestData.close()
             else:
-                url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Current_WildlandFire_Locations/FeatureServer/0/query?where=POOCounty%20%3D%20'"+county+"'%20AND%20POOState%20%3D%20'US-"+state+"'&returnGeometry=false&returnCountOnly=true&outSR=4326&f=json"
+                url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Incident_Locations_Current/FeatureServer/0/query?where=POOCounty%20%3D%20'"+county+"'%20AND%20POOState%20%3D%20'US-"+state+"'&returnGeometry=false&returnCountOnly=true&outSR=4326&f=json"
                 count_response_API = requests.get(url)    
                 countOutput = json.loads(count_response_API.text)
             WildfireResponse["Total Active Wildfires"] = countOutput["count"]
     except Exception as e:
-        print("Active Fire Count Function: " + e)
+        print("Active Fire Count Function: " + str(e))
 #Get the count of wildfires
 def getTotalFiresCounty(county, state, test):
     try:
@@ -105,53 +105,53 @@ def getTotalFiresCounty(county, state, test):
             countOutput = json.load(jsonTestData)
             jsonTestData.close()
         else:
-            countUrl = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+county+"'%20AND%20POOState%20%3D%20'US-"+state+"'&outFields=IncidentName,DailyAcres,ContainmentDateTime,FireDiscoveryDateTime&returnGeometry=false&returnCountOnly=true&outSR=4326&f=json"
+            countUrl = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Incident_Locations/FeatureServer/0/query?where=POOCounty%20%3D%20'"+county+"'%20AND%20POOState%20%3D%20'US-"+state+"'&outFields=IncidentName,DailyAcres,ContainmentDateTime,FireDiscoveryDateTime&returnGeometry=false&returnCountOnly=true&outSR=4326&f=json"
             count_response_API = requests.get(countUrl)    
             countOutput = json.loads(count_response_API.text)
         WildfireResponse["Total Fires"] = "{:,}".format(int(countOutput["count"]))
         return int(countOutput["count"])
     except Exception as e:
-        print("Total Fires County Function: " + e)
+        print("Total Fires County Function: " + str(e))
 
 def getTotalFiresWithNoDailyAcresCity(county, state):
     try:
-        countUrl = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+county+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND(DailyAcres = null)&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&returnCountOnly=true&outSR=4326&f=json"
+        countUrl = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Incident_Locations/FeatureServer/0/query?where=POOCounty%20%3D%20'"+county+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND(DailyAcres = null)&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&returnCountOnly=true&outSR=4326&f=json"
         count_response_API = requests.get(countUrl)    
         countOutput = json.loads(count_response_API.text)
         WildfireResponse["Total Fires"] = "{:,}".format(int(countOutput["count"]))
         return int(countOutput["count"])
     except Exception as e:
-        print("Total Fires Daily Acres Function: " + e)
+        print("Total Fires Daily Acres Function: " + str(e))
 
 def getTotalFiresWithNoDailyAcresState(state):
     try:
-        countUrl = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOState%20%3D%20'US-"+state+"'%20AND(DailyAcres = null)&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&returnCountOnly=true&outSR=4326&f=json"
+        countUrl = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Incident_Locations/FeatureServer/0/query?where=POOState%20%3D%20'US-"+state+"'%20AND(DailyAcres = null)&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&returnCountOnly=true&outSR=4326&f=json"
         count_response_API = requests.get(countUrl)    
         countOutput = json.loads(count_response_API.text)
         WildfireResponse["Total Fires"] = "{:,}".format(int(countOutput["count"]))
         return int(countOutput["count"])
     except Exception as e:
-        print("Total Fires Daily Acres Function: " + e)
+        print("Total Fires Daily Acres Function: " + str(e))
 
 def getTotalFiresWithNoDatesState(state):
     try:
-        countUrl = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOState%20%3D%20'US-"+state+"'%20AND(DailyAcres > 0)AND(FireOutDateTime >= DATE '2003-01-01 00:00:00' OR ContainmentDateTime >= DATE '2003-01-01 00:00:00')&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&returnCountOnly=true&outSR=4326&f=json"
+        countUrl = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Incident_Locations/FeatureServer/0/query?where=POOState%20%3D%20'US-"+state+"'%20AND(DailyAcres > 0)AND(FireOutDateTime >= DATE '2003-01-01 00:00:00' OR ContainmentDateTime >= DATE '2003-01-01 00:00:00')&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&returnCountOnly=true&outSR=4326&f=json"
         count_response_API = requests.get(countUrl)    
         countOutput = json.loads(count_response_API.text)
         WildfireResponse["Total Fires"] = "{:,}".format(int(countOutput["count"]))
         return int(countOutput["count"])
     except Exception as e:
-        print("Total Fires Daily Acres Function: " + e)
+        print("Total Fires Daily Acres Function: " + str(e))
 
 def getTotalFiresWithNoDatesCity(county, state):
     try:
-        countUrl = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+county+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND(DailyAcres > 0)AND(FireOutDateTime >= DATE '2003-01-01 00:00:00' OR ContainmentDateTime >= DATE '2003-01-01 00:00:00')&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&returnCountOnly=true&outSR=4326&f=json"
+        countUrl = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Incident_Locations/FeatureServer/0/query?where=POOCounty%20%3D%20'"+county+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND(DailyAcres > 0)AND(FireOutDateTime >= DATE '2003-01-01 00:00:00' OR ContainmentDateTime >= DATE '2003-01-01 00:00:00')&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&returnCountOnly=true&outSR=4326&f=json"
         count_response_API = requests.get(countUrl)    
         countOutput = json.loads(count_response_API.text)
         WildfireResponse["Total Fires"] = "{:,}".format(int(countOutput["count"]))
         return int(countOutput["count"])
     except Exception as e:
-        print("Total Fires Daily Acres Function: " + e)
+        print("Total Fires Daily Acres Function: " + str(e))
 #count of wildfires for a state
 def getTotalFiresState(state, test):
     try:
@@ -160,13 +160,13 @@ def getTotalFiresState(state, test):
             countOutput = json.load(jsonTestData)
             jsonTestData.close()
         else:
-            countUrl = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOState%20%3D%20'US-"+state+"'&outFields=IncidentName,DailyAcres,ContainmentDateTime,FireDiscoveryDateTime&returnGeometry=false&returnCountOnly=true&outSR=4326&f=json"
+            countUrl = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Incident_Locations/FeatureServer/0/query?where=POOState%20%3D%20'US-"+state+"'&outFields=IncidentName,DailyAcres,ContainmentDateTime,FireDiscoveryDateTime&returnGeometry=false&returnCountOnly=true&outSR=4326&f=json"
             count_response_API = requests.get(countUrl)    
             countOutput = json.loads(count_response_API.text)
         WildfireStateResponse["Total Fires"] = "{:,}".format(int(countOutput["count"]))
         return int(countOutput["count"])
     except Exception as e:
-        print("Total Fire State Function: " + e)    
+        print("Total Fire State Function: " + str(e))    
 #Get count of wildfires caused by humans
 def getHumanCausedFires(county, state, stateOnly, test):
     try:
@@ -176,7 +176,7 @@ def getHumanCausedFires(county, state, stateOnly, test):
                 countOutput = json.load(jsonTestData)
                 jsonTestData.close()
             else:
-                countUrl = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=FireCause%20%3D%20'HUMAN'%20AND%20POOState%20%3D%20'US-"+state+"'&outFields=FireCause&returnGeometry=false&returnCountOnly=true&outSR=4326&f=json"
+                countUrl = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Incident_Locations/FeatureServer/0/query?where=FireCause%20%3D%20'HUMAN'%20AND%20POOState%20%3D%20'US-"+state+"'&outFields=FireCause&returnGeometry=false&returnCountOnly=true&outSR=4326&f=json"
                 count_response_API = requests.get(countUrl)    
                 countOutput = json.loads(count_response_API.text)
             WildfireStateResponse["Total Fires Caused by Humans"] = "{:,}".format(int(countOutput["count"]))
@@ -186,12 +186,12 @@ def getHumanCausedFires(county, state, stateOnly, test):
                 countOutput = json.load(jsonTestData)
                 jsonTestData.close()
             else:
-                countUrl = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=FireCause%20%3D%20'HUMAN'%20AND%20POOCounty%20%3D%20'"+county+"'%20AND%20POOState%20%3D%20'US-"+state+"'&outFields=FireCause&returnGeometry=false&returnCountOnly=true&outSR=4326&f=json"
+                countUrl = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Incident_Locations/FeatureServer/0/query?where=FireCause%20%3D%20'HUMAN'%20AND%20POOCounty%20%3D%20'"+county+"'%20AND%20POOState%20%3D%20'US-"+state+"'&outFields=FireCause&returnGeometry=false&returnCountOnly=true&outSR=4326&f=json"
                 count_response_API = requests.get(countUrl)    
                 countOutput = json.loads(count_response_API.text)
             WildfireResponse["Total Fires Caused by Humans"] = "{:,}".format(int(countOutput["count"]))
     except Exception as e:
-        print("Human caused fire Function: " + e)
+        print("Human caused fire Function: " + str(e))
 #get the count of natural caused fires
 def getNaturalCausedFires(county, state, stateOnly, test):
     try:
@@ -201,7 +201,7 @@ def getNaturalCausedFires(county, state, stateOnly, test):
                 countOutput = json.load(jsonTestData)
                 jsonTestData.close()
             else:
-                countUrl = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=FireCause%20%3D%20'NATURAL'%20AND%20POOState%20%3D%20'US-"+state+"'&outFields=FireCause&returnGeometry=false&returnCountOnly=true&outSR=4326&f=json"
+                countUrl = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Incident_Locations/FeatureServer/0/query?where=FireCause%20%3D%20'NATURAL'%20AND%20POOState%20%3D%20'US-"+state+"'&outFields=FireCause&returnGeometry=false&returnCountOnly=true&outSR=4326&f=json"
                 count_response_API = requests.get(countUrl)    
                 countOutput = json.loads(count_response_API.text)
             WildfireStateResponse["Total Fires Caused by Nature"] = "{:,}".format(int(countOutput["count"]))
@@ -211,12 +211,12 @@ def getNaturalCausedFires(county, state, stateOnly, test):
                 countOutput = json.load(jsonTestData)
                 jsonTestData.close()
             else:
-                countUrl = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=FireCause%20%3D%20'NATURAL'%20AND%20POOCounty%20%3D%20'"+county+"'%20AND%20POOState%20%3D%20'US-"+state+"'&outFields=FireCause&returnGeometry=false&returnCountOnly=true&outSR=4326&f=json"
+                countUrl = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Incident_Locations/FeatureServer/0/query?where=FireCause%20%3D%20'NATURAL'%20AND%20POOCounty%20%3D%20'"+county+"'%20AND%20POOState%20%3D%20'US-"+state+"'&outFields=FireCause&returnGeometry=false&returnCountOnly=true&outSR=4326&f=json"
                 count_response_API = requests.get(countUrl)    
                 countOutput = json.loads(count_response_API.text)
             WildfireResponse["Total Fires Caused by Nature"] = "{:,}".format(int(countOutput["count"]))
     except Exception as e:
-        print("Natural caused fire Function: " + e)
+        print("Natural caused fire Function: " + str(e))
 
 #get total acres burned
 def totalAcres(county, state, numberOfFires, stateOnly, test):
@@ -228,9 +228,9 @@ def totalAcres(county, state, numberOfFires, stateOnly, test):
                 jsonTestData.close()
             else:
                 if(state == "CA" or state == "CO" or state == "MT" or state == "TX" or state == "MN" or state == "UT" or state == "OR" or state == "NV" or state == "OK" or  state == "WA"):
-                    url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOState%20%3D%20'US-"+state+"'%20AND(DailyAcres >= 100)&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
+                    url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Incident_Locations/FeatureServer/0/query?where=POOState%20%3D%20'US-"+state+"'%20AND(DailyAcres >= 100)&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
                 else:
-                    url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOState%20%3D%20'US-"+state+"'%20AND(DailyAcres >= 1)&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
+                    url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Incident_Locations/FeatureServer/0/query?where=POOState%20%3D%20'US-"+state+"'%20AND(DailyAcres >= 1)&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
                 response_API = requests.get(url)    
                 output = json.loads(response_API.text)
         else:
@@ -239,7 +239,7 @@ def totalAcres(county, state, numberOfFires, stateOnly, test):
                 output = json.load(jsonTestData)
                 jsonTestData.close()
             else:
-                url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+county+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND(DailyAcres > 1)&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
+                url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Incident_Locations/FeatureServer/0/query?where=POOCounty%20%3D%20'"+county+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND(DailyAcres > 1)&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
                 response_API = requests.get(url)    
                 output = json.loads(response_API.text)
         sum = 0 
@@ -262,7 +262,7 @@ def totalAcres(county, state, numberOfFires, stateOnly, test):
             WildfireResponse["Average Acres Burned Per Fire"] = round(sum / (numberOfFires - noDailyAcres))
         return sum
     except Exception as e:
-        print(e)
+        print(str(e))
 
 #get the most recent fire by date
 def getMostRecentFire(county, state, stateOnly, test):
@@ -276,9 +276,9 @@ def getMostRecentFire(county, state, stateOnly, test):
             else:
                 #specific states that have a lot of wildfires 
                 if(state == "CA" or state == "CO" or state == "MT" or state == "TX" or state == "MN" or state == "UT" or state == "OR" or state == "NV" or state == "OK" or  state == "WA"):
-                    url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOState%20%3D%20'US-"+state+"'%20AND%20%20(FireDiscoveryDateTime >= DATE '2022-06-01 00:00:00')%20AND%20%20(DailyAcres >= 1)&outFields=IncidentName,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
+                    url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Incident_Locations/FeatureServer/0/query?where=POOState%20%3D%20'US-"+state+"'%20AND%20%20(FireDiscoveryDateTime >= DATE '2022-06-01 00:00:00')%20AND%20%20(DailyAcres >= 1)&outFields=IncidentName,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
                 else:
-                    url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOState%20%3D%20'US-"+state+"'%20AND%20%20(FireDiscoveryDateTime >= DATE '2020-01-01 00:00:00')%20AND%20%20(DailyAcres >= 1)&outFields=IncidentName,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
+                    url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Incident_Locations/FeatureServer/0/query?where=POOState%20%3D%20'US-"+state+"'%20AND%20%20(FireDiscoveryDateTime >= DATE '2020-01-01 00:00:00')%20AND%20%20(DailyAcres >= 1)&outFields=IncidentName,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
                 response_API = requests.get(url)    
                 output = json.loads(response_API.text)
             marker = 0
@@ -301,9 +301,9 @@ def getMostRecentFire(county, state, stateOnly, test):
                 jsonTestData.close()
             else:
                 if(state == "CA" or state == "CO" or state == "MT" or state == "TX" or state == "MN" or state == "UT" or state == "OR" or state == "NV" or state == "OK" or  state == "WA"):
-                    url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+county+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND%20%20(FireDiscoveryDateTime >= DATE '2022-06-01 00:00:00')%20AND%20%20(DailyAcres >= 1)&outFields=IncidentName,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
+                    url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Incident_Locations/FeatureServer/0/query?where=POOCounty%20%3D%20'"+county+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND%20%20(FireDiscoveryDateTime >= DATE '2022-06-01 00:00:00')%20AND%20%20(DailyAcres >= 1)&outFields=IncidentName,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
                 else:
-                    url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+county+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND%20%20(FireDiscoveryDateTime >= DATE '2022-01-01 00:00:00')%20AND%20%20(DailyAcres >= 1)&outFields=IncidentName,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
+                    url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Incident_Locations/FeatureServer/0/query?where=POOCounty%20%3D%20'"+county+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND%20%20(FireDiscoveryDateTime >= DATE '2022-01-01 00:00:00')%20AND%20%20(DailyAcres >= 1)&outFields=IncidentName,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
                 response_API = requests.get(url)    
                 output = json.loads(response_API.text)
             marker = 0
@@ -319,7 +319,7 @@ def getMostRecentFire(county, state, stateOnly, test):
    
             WildfireResponse["Most Recent Fire"] = str(output['features'][marker]['attributes']['IncidentName']).title() +" (" + convertDate(mostRecentStart[0]) + ")"
     except Exception as e:
-        print(e)
+        print(str(e))
         WildfireResponse["Most Recent Fire"] = "Not Available"
         WildfireStateResponse["Most Recent Fire"] = "Not Available"
 
@@ -334,9 +334,9 @@ def getOldestFire(county, state, stateOnly, test):
             else:
                 #specific states that have a lot of wildfires 
                 if(state == "CA" or state == "TX"):
-                    url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOState%20%3D%20'US-"+state+"'%20AND%20%20(FireDiscoveryDateTime <= DATE '2011-01-01 00:00:00')&outFields=IncidentName,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
+                    url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Incident_Locations/FeatureServer/0/query?where=POOState%20%3D%20'US-"+state+"'%20AND%20%20(FireDiscoveryDateTime <= DATE '2011-01-01 00:00:00')&outFields=IncidentName,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
                 else:
-                    url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOState%20%3D%20'US-"+state+"'%20AND%20%20(FireDiscoveryDateTime <= DATE '2017-01-01 00:00:00')&outFields=IncidentName,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
+                    url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Incident_Locations/FeatureServer/0/query?where=POOState%20%3D%20'US-"+state+"'%20AND%20%20(FireDiscoveryDateTime <= DATE '2017-01-01 00:00:00')&outFields=IncidentName,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
                 response_API = requests.get(url)    
                 output = json.loads(response_API.text)
             marker = 0
@@ -359,9 +359,9 @@ def getOldestFire(county, state, stateOnly, test):
                 jsonTestData.close()
             else:
                 if(state == "CA" or state == "MT"):
-                    url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+county+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND%20%20(FireDiscoveryDateTime <= DATE '2014-06-01 00:00:00')&outFields=IncidentName,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
+                    url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Incident_Locations/FeatureServer/0/query?where=POOCounty%20%3D%20'"+county+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND%20%20(FireDiscoveryDateTime <= DATE '2014-06-01 00:00:00')&outFields=IncidentName,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
                 else:
-                    url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+county+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND%20%20(FireDiscoveryDateTime <= DATE '2017-01-01 00:00:00')&outFields=IncidentName,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
+                    url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Incident_Locations/FeatureServer/0/query?where=POOCounty%20%3D%20'"+county+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND%20%20(FireDiscoveryDateTime <= DATE '2017-01-01 00:00:00')&outFields=IncidentName,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
                 response_API = requests.get(url)    
                 output = json.loads(response_API.text)
             marker = 0
@@ -377,7 +377,7 @@ def getOldestFire(county, state, stateOnly, test):
    
             WildfireResponse["Oldest Fire"] = str(output['features'][marker]['attributes']['IncidentName']).title() +" (" + convertDate(mostRecentStart[0]) + ")"
     except Exception as e:
-        print(e)
+        print(str(e))
         WildfireResponse["Oldest Fire"] = "Not Available"
         WildfireStateResponse["Oldest Fire"] = "Not Available"
 
@@ -432,14 +432,14 @@ def averageFireDuration(county, stateName, numberOfFires, state):
             largeState = False
             if(stateName == "CA" or stateName == "CO" or stateName == "MT" or stateName == "TX" or stateName == "MN" or stateName == "UT" or stateName == "OR" or stateName == "NV" or stateName == "OK" or  stateName == "WA"):
                 largeState = True
-                url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOState%20%3D%20'US-"+stateName+"'%20AND(DailyAcres > 1)AND(FireOutDateTime >= DATE '2003-01-01 00:00:00' AND ContainmentDateTime >= DATE '2003-01-01 00:00:00')&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
+                url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Incident_Locations/FeatureServer/0/query?where=POOState%20%3D%20'US-"+stateName+"'%20AND(DailyAcres > 1)AND(FireOutDateTime >= DATE '2003-01-01 00:00:00' AND ContainmentDateTime >= DATE '2003-01-01 00:00:00')&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
                 print(url)
             else:
-                url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOState%20%3D%20'US-"+stateName+"'%20AND(DailyAcres > 0)AND(FireOutDateTime >= DATE '2003-01-01 00:00:00' AND ContainmentDateTime >= DATE '2003-01-01 00:00:00')&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
+                url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Incident_Locations/FeatureServer/0/query?where=POOState%20%3D%20'US-"+stateName+"'%20AND(DailyAcres > 0)AND(FireOutDateTime >= DATE '2003-01-01 00:00:00' AND ContainmentDateTime >= DATE '2003-01-01 00:00:00')&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
             response_API = requests.get(url)    
             output = json.loads(response_API.text)
         else:
-            url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+county+"'%20AND%20POOState%20%3D%20'US-"+stateName+"'%20AND(DailyAcres > 0)AND(FireOutDateTime >= DATE '2015-01-01 00:00:00' AND ContainmentDateTime >= DATE '2015-01-01 00:00:00')&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
+            url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Incident_Locations/FeatureServer/0/query?where=POOCounty%20%3D%20'"+county+"'%20AND%20POOState%20%3D%20'US-"+stateName+"'%20AND(DailyAcres > 0)AND(FireOutDateTime >= DATE '2015-01-01 00:00:00' AND ContainmentDateTime >= DATE '2015-01-01 00:00:00')&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
             response_API = requests.get(url)    
             output = json.loads(response_API.text)
         totalDays = 0
@@ -479,7 +479,7 @@ def averageFireDuration(county, stateName, numberOfFires, state):
                 text = " < 1" +" Day"
             WildfireResponse["Average Fire Duration"] = text
     except Exception as e:
-        print("Avg duration Function: " + e)
+        print("Avg duration Function: " + str(e))
 
 """
 Trend graph calculations
@@ -527,7 +527,7 @@ def averageMonth(dateStart, dateEnd, month, year, output):
             if(round(float(totalDays/amountOfFiresWithStartEndDates)!=0)):
                 WildfireAvgRes[month + " " + str(year)] = str(round(float(totalDays/amountOfFiresWithStartEndDates)))
     except Exception as e:
-        print("average/month Function: " + e)  
+        print("average/month Function: " + str(e))  
 
 #Ahmad's Code
 #total acres per month
@@ -547,7 +547,7 @@ def acresMonth(dateStart, dateEnd, month, year, output):
         if(sum !=0):
             WildfireAcres[month + " " + str(year)] = sum
     except Exception as e:
-        print("acres/month Function: " + e)
+        print("acres/month Function: " + str(e))
 
 #Ahmad's Code
 #fire count per month
@@ -571,7 +571,7 @@ def countMonth(dateStart, dateEnd, month, year, output):
         if(total !=0):
             WildfireCount[month + " " + str(year)] = total
     except Exception as e:
-        print("Count/Month Function: " + e)
+        print("Count/Month Function: " + str(e))
 
 """
 Flask endpoints
@@ -603,7 +603,7 @@ def create_app(config=None):
             jsonTestData.close()
             unitTesting = True
         else:
-            url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND(DailyAcres > 1)AND(FireDiscoveryDateTime >= DATE '2003-01-01 00:00:00')AND(FireOutDateTime>= DATE '2003-01-01 00:00:00' OR ContainmentDateTime>= DATE '2003-01-01 00:00:00' OR ControlDateTime>= DATE '2003-01-01 00:00:00')&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
+            url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Incident_Locations/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND(DailyAcres > 1)AND(FireDiscoveryDateTime >= DATE '2003-01-01 00:00:00')AND(FireOutDateTime>= DATE '2003-01-01 00:00:00' OR ContainmentDateTime>= DATE '2003-01-01 00:00:00' OR ControlDateTime>= DATE '2003-01-01 00:00:00')&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
             response_API = requests.get(url)
             
             output = json.loads(response_API.text)
@@ -658,7 +658,7 @@ def create_app(config=None):
             jsonTestData.close()
             unitTesting = True
         else:
-            url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOState%20%3D%20'US-"+state+"'%20AND(DailyAcres > 1)AND(FireDiscoveryDateTime >= DATE '2015-01-01 00:00:00')AND(FireOutDateTime>= DATE '2015-01-01 00:00:00' OR ContainmentDateTime>= DATE '2015-01-01 00:00:00' OR ControlDateTime>= DATE '2015-01-01 00:00:00')&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
+            url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Incident_Locations/FeatureServer/0/query?where=POOState%20%3D%20'US-"+state+"'%20AND(DailyAcres > 1)AND(FireDiscoveryDateTime >= DATE '2015-01-01 00:00:00')AND(FireOutDateTime>= DATE '2015-01-01 00:00:00' OR ContainmentDateTime>= DATE '2015-01-01 00:00:00' OR ControlDateTime>= DATE '2015-01-01 00:00:00')&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
             #print(url)
             response_API = requests.get(url)
         
@@ -712,7 +712,7 @@ def create_app(config=None):
                 output = json.load(jsonTestData)
                 jsonTestData.close()
             else:
-                url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Current_WildlandFire_Locations/FeatureServer/0/query?where=POOCounty%20%3D%20'"+county+"'%20AND%20POOState%20%3D%20'US-"+state+"'&outFields=InitialLongitude,InitialLatitude,POOCounty,FireDiscoveryDateTime,FireCause,IncidentName&returnGeometry=false&outSR=4326&f=json"
+                url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Incident_Locations_Current/FeatureServer/0/query?where=POOCounty%20%3D%20'"+county+"'%20AND%20POOState%20%3D%20'US-"+state+"'&outFields=InitialLongitude,InitialLatitude,POOCounty,FireDiscoveryDateTime,FireCause,IncidentName&returnGeometry=false&outSR=4326&f=json"
                 #print(url)
                 response_API = requests.get(url)
                 output = json.loads(response_API.text)
@@ -726,7 +726,7 @@ def create_app(config=None):
                 currentActiveFiresMap.append(activeDictionaryMap)
                 activeDictionaryMap = {} 
         except Exception as e:
-            print(e)
+            print(str(e))
 
         return json.dumps(list(reversed(currentActiveFiresMap)))
 
@@ -743,7 +743,7 @@ def create_app(config=None):
                 output = json.load(jsonTestData)
                 jsonTestData.close()
             else:
-                url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND(DailyAcres > 1)AND(FireDiscoveryDateTime >= DATE '2015-01-01 00:00:00')AND(FireOutDateTime>= DATE '2015-01-01 00:00:00' OR ContainmentDateTime>= DATE '2015-01-01 00:00:00' OR ControlDateTime>= DATE '2015-01-01 00:00:00')&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
+                url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Incident_Locations/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND(DailyAcres > 1)AND(FireDiscoveryDateTime >= DATE '2015-01-01 00:00:00')AND(FireOutDateTime>= DATE '2015-01-01 00:00:00' OR ContainmentDateTime>= DATE '2015-01-01 00:00:00' OR ControlDateTime>= DATE '2015-01-01 00:00:00')&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
                 response_API = requests.get(url)
                 output = json.loads(response_API.text)
             #january 1, 2015
@@ -787,7 +787,7 @@ def create_app(config=None):
                     else:
                         month = month + 1   
         except Exception as e:
-            print(e)
+            print(str(e))
         return json.dumps(WildfireAvgRes)
 
     #Ahmad's Code
@@ -803,7 +803,7 @@ def create_app(config=None):
                 output = json.load(jsonTestData)
                 jsonTestData.close()
             else:
-                url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND%20%20(DailyAcres >= 0.1)%20&outFields=IncidentName,DailyAcres,ContainmentDateTime,ControlDateTime,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
+                url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Incident_Locations/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND%20%20(DailyAcres >= 0.1)%20&outFields=IncidentName,DailyAcres,ContainmentDateTime,ControlDateTime,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
                 #print(url)
                 response_API = requests.get(url)
                 output = json.loads(response_API.text)
@@ -850,7 +850,7 @@ def create_app(config=None):
 
             return json.dumps(WildfireAcres)
         except Exception as e:
-            print("Total Acres graph Function: " + e)
+            print("Total Acres graph Function: " + str(e))
 
     #Ahmad's Code
     #number of fires per year endpoint for graphs
@@ -865,7 +865,7 @@ def create_app(config=None):
                 output = json.load(jsonTestData)
                 jsonTestData.close()
             else:
-                url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND%20%20(DailyAcres >= 0.1)%20&outFields=IncidentName,DailyAcres,ContainmentDateTime,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
+                url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Incident_Locations/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND%20%20(DailyAcres >= 0.1)%20&outFields=IncidentName,DailyAcres,ContainmentDateTime,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
                 response_API = requests.get(url)    
                 output = json.loads(response_API.text)
             #january 1, 2015
@@ -912,7 +912,7 @@ def create_app(config=None):
             #print(WildfireCount)
             return json.dumps(WildfireCount)
         except Exception as e:
-            print("Number of Fires Graph Function: " + e)
+            print("Number of Fires Graph Function: " + str(e))
     
     #Ahmad's Code
     #top 10 fires by acres graph
@@ -927,7 +927,7 @@ def create_app(config=None):
                 output = json.load(jsonTestData)
                 jsonTestData.close()
             else:
-                url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND(DailyAcres > 1)AND(FireDiscoveryDateTime >= DATE '2015-01-01 00:00:00')AND(FireOutDateTime>= DATE '2015-01-01 00:00:00' OR ContainmentDateTime>= DATE '2015-01-01 00:00:00' OR ControlDateTime>= DATE '2015-01-01 00:00:00')&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
+                url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Incident_Locations/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND(DailyAcres > 1)AND(FireDiscoveryDateTime >= DATE '2015-01-01 00:00:00')AND(FireOutDateTime>= DATE '2015-01-01 00:00:00' OR ContainmentDateTime>= DATE '2015-01-01 00:00:00' OR ControlDateTime>= DATE '2015-01-01 00:00:00')&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
                 #print(url)
                 response_API = requests.get(url)
                 output = json.loads(response_API.text)
@@ -947,7 +947,7 @@ def create_app(config=None):
             res = dict(list(OrderedDict(sorted(top10AcresRes.items(), reverse=True)).items())[0: 10])
             return json.dumps(res)
         except Exception as e:
-            print("Top10 Acres Function: " + e)
+            print("Top10 Acres Function: " + str(e))
     
     
 
@@ -964,7 +964,7 @@ def create_app(config=None):
                 output = json.load(jsonTestData)
                 jsonTestData.close()
             else:
-                url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/Fire_History_Locations_Public/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND(DailyAcres > 1)AND(FireDiscoveryDateTime >= DATE '2015-01-01 00:00:00')AND(FireOutDateTime>= DATE '2015-01-01 00:00:00' OR ContainmentDateTime>= DATE '2015-01-01 00:00:00' OR ControlDateTime>= DATE '2015-01-01 00:00:00')&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
+                url = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Incident_Locations/FeatureServer/0/query?where=POOCounty%20%3D%20'"+location+"'%20AND%20POOState%20%3D%20'US-"+state+"'%20AND(DailyAcres > 1)AND(FireDiscoveryDateTime >= DATE '2015-01-01 00:00:00')AND(FireOutDateTime>= DATE '2015-01-01 00:00:00' OR ContainmentDateTime>= DATE '2015-01-01 00:00:00' OR ControlDateTime>= DATE '2015-01-01 00:00:00')&outFields=IncidentName,ControlDateTime,ContainmentDateTime,DailyAcres,FireDiscoveryDateTime,FireOutDateTime&returnGeometry=false&outSR=4326&f=json"
                 response_API = requests.get(url)
                 output = json.loads(response_API.text)
             top10DurationRes.clear()
@@ -997,7 +997,7 @@ def create_app(config=None):
             res = dict(list(OrderedDict(sorted(top10DurationRes.items(), reverse=True)).items())[0: 10])
             return json.dumps(res)
         except Exception as e:
-            print("Top10 Duration Function: " + e)
+            print("Top10 Duration Function: " + str(e))
     return app
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8001))
